@@ -1,0 +1,9 @@
+PR review process
+- Keep PRs small and manageable (< 1K LOC)
+- Review complete within 8 business hours.
+- At least 1 reviewer for small PRs.
+- At least 2 reviewers for large PRs, one of which must be a lead.
+- Reviewers should be assigned in the PR. Team members should self-assign
+once reviewers have been decided on. The #list-services Slack channel is a good place
+to find people to review the PR.
+- You must merge your own PR

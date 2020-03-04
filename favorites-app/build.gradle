@@ -1,0 +1,20 @@
+plugins {
+    id "application"
+}
+
+apply from: "test.gradle"
+apply plugin: "com.target.platform.connector"
+
+mainClassName = "com.tgt.favorites.api.Application"
+
+distTar {
+    archiveFileName = project.name + ".tar"
+}
+
+dependencies {
+    implementation "com.tgt.lists.micronaut:micronaut-resilience4j:1.127.1"
+    implementation "org.owasp.esapi:esapi:2.2.0.0"
+    testImplementation 'org.apache.kafka:kafka-clients:2.3.0:test'
+    testImplementation 'org.apache.kafka:kafka_2.12:2.3.0:test'
+}
+

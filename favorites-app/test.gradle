@@ -1,0 +1,56 @@
+sourceSets {
+    main
+    testUnit {
+        groovy {
+            srcDir { "src/test/unit/groovy" }
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+        }
+        resources.srcDir "src/test/unit/resources"
+    }
+
+    testFunctional {
+        groovy {
+            srcDir { "src/test/functional/groovy" }
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+        }
+        resources.srcDir "src/test/functional/resources"
+    }
+}
+
+configurations {
+    testFunctionalCompile.extendsFrom testCompile
+    testFunctionalImplementation.extendsFrom testImplementation
+    testFunctionalRuntime.extendsFrom testRuntime
+
+    testUnitCompile.extendsFrom testCompile
+    testUnitImplementation.extendsFrom testImplementation
+    testUnitRuntime.extendsFrom testRuntime
+}
+
+task testUnit(type: Test) {
+    testClassesDirs = sourceSets.testUnit.output.classesDirs
+    classpath = sourceSets.testUnit.runtimeClasspath
+}
+
+task testFunctional(type: Test) {
+    testClassesDirs = sourceSets.testFunctional.output.classesDirs
+    classpath = sourceSets.testFunctional.runtimeClasspath
+}
+
+tasks.withType(Test) {
+    testLogging {
+        events "passed", "skipped", "failed", "standardError", "standard_out", "standard_error"
+    }
+}
+
+test {
+    dependsOn testUnit
+    dependsOn testFunctional
+}
+
+cleanTest {
+    dependsOn cleanTestUnit
+    dependsOn cleanTestFunctional
+}

@@ -1,0 +1,3 @@
+rootProject.name="shopping-list"
+include ':shopping-list-app'
+include ':shopping-list-consumer-app'

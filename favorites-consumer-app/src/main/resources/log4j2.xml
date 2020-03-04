@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%style{%d{HH:mm:ss.SSS}}{cyan} %style{[%t]}{bright,gray} %highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue} %style{%c{1.}}{magenta} - %X %msg%n %throwable{10}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+        </Root>
+        <Logger name="com" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="io" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="io.micronaut.http" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.tgt.lists.msgbus" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.tgt.lists.api.filter" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.tgt.lists.oauth" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.tgt.lists.micronaut.resilience" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.tgt.lists.micronaut.zipkin" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.tgt.lists.micronaut.test" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="io.micronaut.data.query" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.tgt.lists.micronaut:micronaut-jdbc" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+    </Loggers>
+</Configuration>

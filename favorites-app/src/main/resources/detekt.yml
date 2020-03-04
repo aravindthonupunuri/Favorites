@@ -1,0 +1,170 @@
+test-pattern: # Configure exclusions for test sources
+    active: true
+    patterns: # Test file regexes
+        - '.*/test/.*'
+        - '.*Test.kt'
+        - '.*Spec.kt'
+    exclude-rule-sets:
+        - 'comments'
+    exclude-rules:
+        - 'NamingRules'
+        - 'WildcardImport'
+        - 'StringLiteralDuplication'
+        - 'TooManyFunctions'
+        - 'NewLineAtEndOfFile'
+
+failFast: true
+# formatting is a ktLint setting (detekt wrapper around ktLint)
+formatting:
+    ImportOrdering:
+        active: false
+    NoWildcardImports:
+        active: false
+    MaximumLineLength:
+        active: false
+        maxLineLength: 180
+
+
+complexity:
+    LongParameterList:
+        active: false
+
+comments:
+    active: true
+    CommentOverPrivateFunction:
+        active: false
+    CommentOverPrivateProperty:
+        active: false
+    EndOfSentenceFormat:
+        active: false
+        endOfSentenceFormat: ([.?!][ \t\n\r\f<])|([.?!]$)
+    UndocumentedPublicClass:
+        active: true
+        searchInNestedClass: true
+        searchInInnerClass: false
+        searchInInnerObject: false
+        searchInInnerInterface: false
+    UndocumentedPublicFunction:
+        active: false
+
+style:
+    active: true
+    CollapsibleIfStatements:
+        active: false
+    DataClassContainsFunctions:
+        active: false
+        conversionFunctionPrefix: 'to'
+    EqualsNullCall:
+        active: false
+    EqualsOnSignatureLine:
+        active: false
+    ExplicitItLambdaParameter:
+        active: true
+    ExpressionBodySyntax:
+        active: false
+        includeLineWrapping: false
+    ForbiddenComment:
+        active: true
+        values: 'FIXME:,STOPSHIP:'
+    ForbiddenImport:
+        active: true
+        imports: ''
+    ForbiddenVoid:
+        active: false
+    FunctionOnlyReturningConstant:
+        active: false
+        ignoreOverridableFunction: true
+        excludedFunctions: 'describeContents'
+    LoopWithTooManyJumpStatements:
+        active: false
+        maxJumpCount: 1
+    MagicNumber:
+        active: true
+        ignoreNumbers: '-1,0,1,2'
+        ignoreHashCodeFunction: true
+        ignorePropertyDeclaration: false
+        ignoreConstantDeclaration: true
+        ignoreCompanionObjectPropertyDeclaration: true
+        ignoreAnnotation: false
+        ignoreNamedArgument: true
+        ignoreEnums: false
+    MandatoryBracesIfStatements:
+        active: false
+    MaxLineLength:
+        active: false
+        maxLineLength: 180
+        excludePackageStatements: true
+        excludeImportStatements: true
+        excludeCommentStatements: false
+    MayBeConst:
+        active: true
+    ModifierOrder:
+        active: true
+    NestedClassesVisibility:
+        active: false
+    NewLineAtEndOfFile:
+        active: false
+    NoTabs:
+        active: true
+    OptionalAbstractKeyword:
+        active: true
+    OptionalUnit:
+        active: false
+    OptionalWhenBraces:
+        active: false
+    PreferToOverPairSyntax:
+        active: false
+    ProtectedMemberInFinalClass:
+        active: false
+    RedundantVisibilityModifierRule:
+        active: true
+    ReturnCount:
+        active: true
+        max: 2
+        excludedFunctions: "equals"
+        excludeLabeled: false
+        excludeReturnFromLambda: true
+    SafeCast:
+        active: true
+    SerialVersionUIDInSerializableClass:
+        active: false
+    SpacingBetweenPackageAndImports:
+        active: false
+    ThrowsCount:
+        active: true
+        max: 2
+    TrailingWhitespace:
+        active: true
+    UnderscoresInNumericLiterals:
+        active: false
+        acceptableDecimalLength: 5
+    UnnecessaryAbstractClass:
+        active: false
+        excludeAnnotatedClasses: "dagger.Module"
+    UnnecessaryApply:
+        active: false
+    UnnecessaryInheritance:
+        active: true
+    UnnecessaryLet:
+        active: false
+    UnnecessaryParentheses:
+        active: false
+    UntilInsteadOfRangeTo:
+        active: false
+    UnusedImports:
+        active: true
+    UnusedPrivateClass:
+        active: true
+    UnusedPrivateMember:
+        active: true
+        allowedNames: "(_|ignored|expected|serialVersionUID)"
+    UseDataClass:
+        active: true
+        excludeAnnotatedClasses: ""
+    UtilityClassWithPublicConstructor:
+        active: false
+    VarCouldBeVal:
+        active: true
+    WildcardImport:
+        active: false
+        excludeImports: 'java.util.*,kotlinx.android.synthetic.*,com.tgt.id2.*'
