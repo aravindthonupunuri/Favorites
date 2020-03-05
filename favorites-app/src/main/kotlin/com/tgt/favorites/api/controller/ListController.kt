@@ -1,5 +1,6 @@
-package com.tgt.shoppinglist.api.controller
+package com.tgt.favorites.api.controller
 
+import com.tgt.favorites.service.*
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MutableHttpResponse
@@ -25,9 +26,9 @@ class ListController(
     private val getListsService: GetAllListService,
     private val createListItemService: CreateListItemService,
     private val deleteListItemService: DeleteListItemService,
-    private val getListService: GetListService,
-    private val getDefaultListService: GetDefaultListService,
-    private val getListItemService: GetListItemService,
+    private val getShoppingListService: GetShoppingListService,
+    private val getDefaultShoppingListService: GetDefaultShoppingListService,
+    private val getShoppingListItemService: GetShoppingListItemService,
     private val updateListItemService: UpdateListItemService,
     private val deleteMultipleListItemService: DeleteMultipleListItemService,
     private val editListSortOrderService: EditListSortOrderService,
@@ -77,7 +78,7 @@ class ListController(
         if (locationId == null) {
             return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return getListService.getList(guestId, locationId, startX, startY, startFloor, listId, sortFieldBy, sortOrderBy,
+        return getShoppingListService.getList(guestId, locationId!!, listId, startX, startY, startFloor, sortFieldBy, sortOrderBy,
             allowExpiredItems ?: false, includeItems ?: ItemIncludeFields.ALL)
             .zipWith(Mono.subscriberContext())
             .map {
@@ -115,7 +116,7 @@ class ListController(
         @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false,
         @QueryValue("include_items") includeItems: ItemIncludeFields?
     ): Mono<MutableHttpResponse<ListResponseTO>> {
-        return getDefaultListService.getDefaultList(guestId, locationId, startX, startY, startFloor, sortFieldBy, sortOrderBy,
+        return getDefaultShoppingListService.getDefaultList(guestId, locationId, startX, startY, startFloor, sortFieldBy, sortOrderBy,
             allowExpiredItems ?: false, includeItems ?: ItemIncludeFields.ALL)
             .zipWith(Mono.subscriberContext())
             .map {
@@ -216,7 +217,7 @@ class ListController(
         if (locationId == null) {
             return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return getListItemService.getListItemService(locationId, listId, listItemId).zipWith(Mono.subscriberContext())
+        return getShoppingListItemService.getListItem(locationId, listId, listItemId).zipWith(Mono.subscriberContext())
             .map {
                 if (it.t2.get<ContextContainer>(CONTEXT_OBJECT).partialResponse) {
                     HttpResponse.status<ListItemResponseTO>(HttpStatus.PARTIAL_CONTENT).body(it.t1)

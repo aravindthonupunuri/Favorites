@@ -1,4 +1,4 @@
-package com.tgt.shoppinglist.api.filter
+package com.tgt.favorites.api.filter
 
 import com.tgt.lists.lib.api.domain.ListPermissionManager
 import com.tgt.lists.lib.api.exception.NotAuthorizedException

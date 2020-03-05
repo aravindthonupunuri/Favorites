@@ -1,6 +1,6 @@
 micronaut:
   application:
-    name: shopping-list-consumer
+    name: favorites-consumer
   http:
     client.connect-ttl: 30m
     client.pool.acquire-timeout: 2000ms

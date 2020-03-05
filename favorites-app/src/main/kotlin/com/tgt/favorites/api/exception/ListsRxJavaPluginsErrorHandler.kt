@@ -1,4 +1,4 @@
-package com.tgt.shoppinglist.api.exception
+package com.tgt.favorites.api.exception
 
 import com.tgt.lists.micronaut.resilience.ResiliencyException
 import io.micronaut.discovery.event.ServiceStartedEvent

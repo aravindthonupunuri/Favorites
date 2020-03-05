@@ -1,4 +1,4 @@
-package com.tgt.shoppinglist.api.filter
+package com.tgt.favorites.api.filter
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode

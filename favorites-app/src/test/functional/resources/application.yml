@@ -1,6 +1,6 @@
 micronaut:
   application:
-    name: shopping-list-app
+    name: favorites-app
   server:
     port: ${server-port:32000}
   http:
@@ -131,7 +131,7 @@ kafka:
           ms: 2_000
 
 msgbus:
-  source: shopping-list
+  source: favorites-app
   kafka:
     consumer:
       enabled: false
@@ -156,7 +156,10 @@ list:
   max-pending-item-count: 3
   max-completed-items-count: 100
   abandon-after-duration-in-days: 730 # It is two years duration
-
+  features.two-carts: true
+  features.dedupe: true
+  features.sort-position: true
+  features.fixed-default-list: false
 sic:
   batch-size: 3
 

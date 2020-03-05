@@ -1,4 +1,4 @@
-package com.tgt.shoppinglist.api.exception
+package com.tgt.favorites.api.exception
 
 import io.micronaut.context.event.ApplicationEventListener
 import io.micronaut.http.context.event.HttpRequestTerminatedEvent
