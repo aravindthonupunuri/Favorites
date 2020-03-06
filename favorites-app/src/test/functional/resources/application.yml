@@ -10,30 +10,6 @@ micronaut:
           - http://localhost:${server-port:32000}
         pool:
           enabled: false
-      sic-api:
-        urls:
-          - http://localhost:${server-port:32000}
-        pool:
-          enabled: false
-      cartwheel-api:
-        urls:
-          - http://localhost:${server-port:32000}
-        pool:
-          enabled: false
-      item-search-api:
-        urls:
-          - http://localhost:${server-port:32000}
-        pool:
-          enabled: false
-      lists-v2-api:
-        urls:
-          - http://localhost:${server-port:32000}
-        pool:
-          enabled: false
-
-jdbc-stmt-timeout:
-  serverStatementTimeoutMillis: 100  # for server side statement timeout
-  statementQueryTimeoutSeconds: 1    # for client side statement timeout
 
 jackson:
   property-naming-strategy: "SNAKE_CASE"
@@ -142,10 +118,10 @@ msgbus:
     dlqproducer:
       enabled: true
     topic: lists-msg-bus
-    consumer-group: lists-msg-bus-apiapp-consumer
+    consumer-group: favorites-msg-bus-apiapp-consumer
     consumer-batch-size: 10
     dlq-topic: lists-dlq
-    dlq-consumer-group: lists-dlq-apiapp-consumer
+    dlq-consumer-group: favorites-dlq-apiapp-consumer
     dlq-event-retry-interval-secs: 1
     dlq-max-event-retry-count: 2
     dlq-consumer-batch-size: 10
@@ -158,7 +134,7 @@ list:
   abandon-after-duration-in-days: 730 # It is two years duration
   features.two-carts: true
   features.dedupe: true
-  features.sort-position: true
+  features.sort-position: false
   features.fixed-default-list: false
 sic:
   batch-size: 3

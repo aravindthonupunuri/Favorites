@@ -210,6 +210,7 @@ class ListController(
     @Get("/{list_id}/list_items/{list_item_id}")
     @Status(HttpStatus.OK)
     fun getListItem(
+        @Header(PROFILE_ID) guestId: String,
         @QueryValue("location_id") locationId: Long?,
         @PathVariable("list_id") listId: UUID,
         @PathVariable("list_item_id") listItemId: UUID
@@ -217,7 +218,7 @@ class ListController(
         if (locationId == null) {
             return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return getShoppingListItemService.getListItem(locationId, listId, listItemId).zipWith(Mono.subscriberContext())
+        return getShoppingListItemService.getListItem(guestId, locationId, listId, listItemId).zipWith(Mono.subscriberContext())
             .map {
                 if (it.t2.get<ContextContainer>(CONTEXT_OBJECT).partialResponse) {
                     HttpResponse.status<ListItemResponseTO>(HttpStatus.PARTIAL_CONTENT).body(it.t1)

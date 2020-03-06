@@ -18,51 +18,6 @@ micronaut:
           enabled: true
           max-connections: 128
           max-pending-acquires: 50
-      sic-api:
-        urls:
-          - "https://stage.tgtneptune.com"
-        connect-timeout: 300ms
-        read-timeout: 400ms
-        pool:
-          enabled: true
-          max-connections: 128
-          max-pending-acquires: 50
-      cartwheel-api:
-        urls:
-          - "https://cartwheel.perf.target.com"
-        connect-timeout: 300ms
-        read-timeout: 400ms
-        pool:
-          enabled: true
-          max-connections: 256
-          max-pending-acquires: 100
-      neptune-api:
-        urls:
-          - "https://stgapi-internal.target.com"
-        connect-timeout: 300ms
-        read-timeout: 600ms
-        pool:
-          enabled: true
-          max-connections: 128
-          max-pending-acquires: 50
-      item-search-api:
-        urls:
-          - "http://keywordsearch.us-east1.tgt-pe-test.gcp.cloud.target.internal"
-        connect-timeout: 300ms
-        read-timeout: 400ms
-        pool:
-          enabled: true
-          max-connections: 128
-          max-pending-acquires: 50
-      lists-v2-api:
-        urls:
-          - "https://stage-api.target.com"
-        connect-timeout: 300ms
-        read-timeout: 1000ms
-        pool:
-          enabled: true
-          max-connections: 128
-          max-pending-acquires: 50
 
   metrics:
     binders:
@@ -149,10 +104,10 @@ msgbus:
     dlqproducer:
       enabled: true
     topic: lists-msg-bus
-    consumer-group: lists-msg-bus-consumer
+    consumer-group: favorites-msg-bus-consumer
     consumer-batch-size: 10
     dlq-topic: lists-dlq
-    dlq-consumer-group: lists-dlq-consumer
+    dlq-consumer-group: favorites-dlq-consumer
     dlq-event-retry-interval-secs: 1
     dlq-max-event-retry-count: 2
     dlq-consumer-batch-size: 10

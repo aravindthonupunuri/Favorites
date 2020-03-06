@@ -78,37 +78,37 @@ pipeline:
     flush: true
     flush_age: 14
 
-  publish-docker-favorites-app-dev:
-    image: plugins/docker
-    group: devimggroup
-    registry: docker.target.com
-    repo: docker.target.com/app/shopping-list/favorites-app
-    dockerfile: ./favorites-app/Dockerfile
-    tags:
-      - 'b${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8}'
-      - latest
-    when:
-      event: [push]
-      branch: master
-    secrets:
-      - {source: artifactory_username, target: plugin_username}
-      - {source: artifactory_password, target: plugin_password}
-
-  publish-docker-favorites-consumer-app-dev:
-    image: plugins/docker
-    group: devimggroup
-    registry: docker.target.com
-    repo: docker.target.com/app/shopping-list/favorites-consumer-app
-    dockerfile: ./favorites-consumer-app/Dockerfile
-    tags:
-      - 'b${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8}'
-      - latest
-    when:
-      event: [push]
-      branch: master
-    secrets:
-      - {source: artifactory_username, target: plugin_username}
-      - {source: artifactory_password, target: plugin_password}
+#  publish-docker-favorites-app-dev:
+#    image: plugins/docker
+#    group: devimggroup
+#    registry: docker.target.com
+#    repo: docker.target.com/app/shopping-list/favorites-app
+#    dockerfile: ./favorites-app/Dockerfile
+#    tags:
+#      - 'b${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8}'
+#      - latest
+#    when:
+#      event: [push]
+#      branch: master
+#    secrets:
+#      - {source: artifactory_username, target: plugin_username}
+#      - {source: artifactory_password, target: plugin_password}
+#
+#  publish-docker-favorites-consumer-app-dev:
+#    image: plugins/docker
+#    group: devimggroup
+#    registry: docker.target.com
+#    repo: docker.target.com/app/shopping-list/favorites-consumer-app
+#    dockerfile: ./favorites-consumer-app/Dockerfile
+#    tags:
+#      - 'b${DRONE_BUILD_NUMBER}-${DRONE_COMMIT:0:8}'
+#      - latest
+#    when:
+#      event: [push]
+#      branch: master
+#    secrets:
+#      - {source: artifactory_username, target: plugin_username}
+#      - {source: artifactory_password, target: plugin_password}
 
 secrets:
   cache_s3_server:

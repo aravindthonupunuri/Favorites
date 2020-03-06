@@ -95,7 +95,7 @@ list:
   abandon-after-duration-in-days: 730 # It is two years duration
 
 msgbus:
-  source: shoppinglist
+  source: favorites
   kafka:
     consumer:
       enabled: true
@@ -106,10 +106,10 @@ msgbus:
     dlqproducer:
       enabled: true
     topic: lists-msg-bus
-    consumer-group: lists-msg-bus-consumer
+    consumer-group: favorites-msg-bus-consumer
     consumer-batch-size: 30
     dlq-topic: lists-dlq
-    dlq-consumer-group: lists-dlq-consumer
+    dlq-consumer-group: favorites-dlq-consumer
     dlq-event-retry-interval-secs: 1
     dlq-max-event-retry-count: 2
     dlq-consumer-batch-size: 10

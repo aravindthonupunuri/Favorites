@@ -16,46 +16,6 @@ micronaut:
         pool:
           enabled: true
           max-connections: 5
-      sic-api:
-        urls:
-          - ${sic-base-url}
-        connect-timeout: 1500ms
-        read-timeout: 1500ms
-        pool:
-          enabled: true
-          max-connections: 5
-      cartwheel-api:
-        urls:
-          - ${cartwheel-base-url}
-        connect-timeout: 1500ms
-        read-timeout: 1500ms
-        pool:
-          enabled: true
-          max-connections: 5
-      neptune-api:
-        urls:
-          - ${neptune-base-url}
-        connect-timeout: 1500ms
-        read-timeout: 1500ms
-        pool:
-          enabled: true
-          max-connections: 5
-      item-search-api:
-        urls:
-          - ${item-search-base-url}
-        connect-timeout: 1500ms
-        read-timeout: 1500ms
-        pool:
-          enabled: true
-          max-connections: 5
-      lists-v2-api:
-        urls:
-          - ${lists-v2-base-url}
-        connect-timeout: 1500ms
-        read-timeout: 1500ms
-        pool:
-          enabled: true
-          max-connections: 5
 
   metrics:
     binders:
@@ -81,16 +41,6 @@ datasources: # hikari
     idleTimeout: 600000       # default 600000ms (10min)
     maxLifetime: 1800000      # default 1800000ms (30min), should be shorter than any database imposed connection time limit
     connectionTimeout: 10000  # default: 30000ms (30 seconds)
-
-flyway:
-  schemas: lists
-  datasources:
-    default:
-      locations: classpath:db.migration
-
-jdbc-stmt-timeout:
-  serverStatementTimeoutMillis: 200  # for server side statement timeout
-  statementQueryTimeoutSeconds: 1    # for client side statement timeout
 
 jackson:
   property-naming-strategy: "SNAKE_CASE"
@@ -209,10 +159,10 @@ msgbus:
     dlqproducer:
       enabled: true
     topic: ${kafka-msgbus-topic}
-    consumer-group: lists-msg-bus-consumer
+    consumer-group: favorites-msg-bus-consumer
     consumer-batch-size: 10
     dlq-topic: ${kafka-dlq-topic}
-    dlq-consumer-group: lists-dlq-consumer
+    dlq-consumer-group: favorites-dlq-consumer
     dlq-event-retry-interval-secs: 1
     dlq-max-event-retry-count: 2
     dlq-consumer-batch-size: 10
