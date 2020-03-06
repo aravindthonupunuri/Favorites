@@ -1,6 +1,6 @@
 micronaut:
   application:
-    name: shopping-list-consumer
+    name: favorites-consumer
   server:
     port: 8085
   executors:

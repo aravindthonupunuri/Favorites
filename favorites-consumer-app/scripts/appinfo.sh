@@ -6,9 +6,9 @@ scriptDir=`dirname $0`
 if [[ "$scriptDir" =~ ^\..* ]]; then
    scriptDir="$currDir/$scriptDir"
 fi
-appname=shoppinglistconsumer
+appname=favoritesconsumer
 gitorg=Lists-Modernization
-gitrepo=shopping-list
+gitrepo=favorites
 resources_location=$scriptDir/../src/main/resources
 secret_resources_location=$resources_location/secrets
 data_folder=${scriptDir}/../../data

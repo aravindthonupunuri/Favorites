@@ -18,7 +18,7 @@ cors:
     - Authorization
 keyValidation:
   environment: "STAGE"
-apiName: "shopping-list"
+apiName: "favorites"
 metrics:
   enabled: true
 auth:

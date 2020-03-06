@@ -1,3 +1,4 @@
-rootProject.name="shopping-list"
-include ':shopping-list-app'
-include ':shopping-list-consumer-app'
+rootProject.name="favorites"
+include ':favorites-app'
+include ':favorites-consumer-app'
+include ':favorites-service'

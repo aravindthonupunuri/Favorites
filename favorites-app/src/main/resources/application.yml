@@ -1,6 +1,6 @@
 micronaut:
   application:
-    name: shopping-list-app
+    name: favorites-app
   executors:
     io:
       type: fixed
@@ -139,7 +139,7 @@ resilience4j:
 
 tracing:
   zipkin:
-    enabled: false
+    enabled: true
     excluded-paths: /health
     b3-propagation-suppress: true
     sample-rate-percent: 0.5
@@ -147,7 +147,7 @@ tracing:
       url: "https://zipkinserver.dev.target.com"
       messageMaxBytes: 50000
     app:
-      name: shoppinglist
+      name: favorites
       env: stage
       region: tdc
 
@@ -198,7 +198,7 @@ kafka:
           ms: 2_000
 
 msgbus:
-  source: shopping-list
+  source: favorites
   kafka:
     consumer:
       enabled: false

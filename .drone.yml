@@ -1,4 +1,12 @@
 services:
+  favoritespostgres:
+    image: 'postgres:11.5'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=lists
+    ports:
+      - '5432:5432'
   zookeeper:
     image: 'wurstmeister/zookeeper:3.4.6'
     ports:
@@ -23,47 +31,19 @@ pipeline:
       - cache_s3_secret_key
       - cache_s3_ca_cert
 
-  publish-config-favorites-dev:
-    when:
-      event: [push]
-      branch: master
-    image: 'docker.target.com/app/lists/alpine-bash-curl-ssl:1.0.5'
-    secrets:
-      - TAP_API_TOKEN
-      - favorites_app_private_key_dev
-      - favorites_consumer_app_private_key_dev
-    commands:
-      - 'tap_api_token=$TAP_API_TOKEN app_private_key=$FAVORITES_APP_PRIVATE_KEY_DEV ./favorites-app/scripts/config_deploy_manager.sh conf.dev.0.0'
-      - 'tap_api_token=$TAP_API_TOKEN app_private_key=$FAVORITES_CONSUMER_APP_PRIVATE_KEY_DEV ./favorites-consumer-app/scripts/config_deploy_manager.sh conf.dev.0.0'
-
-  publish-config-favorites-stage:
-    when:
-      event: tag
-      ref: 'refs/tags/conf.stage.favorites.*'
-      branch: master
-    image: 'docker.target.com/app/lists/alpine-bash-curl-ssl:1.0.5'
-    secrets:
-      - TAP_API_TOKEN
-      - favorites_app_private_key_stage
-      - favorites_consumer_app_private_key_stage
-    commands:
-      - 'tap_api_token=$TAP_API_TOKEN app_private_key=$SHOPPING_LIST_APP_PRIVATE_KEY_STAGE ./favorites-app/scripts/config_deploy_manager.sh ${DRONE_TAG}'
-      - 'tap_api_token=$TAP_API_TOKEN app_private_key=$SHOPPING_LIST_CONSUMER_APP_PRIVATE_KEY_STAGE ./shopping-list-consumer-app/scripts/config_deploy_manager.sh ${DRONE_TAG}'
-
-  publish-config-shopping-list-prod:
-    when:
-      event: tag
-      ref: 'refs/tags/conf.prod.shoppinglist.*'
-      branch: master
-    image: 'docker.target.com/app/lists/alpine-bash-curl-ssl:1.0.5'
-    secrets:
-      - TAP_API_TOKEN
-      - shopping_list_app_private_key_prod
-      - shopping_list_consumer_app_private_key_prod
-    commands:
-      - 'tap_api_token=$TAP_API_TOKEN app_private_key=$SHOPPING_LIST_APP_PRIVATE_KEY_PROD ./favorites-app/scripts/config_deploy_manager.sh ${DRONE_TAG}'
-      - 'tap_api_token=$TAP_API_TOKEN app_private_key=$SHOPPING_LIST_CONSUMER_APP_PRIVATE_KEY_PROD ./shopping-list-consumer-app/scripts/config_deploy_manager.sh ${DRONE_TAG}'
-
+#  publish-config-favorites-dev:
+#    when:
+#      event: [push]
+#      branch: master
+#    image: 'docker.target.com/app/lists/alpine-bash-curl-ssl:1.0.5'
+#    secrets:
+#      - TAP_API_TOKEN
+#      - favorites_app_private_key_dev
+#      - favorites_consumer_app_private_key_dev
+#    commands:
+#      - 'tap_api_token=$TAP_API_TOKEN app_private_key=$FAVORITES_APP_PRIVATE_KEY_DEV ./favorites-app/scripts/config_deploy_manager.sh conf.dev.0.0'
+#      - 'tap_api_token=$TAP_API_TOKEN app_private_key=$FAVORITES_CONSUMER_APP_PRIVATE_KEY_DEV ./favorites-consumer-app/scripts/config_deploy_manager.sh conf.dev.0.0'
+#
   build:
     when:
       event: [pull_request, push, tag]
@@ -72,7 +52,7 @@ pipeline:
       JAVA_TOOL_OPTIONS: '-Xmx4000M'
       GRADLE_USER_HOME: .gradle
       GRADLE_OPTS: '-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false'
-      JDBC_URL: 'jdbc:postgresql://shoppinglistpostgres:5432/lists'
+      JDBC_URL: 'jdbc:postgresql://favoritespostgres:5432/lists'
       KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
     commands:
       - './gradlew build distTar'
@@ -114,35 +94,6 @@ pipeline:
       - {source: artifactory_username, target: plugin_username}
       - {source: artifactory_password, target: plugin_password}
 
-  publish-docker-favorites-app-stage:
-    image: 'plugins/docker:latest'
-    group: stgimggroup
-    registry: docker.target.com
-    repo: docker.target.com/app/shopping-list/favorites-app
-    dockerfile: ./favorites-app/Dockerfile
-    tags: 'rc.${DRONE_TAG:24}'
-    when:
-      event: tag
-      branch: master
-      ref: 'refs/tags/conf.stage.shoppinglist.*'
-    secrets:
-      - {source: artifactory_username, target: plugin_username}
-      - {source: artifactory_password, target: plugin_password}
-
-  publish-docker-favorites-app-prod:
-    image: 'docker.target.com/drone/docker-promotion:1'
-    source_repo: docker.target.com/app/shopping-list/favorites-app
-    source_tag: 'rc.${DRONE_TAG:23}'
-    target_repo: docker.target.com/app/shopping-list/favorites-app
-    target_tags: 'prod.${DRONE_TAG:23}'
-    when:
-      event: tag
-      branch: master
-      ref: 'refs/tags/conf.prod.shoppinglist.*'
-    secrets:
-      - {source: artifactory_username, target: registry_username}
-      - {source: artifactory_password, target: registry_password}
-
   publish-docker-favorites-consumer-app-dev:
     image: plugins/docker
     group: devimggroup
@@ -159,35 +110,6 @@ pipeline:
       - {source: artifactory_username, target: plugin_username}
       - {source: artifactory_password, target: plugin_password}
 
-  publish-docker-favorites-consumer-app-stage:
-    image: 'plugins/docker:latest'
-    group: stgimggroup
-    registry: docker.target.com
-    repo: docker.target.com/app/shopping-list/favorites-consumer-app
-    dockerfile: ./favorites-consumer-app/Dockerfile
-    tags: 'rc.${DRONE_TAG:24}'
-    when:
-      event: tag
-      branch: master
-      ref: 'refs/tags/conf.stage.shoppinglist.*'
-    secrets:
-      - {source: artifactory_username, target: plugin_username}
-      - {source: artifactory_password, target: plugin_password}
-
-  publish-docker-favorites-consumer-app-prod:
-    image: 'docker.target.com/drone/docker-promotion:1'
-    source_repo: docker.target.com/app/shopping-list/favorites-consumer-app
-    source_tag: 'rc.${DRONE_TAG:23}'
-    target_repo: docker.target.com/app/shopping-list/favorites-consumer-app
-    target_tags: 'prod.${DRONE_TAG:23}'
-    when:
-      event: tag
-      branch: master
-      ref: 'refs/tags/conf.prod.shoppinglist.*'
-    secrets:
-      - {source: artifactory_username, target: registry_username}
-      - {source: artifactory_password, target: registry_password}
-
 secrets:
   cache_s3_server:
     path: secret/shared/drone/prod-secrets/cache_s3_server
@@ -197,15 +119,7 @@ secrets:
     path: secret/shared/drone/prod-secrets/cache_s3_secret_key
   cache_s3_ca_cert:
     path: secret/shared/drone/prod-secrets/cache_s3_ca_cert
-  shopping_list_app_private_key_dev:
-    path: secret/repo/Lists-Modernization/shopping-list/shoppinglist-privkey-dev
-  shopping_list_app_private_key_stage:
-    path: secret/repo/Lists-Modernization/shopping-list/shoppinglist-privkey-stage
-  shopping_list_app_private_key_prod:
-    path: secret/repo/Lists-Modernization/shopping-list/shoppinglist-privkey-prod
-  shopping_list_consumer_app_private_key_dev:
-    path: secret/repo/Lists-Modernization/shopping-list/shoppinglistconsumer-privkey-dev
-  shopping_list_consumer_app_private_key_stage:
-    path: secret/repo/Lists-Modernization/shopping-list/shoppinglistconsumer-privkey-stage
-  shopping_list_consumer_app_private_key_prod:
-    path: secret/repo/Lists-Modernization/shopping-list/shoppinglistconsumer-privkey-prod
+  favorites_app_private_key_dev:
+    path: secret/repo/Lists-Modernization/favorites/favorites-privkey-dev
+  favorites_consumer_app_private_key_dev:
+    path: secret/repo/Lists-Modernization/favorites/favoritesconsumer-privkey-dev
