@@ -163,7 +163,7 @@ kafka:
           ms: 2_000
 
 msgbus:
-  source: shopping-list
+  source: favorites
   kafka:
     consumer:
       enabled: true

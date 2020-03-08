@@ -10,9 +10,7 @@ import com.tgt.lists.msgbus.producer.MsgbusKafkaProducerClient
 import com.tgt.lists.msgbus.tracing.EventTracer
 import com.tgt.lists.msgbus.tracing.ZipkinTracingMapper
 import com.tgt.favorites.api.util.CartDataProvider
-import com.tgt.favorites.api.util.CartWheelDataProvider
 import com.tgt.favorites.api.util.ListV2DataProvider
-import com.tgt.favorites.api.util.SicDataProvider
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.MockClock
 import io.micrometer.core.instrument.simple.SimpleConfig
@@ -43,18 +41,14 @@ class BaseFunctionalTest extends Specification implements TestPropertyProvider {
     MockServerDelegate mockServerDelegate
     MockServer mockServer
     CartDataProvider cartDataProvider
-    SicDataProvider sicDataProvider
     ListV2DataProvider listV2DataProvider
-    CartWheelDataProvider cartWheelDataProvider
 
     def setup() {
         mockServer = Mock(MockServer)
         mockServer.post({ path -> path.contains("/auth/oauth/v2/token") }, _, _) >> [status: 200, body: DataProvider.getTokenResponse()]
         mockServerDelegate.delegate = mockServer
         cartDataProvider = new CartDataProvider()
-        sicDataProvider = new SicDataProvider()
         listV2DataProvider = new ListV2DataProvider()
-        cartWheelDataProvider = new CartWheelDataProvider()
     }
 
     @Override

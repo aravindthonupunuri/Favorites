@@ -1,17 +1,16 @@
-# shopping-list
-[![Build Status](https://drone6.target.com/api/badges/Lists-Modernization/lists-api/status.svg)](https://drone6.target.com/Lists-Modernization/lists-api)
+# favorites
+[![Build Status](https://drone6.target.com/api/badges/Lists-Modernization/favorites/status.svg)](https://drone6.target.com/Lists-Modernization/lists-api)
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
-
-Shopping list providing endpoints for
-- Create/Read/Update/Delete List
-- Create/Read/Update/Delete List Items
 
 ## Usage
 Versions can be found here:
-https://git.target.com/Lists-Modernization/shopping-list/releases
+
+https://git.target.com/Lists-Modernization/favorites/releases
+
+[favorites swagger doc](favorites-app/api-specs/favorites.yml)
 
 ### General
-This api is built using Micronaut framework.
+This api is built using Micronaut framework. 
 
 ### TAP Secrets and Configuration Automation
 The src/main/resources folder contains secrets and other configuration data by TAP deployment environments.

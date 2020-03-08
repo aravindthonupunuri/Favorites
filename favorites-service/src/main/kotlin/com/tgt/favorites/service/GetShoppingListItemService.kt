@@ -12,10 +12,11 @@ class GetShoppingListItemService(
     @Inject val getListItemService: GetListItemService
 ) {
     fun getListItem(
+        guestId: String,
         locationId: Long,
         listId: UUID,
         listItemId: UUID
     ): Mono<ListItemResponseTO> {
-        return getListItemService.getListItemService(locationId, listId, listItemId)
+        return getListItemService.getListItemService(guestId, locationId, listId, listItemId)
     }
 }

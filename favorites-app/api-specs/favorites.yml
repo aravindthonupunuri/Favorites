@@ -1,0 +1,938 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: favorites-v1
+  description: API to expose Favorites list operations
+host: api.target.com
+schemes:
+  - https
+basePath: /favorites/v1
+produces:
+  - application/json
+consumes:
+  - application/json
+x-api-definition:
+  api_name: favorites-v1
+  personnel:
+    portfolio: Digital
+    owner: Indrakumar.Thimmaiah
+    development_team: Lists Team
+    developers:
+      - Abhishek.Kotha
+      - Ashwin.GunaseelanRavindran
+      - Kiran.Shivalingaiah
+      - MohanaSundaram.A
+      - Rajeshkannan.Balu
+      - Aravind.Thonupunuri
+    enterprise_architect:
+      - Maria.Brinas-Dobrowski
+  compliance_designations:
+    - None
+  api_type: TENANT
+  lifecycle_status: BUILD
+  production_date: null
+  retirement_date: null
+  api_framework: Micronaut
+  overall_data_classification: PUBLIC
+  business_criticality: P2
+  service_now_ci: CI10351932
+  workload_placements:
+    - where: core
+      platform: tap
+      proxy_pattern: side-car
+  notification_ids:
+    - description: ShuttleIO
+      id: 'null'
+    - description: slack
+      id: GQ10ZD7UZ
+  slack_channel_id: GQ10ZD7UZ
+  nuid_ad_groups: null
+  risk_rating: MEDIUM
+  last_pentest_date: null
+  dependencies:
+    - system_name: carts-v4
+      system_type: ORIGIN
+      api_spec: 'https://git.target.com/checkout/bumblebee/blob/master/api-spec/carts-v4.yaml'
+      code_repository: "https://git.target.com/checkout/bumblebee"
+      issue_tracker: "https://git.target.com/checkout/bumblebee/issues"
+      endpoints:
+        - name: Production
+          url: 'https://api.target.com/carts/v4'
+        - name: Stage
+          url: 'https://stage-api.target.com/carts/v4'
+  links:
+    issue_tracker: https://git.target.com/Lists-Modernization/lists-api/issues
+    api_wiki_page: null
+    code_repository: https://git.target.com/Lists-Modernization/lists-api
+    ci_pipeline: https://drone6.target.com/Lists-Modernization/lists-api
+    documentation_links:
+      - https://git.target.com/Lists-Modernization/lists-api/master/README.md
+    logging_link:
+      - http://platform.logging.target.com/goto/5d0c586b331b44400d8ae2f017b33b9b
+    metrics_link:
+      - https://visualize.target.com/d/G03A--pZz/target-platform-metrics-listsapi?orgId=1
+    monitoring_link:
+      - https://www.thalamus.target.com
+    support_team_contact: TTS-List-Service@Target.com
+    api_spec: https://git.target.com/Lists-Modernization/lists-api/blob/master/lists-api-app/api-specs/lists-api-v4.yml
+  endpoints:
+    external:
+      production: https://api.target.com/favorites/v1
+      stage: https://stage-api.target.com/favorites/v1
+      qa: null
+      ci: null
+    internal:
+      production: https://api-internal.target.com/favorites/v1
+      stage: https://stgapi-internal.target.com/favorites/v1
+      qa: null
+      ci: null
+securityDefinitions:
+  gsp_oauth:
+    type: oauth2
+    authorizationUrl: 'http://gsp.target.com/gsp/oauth_tokens/v2/keys/'
+    flow: implicit
+    scopes: {}
+paths:
+  /:
+    x-data_classification: PUBLIC
+    get:
+      x-incident_priority: P4
+      x-response_time_sla: 700ms
+      x-success_http_code: '200'
+      x-expected_tps: '100'
+      summary: Get all favorite lists
+      description: Get all favorite lists for the guest.
+      tags:
+        - lists
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: sort_field
+          in: query
+          description: sort field by given enum options
+          required: false
+          type: "string"
+          enum: [ "LIST_TITLE", "ADDED_DATE","LAST_MODIFIED_DATE"]
+        - name: sort_order
+          in: query
+          description: sort order by given enum options
+          required: false
+          type: "string"
+          enum: [ "ASCENDING", "DESCENDING"]
+
+      responses:
+        '200':
+          description: get all response transfer objects
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ListGetAllResponseTO'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+    post:
+      x-incident_priority: P4
+      x-response_time_sla: 1500ms
+      x-success_http_code: '201'
+      x-expected_tps: '100'
+      summary: Create list.
+      description: Create list.
+      tags:
+        - lists
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: create_list
+          in: body
+          description: create list request body
+          required: true
+          schema:
+            $ref: '#/definitions/ListRequestTO'
+      responses:
+        '201':
+          description: list response transfer object
+          schema:
+            $ref: '#/definitions/ListPostResponseTO'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+  '/{list_id}':
+    x-data_classification: PUBLIC
+    get:
+      x-incident_priority: P4
+      x-response_time_sla: 500ms
+      x-success_http_code: '200'
+      x-expected_tps: '100'
+      summary: Get favorite list by list id. 
+      description: Get favorite list by list id. (this will be a paginated response)
+      tags:
+        - lists
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: list_id
+          in: path
+          description: list id
+          required: true
+          type: string
+          format: uuid
+        - name: location_id
+          in: query
+          description: location id
+          required: true
+          type: integer
+          format: int64
+        - name: sort_field
+          in: query
+          description: sort field by given enum options
+          required: false
+          type: "string"
+          enum: ["PRICE", "ITEM_TITTLE", "AVERAGE_OVERALL_RATING", "ADDED_DATE", "LAST_MODIFIED_DATE"]
+        - name: sort_order
+          in: query
+          description: sort order by given enum options
+          required: false
+          type: "string"
+          enum: [ "ASCENDING", "DESCENDING"]
+      responses:
+        '200':
+          description: get list response
+          schema:
+            $ref: '#/definitions/ListResponseTO'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+    put:
+      x-incident_priority: P4
+      x-response_time_sla: 1000ms
+      x-success_http_code: '200'
+      x-expected_tps: '100'
+      summary: Update list by list id.
+      description: Update list by list id.
+      tags:
+        - lists
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: list_id
+          in: path
+          description: list id
+          required: true
+          type: string
+          format: uuid
+        - name: update_list
+          in: body
+          description: update list request body
+          required: true
+          schema:
+            $ref: '#/definitions/ListUpdateRequestTO'
+      responses:
+        '200':
+          description: list update response transfer object
+          schema:
+            $ref: '#/definitions/ListPostResponseTO'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+    delete:
+      x-incident_priority: P4
+      x-response_time_sla: 500ms
+      x-success_http_code: '204'
+      x-expected_tps: '100'
+      summary: Delete list by list id.
+      description: Delete list by list id.
+      tags:
+        - lists
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: list_id
+          in: path
+          description: list id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: success- list deleted
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+  '/default_list':
+    x-data_classification: PUBLIC
+    get:
+      x-incident_priority: P4
+      x-response_time_sla: 800ms
+      x-success_http_code: '200'
+      x-expected_tps: '100'
+      summary: Get default list.
+      description: Get default list by this api.
+      tags:
+        - lists
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: sort_field
+          in: query
+          description: sort field by given enum options
+          required: false
+          type: "string"
+          enum: [ "PRICE", "ITEM_TITTLE", "AVERAGE_OVERALL_RATING", "ADDED_DATE", "LAST_MODIFIED_DATE"]
+        - name: sort_order
+          in: query
+          description: sort order by given enum options
+          required: false
+          type: "string"
+          enum: [ "ASCENDING", "DESCENDING"]
+        - name: location_id
+          in: query
+          description: location_id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: default list response transfer object
+          schema:
+            $ref: '#/definitions/ListResponseTO'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+   
+ 
+  '/{list_id}/list_items':
+    x-data_classification: PUBLIC
+    post:
+      x-incident_priority: P4
+      x-response_time_sla: 1000ms
+      x-success_http_code: '201'
+      x-expected_tps: '100'
+      summary: Create favorite list item.
+      description: Create favorite list item.
+      tags:
+        - list_items
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: list_id
+          in: path
+          description: list id
+          required: true
+          type: string
+          format: uuid
+        - name: add_list_item
+          in: body
+          description: add list item request body
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ListItemRequestTO'
+      responses:
+        '201':
+          description: list item response transfer object
+          schema:
+            $ref: '#/definitions/ListItemPostResponseTO'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+ 
+
+  '/{list_id}/list_items/{list_item_id}':
+    x-data_classification: PUBLIC
+    get:
+      x-incident_priority: P4
+      x-response_time_sla: 800ms
+      x-success_http_code: '200'
+      x-expected_tps: '100'
+      summary: Get list item by item id.
+      description: Get list item by item id.
+      tags:
+        - list_items
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: location_id
+          in: query
+          description: location id
+          required: true
+          type: integer
+          format: int64
+        - name: list_id
+          in: path
+          description: list id
+          required: true
+          type: string
+          format: uuid
+        - name: list_item_id
+          in: path
+          description: list item id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: list item response transfer object
+          schema:
+            $ref: '#/definitions/ListItemResponseTO'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+    put:
+      x-incident_priority: P4
+      x-response_time_sla: 1500ms
+      x-success_http_code: '200'
+      x-expected_tps: '100'
+      summary: Update list item by list item id.
+      description: Update list item by list item id.
+      tags:
+        - list_items
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: list_id
+          in: path
+          description: list id
+          required: true
+          type: string
+          format: uuid
+        - name: list_item_id
+          in: path
+          description: list item id
+          required: true
+          type: string
+          format: uuid
+        - name: location_id
+          in: query
+          description: location id
+          required: true
+          type: integer
+          format: int64
+        - name: list_item_update
+          description: the list request body
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ListItemUpdateRequestTO'
+      responses:
+        '200':
+          description: list item response transfer object
+          schema:
+            $ref: '#/definitions/ListItemPostResponseTO'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+    delete:
+      x-incident_priority: P4
+      x-response_time_sla: 500ms
+      x-success_http_code: '204'
+      x-expected_tps: '100'
+      summary: Delete list item by id.
+      description: Delete list item by id.
+      tags:
+        - list_items
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: list_id
+          in: path
+          description: list id
+          required: true
+          type: string
+          format: uuid
+        - name: list_item_id
+          in: path
+          description: list item id
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: success- list item deleted
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error404'
+  /guest_favorites: 
+    x-data_classification: PUBLIC
+    get:
+      x-incident_priority: P4
+      x-response_time_sla: 700ms
+      x-success_http_code: '200'
+      x-expected_tps: '100'
+      summary: Get matching items up to 28 items
+      description: Get matching items from guest's lists of favorites
+      tags:
+        - other
+      parameters:
+        - name: Authorization
+          in: header
+          description: bearer token
+          required: true
+          type: string
+          format: string
+          default: Bearer
+        - name: key
+          in: query
+          description: The consumer's valid API key.
+          required: true
+          type: string
+        - name: tcins
+          in: query
+          description: array of tcins
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: get all matching items response transfer objects
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GuestFavoritesResponseTO'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error400'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error401'
+ 
+definitions:
+  ListItemUpdateRequestTO:
+    type: object
+    properties:
+      item_note:
+        minLength: 1
+        type: string
+  ListItemResponseTO:
+    type: object
+    required:
+      - list_item_id
+      - item_type
+    properties:
+      list_item_id:
+        type: string
+        format: uuid
+      item_type:
+        $ref: '#/definitions/ItemType'
+      tcin:
+        type: string
+      item_title:
+        type: string
+      item_note:
+        type: string
+      price:
+        type: number
+        format: float
+      list_price:
+        type: number
+        format: float
+      average_overall_rating:
+        type: number
+        format: float
+      total_review_count:
+        type: integer
+        format: int32
+      images:
+        $ref: '#/definitions/Image'
+      added_ts:
+        type: string
+      last_modified_ts:
+        type: string
+      
+        
+  ItemType:
+    type: string
+    enum:
+      - TCIN
+      - GENERIC_ITEM
+      - OFFER
+  Image:
+    type: object
+    required:
+      - base_url
+      - primary_image
+    properties:
+      base_url:
+        type: string
+      primary_image:
+        type: string
+      swatch_image:
+        type: string
+      alternate_images:
+        type: string
+
+  ListItemPostResponseTO:
+    type: object
+    required:
+      - list_id
+      - list_item_id
+      - item_type
+    properties:
+      list_id:
+        type: string
+        format: uuid
+      list_item_id:
+        type: string
+        format: uuid
+      item_type:
+        $ref: '#/definitions/ItemType'
+      tcin:
+        type: string
+      item_title:
+        type: string
+      item_note:
+        type: string
+      added_ts: 
+        type: string
+      last_modified_ts:
+        type: string
+
+  ListItemRequestTO:
+    type: object
+    required:
+      - item_type
+    properties:
+      item_type:
+        $ref: '#/definitions/ItemType'
+      tcin:
+        type: string
+      item_note:
+        type: string
+ 
+  ListRequestTO:
+    type: object
+    required:
+      - channel
+      - list_title
+      - location_id
+    properties:
+      channel:
+        $ref: '#/definitions/ListChannelType'
+      list_title:
+        minLength: 1
+        type: string
+      short_description:
+        type: string
+  ListPostResponseTO:
+    type: object
+    required:
+      - list_id
+      - channel
+      - list_type
+      - list_title
+    properties:
+      list_id:
+        type: string
+        format: uuid
+      channel:
+        $ref: '#/definitions/ListChannelType'
+      list_type:
+        $ref: '#/definitions/ListType'
+      list_title:
+        minLength: 1
+        type: string
+      short_description:
+        type: string
+      default_list:
+        type: boolean
+      added_time_ts:
+        type: string
+      last_modified_ts:
+        type: string
+  
+  ListUpdateRequestTO:
+    type: object
+    properties:
+      list_title:
+        type: string
+      short_description:
+        type: string
+  ListResponseTO:
+    type: object
+    required:
+      - list_id
+      - channel
+      - list_type
+      - list_title
+    properties:
+      list_id:
+        type: string
+        format: uuid
+      channel:
+        $ref: '#/definitions/ListChannelType'
+      list_type:
+        $ref: '#/definitions/ListType'
+      list_title:
+        minLength: 1
+        type: string
+      short_description:
+        type: string
+      default_list:
+        type: boolean
+      list_items:
+        type: array
+        items:
+          $ref: '#/definitions/ListItemResponseTO'
+      added_ts:
+        type: string
+      last_modified_ts:
+        type: string
+  ListType:
+    type: string
+    enum:
+      - FAVORITES
+  ListChannelType:
+    type: string
+    enum:
+      - WEB
+      - IOS
+      - ANDROID
+  ListGetAllResponseTO:
+    type: object
+    required:
+      - list_id
+      - list_type
+      - channel
+      - list_title
+      - maximum_lists_count
+      - total_items_count
+    properties:
+      list_id:
+        type: string
+        format: uuid
+      list_type:
+        $ref: '#/definitions/ListType'
+      channel:
+        $ref: '#/definitions/ListChannelType'
+      list_title:
+        minLength: 1
+        type: string
+      default_list:
+        type: boolean
+      maximum_lists_count:
+        type: integer
+        format: int32
+      total_items_count:
+        type: integer
+        format: int32
+      added_ts:
+        type: string
+      last_modified_ts:
+        type: string
+  GuestFavoritesResponseTO:
+    type: object
+    properties:
+      tcin: 
+        type: string
+      list_item_details: 
+        type: array
+        items:
+         $ref: '#/definitions/ListItemDetailsTO'
+        
+  ListItemDetailsTO:
+    type: object
+    required:
+      - list_id
+      - list_title
+      - item_id
+    properties:
+      list_id:
+        type: string
+        format: uuid
+      list_title:
+        minLength: 1
+        type: string
+      item_id:
+        type: string
+        format: uuid
+
+  Error401:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Authentication credentials were missing or incorrect
+        example: Unauthorized
+  Error400:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Invalid Request
+        example: Bad Request
+  Error404:
+    type: object
+    properties:
+      message:
+        type: string
+        description: URL requested is invalid or the resource requested does not exist
+        example: Not Found

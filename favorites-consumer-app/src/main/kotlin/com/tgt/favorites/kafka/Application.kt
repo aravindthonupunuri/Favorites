@@ -1,4 +1,4 @@
-package com.tgt.shoppinglist.kafka
+package com.tgt.favorites.kafka
 
 import com.target.platform.connector.micronaut.PlatformPropertySource
 import com.tgt.lists.lib.api.util.TAPEnvironmentLoader
@@ -13,7 +13,7 @@ object Application {
 
         Micronaut.build()
             .propertySources(PlatformPropertySource.connect())
-            .packages("com.tgt.shoppinglist.kafka")
+            .packages("com.tgt.favorites.kafka")
             .mainClass(Application.javaClass)
             .start()
     }
