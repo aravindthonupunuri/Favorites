@@ -1,5 +1,5 @@
 # favorites
-[![Build Status](https://drone6.target.com/api/badges/Lists-Modernization/favorites/status.svg)](https://drone6.target.com/Lists-Modernization/lists-api)
+[![Build Status](https://drone6.target.com/api/badges/Lists-Modernization/favorites/status.svg)](https://drone6.target.com/Lists-Modernization/favorites)
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 
 ## Usage
