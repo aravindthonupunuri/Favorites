@@ -1,7 +1,6 @@
 package com.tgt.favorites.api
 
 import com.tgt.favorites.util.BaseFunctionalTest
-import com.tgt.lists.cart.transport.CartResponse
 import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.*
 import com.tgt.lists.lib.api.util.*
@@ -34,20 +33,14 @@ class GetDefaultListFunctionalTest extends BaseFunctionalTest {
         return newMockMsgbusKafkaProducerClient(eventNotificationsProvider)
     }
 
-    def "test get default list integration with no lists in v4, checking for default list in v2 and migrate if present"() {
+    def "test get default list integration"() {
         given:
         def uri = Constants.LISTS_BASEPATH + "/default_list?location_id=1375"
         String guestId = "1234"
         def listId = UUID.randomUUID()
-        UUID completedCartId = UUID.randomUUID()
-
-        def listGetAllResponseTOV2 = listV2DataProvider.getAllListsV2(guestId, listV2DataProvider.getListsV2())
 
         def pendingCartResponse = cartDataProvider.getCartResponse(listId, guestId,
             LIST_CHANNEL.MOBILE, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING), new UserMetaDataTO()))
-
-        def completedCartResponse = cartDataProvider.getCartResponse(completedCartId,
-            guestId, listId.toString(), cartDataProvider.getMetaData(new ListMetaDataTO(false, "SHOPPING", LIST_STATUS.COMPLETED), new UserMetaDataTO()))
 
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
         def pendingCartItemResponse1 = cartDataProvider.getCartItemResponse(listId, UUID.randomUUID(), "1234",
@@ -62,8 +55,6 @@ class GetDefaultListFunctionalTest extends BaseFunctionalTest {
             cartDataProvider.getItemMetaData(itemMetaData2, new UserItemMetaDataTO()), null, null, null)
 
         def pendingCartContentsResponse = cartDataProvider.getCartContentsResponse(pendingCartResponse, [pendingCartItemResponse1, pendingCartItemResponse2])
-
-        List<CartResponse> migratedCartResponseList = [pendingCartResponse, completedCartResponse]
 
         when:
         HttpResponse<ListResponseTO> listResponse = client.toBlocking()
@@ -102,38 +93,8 @@ class GetDefaultListFunctionalTest extends BaseFunctionalTest {
         def completedItems = actual.completedListItems
         completedItems == null
 
-        3 * mockServer.get({ path -> path.contains(getCartURI(guestId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: []] // call to get all lists for the user
-        1 * mockServer.get({ path -> path.contains("/lists/v2/")}, { headers -> checkHeaders(headers) }) >> [status: 200, body: listGetAllResponseTOV2]  // lists v2 call to get all lists for the user
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))},{ headers -> checkHeaders(headers) }) >> [status: 200, body: []]  // default list manager check while creating cart in v4
-        1 * mockServer.post({ path -> path.contains("/carts/v4/")},_,{ headers -> checkHeaders(headers) }) >> [status: 200, body: pendingCartResponse]   // create pending cart in v4
-        1 * mockServer.post({ path -> path.contains("/carts/v4/")},_,{ headers -> checkHeaders(headers) }) >> [status: 200, body: completedCartResponse]   // create completed cart in v4
-        1 * mockServer.post({ path -> path.contains("/carts/v4/multi_cart_items")},_,{ headers -> checkHeaders(headers) }) >> [status: 200, body: pendingCartContentsResponse]   // add multiple cart items call in v4
-        1 * mockServer.get({ path -> path.contains(getCartURI(guestId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: migratedCartResponseList] // search carts call after the list in v2 is migrated to v4
         1 * mockServer.get({ path -> path.contains("/carts/v4/cart_contents/" + listId) }, _) >> [status: 200, body: pendingCartContentsResponse] // cart contents call  to get pending items
-
-        when: 'circuit is still closed'
-        String metrics = client.toBlocking().retrieve(HttpRequest.GET("/prometheus"))
-
-        then:
-        metrics.contains('resilience4j_circuitbreaker_state{name="carts-api",state="closed",} 1.0')
-    }
-
-    def "test get default list integration with no lists in v4 and v2"() {
-        given:
-        def uri = Constants.LISTS_BASEPATH + "/default_list?location_id=1375"
-        String guestId = "1234"
-        def listGetAllResponseTOV2 = listV2DataProvider.getAllListsV2(guestId, [])
-
-        when:
-        HttpResponse<ListResponseTO> listResponse = client.toBlocking()
-            .exchange(HttpRequest.GET(uri).headers(getHeaders(guestId)), ListResponseTO)
-        def actualStatus = listResponse.status()
-
-        then:
-        actualStatus == HttpStatus.NO_CONTENT
-
-        1 * mockServer.get({ path -> path.contains(getCartURI(guestId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: []] // call to get all lists for the user
-        1 * mockServer.get({ path -> path.contains("/lists/v2/")}, { headers -> checkHeaders(headers) }) >> [status: 200, body: listGetAllResponseTOV2]  // lists v2 call to get all lists for the user
 
         when: 'circuit is still closed'
         String metrics = client.toBlocking().retrieve(HttpRequest.GET("/prometheus"))

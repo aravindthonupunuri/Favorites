@@ -28,9 +28,7 @@ import static com.tgt.favorites.util.DataProvider.*
 class UpdateListFunctionalTest  extends BaseKafkaFunctionalTest {
 
     CartDataProvider cartDataProvider
-    CartType cartType = CartType.LIST
     LIST_CHANNEL cartChannel = LIST_CHANNEL.WEB
-    String cartLocation = "3991"
     String guestId = "1234"
 
     @Shared
@@ -98,53 +96,4 @@ class UpdateListFunctionalTest  extends BaseKafkaFunctionalTest {
         metrics.contains('resilience4j_circuitbreaker_state{name="carts-api",state="closed",} 1.0')
     }
 
-    def "test update list integrity with preexisting default list"() {
-        def listId = UUID.randomUUID()
-        def uri = Constants.LISTS_BASEPATH + "/" + listId
-        def listRequest =
-            [
-                "list_title"                        : "My updated list",
-                "short_description"                 : "My updated first list",
-                (TestUtilConstants.DEFAULT_LIST_IND): true
-            ]
-
-        ListMetaDataTO metadata = new ListMetaDataTO(false, "SHOPPING", LIST_STATUS.PENDING)
-        def cartResponse = cartDataProvider.getCartResponse(listId, guestId, cartChannel, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
-
-        def cartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, null)
-
-        def cartLists = [getCart(listId, cartType , cartChannel, cartLocation, guestId, "My list", "My first list", cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))]
-
-        ListMetaDataTO updatedMetadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
-        def updatedCartResponse = cartDataProvider.getCartResponse(listId, guestId, cartChannel, CartType.LIST, "My updated list", "My updated first list", null, cartDataProvider.getMetaData(updatedMetadata, new UserMetaDataTO()))
-
-        def updatedListMetaData = cartDataProvider.getListMetaDataFromCart(updatedCartResponse.metadata)
-
-        when:
-        HttpResponse<ListResponseTO> listResponse = client.toBlocking().exchange(
-            HttpRequest.PUT(uri, JsonOutput.toJson(listRequest)).headers(getHeaders(guestId)), ListResponseTO)
-        def actualStatus = listResponse.status()
-        def actual = listResponse.body()
-
-        then:
-        actualStatus == HttpStatus.OK
-
-        actual.listId == updatedCartResponse.cartId
-        actual.channel == LIST_CHANNEL.valueOf(cartResponse.cartChannel)
-        actual.listTitle == updatedCartResponse.tenantCartName
-        actual.shortDescription == updatedCartResponse.tenantCartDescription
-        actual.listType == updatedListMetaData.listType
-        actual.defaultList == updatedListMetaData.defaultList
-
-        1 * mockServer.get({ path -> path.contains(getCartContentURI(listId))}, _) >> [status: 200, body: cartContentsResponse] // Authorization filter call
-        1 * mockServer.get({ path -> path.contains(getCartURI(guestId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartLists] // search call in default list manager
-        1 * mockServer.get({ path -> path.contains(getCartContentURI(listId))}, _) >> [status: 200, body: cartContentsResponse]
-        1 * mockServer.put({ path -> path.contains("/carts/v4/" + listId)},_, { headers -> checkHeaders(headers) }) >> [status: 200, body: updatedCartResponse] // updateByListId cart response
-
-        when: 'circuit is still closed'
-        String metrics = client.toBlocking().retrieve(HttpRequest.GET("/prometheus"))
-
-        then:
-        metrics.contains('resilience4j_circuitbreaker_state{name="carts-api",state="closed",} 1.0')
-    }
 }
