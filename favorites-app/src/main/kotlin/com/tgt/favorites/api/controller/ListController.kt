@@ -22,18 +22,13 @@ class ListController(
     private val createListService: CreateListService,
     private val updateListService: UpdateListService,
     private val deleteListService: DeleteListService,
-    private val replaceListItemService: ReplaceListItemService,
     private val getListsService: GetAllListService,
     private val createListItemService: CreateListItemService,
     private val deleteListItemService: DeleteListItemService,
     private val getShoppingListService: GetShoppingListService,
     private val getDefaultShoppingListService: GetDefaultShoppingListService,
     private val getShoppingListItemService: GetShoppingListItemService,
-    private val updateListItemService: UpdateListItemService,
-    private val deleteMultipleListItemService: DeleteMultipleListItemService,
-    private val editListSortOrderService: EditListSortOrderService,
-    private val editItemSortOrderService: EditItemSortOrderService,
-    private val addMultipleListItemService: AddMultipleListItemService
+    private val updateListItemService: UpdateListItemService
 ) {
 
     /**
@@ -289,92 +284,5 @@ class ListController(
             return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
         return updateListItemService.updateListItem(guestId, locationId, listId, listItemId, listItemUpdateRequestTO)
-    }
-
-    /**
-     * Multiple delete of list items.
-     *
-     * @param listId list id
-     * @QueryValue("include_items") includeItems: ITEM_INCLUDE_FIELDS? = null
-     * @param deleteFields delete fields
-     *
-     */
-    @Delete("/{list_id}/list_items")
-    @Status(HttpStatus.OK)
-    fun multipleDeleteListItem(
-        @Header(PROFILE_ID) guestId: GuestId,
-        @PathVariable("list_id") listId: UUID,
-        @QueryValue("itemIds") itemIds: String? = null,
-        @QueryValue("include_items") deleteFields: ItemIncludeFields? = null
-    ): Mono<ListItemMultiDeleteResponseTO> {
-        return deleteMultipleListItemService.deleteMultipleListItem(guestId, listId, itemIds, deleteFields)
-    }
-
-    /**
-     * Multiple addition of list items
-     *
-     *@param listId list id
-     *@param location_id location id
-     *@return list multi items response transfer object
-     */
-    @Post("/{list_id}/multiple_list_items")
-    @Status(HttpStatus.CREATED)
-    fun multipleAddListItem(
-        @Header(PROFILE_ID) guestId: GuestId,
-        @PathVariable("list_id") listId: UUID,
-        @QueryValue("location_id") locationId: Long,
-        @Valid @Body listItemMultiAddRequestTO: ListItemMultiAddRequestTO
-    ): Mono<ListItemMultiAddResponseTO> {
-        return addMultipleListItemService.addMultipleListItem(guestId, listId, locationId, listItemMultiAddRequestTO.items)
-    }
-
-    /**
-     * Edit list sort order for the guest.
-     *
-     * @param guestId guest id
-     * @param editListSortOrderRequestTO body for editing list sort order
-     *
-     */
-    @Put("/guest_preferences/list_sort_order")
-    @Status(HttpStatus.OK)
-    fun editListSortOrder(
-        @Header("profile_id") guestId: String,
-        @Valid @Body editListSortOrderRequestTO: EditListSortOrderRequestTO
-    ): Mono<Boolean> {
-        return editListSortOrderService.editListPosition(guestId, editListSortOrderRequestTO)
-    }
-
-    /**
-     * Edit Item Sort order for given list.
-     *
-     * @param editItemSortOrderRequestTO body for edit item sort order
-     */
-    @Put("/guest_preferences/item_sort_order")
-    @Status(HttpStatus.OK)
-    fun editItemsSortOrder(
-        @Valid @Body editItemSortOrderRequestTO: EditItemSortOrderRequestTO
-    ): Mono<Boolean> {
-        return editItemSortOrderService.editItemPosition(editItemSortOrderRequestTO)
-    }
-
-    /**
-     * Replace Item for given list.
-     *
-     * @param listItemTO body for replace item
-     * @param sourceitemid source item id
-     */
-    @Put("/{list_id}/replace_list_item/{source_item_id}")
-    @Status(HttpStatus.OK)
-    fun replaceListItem(
-        @Header(PROFILE_ID) guestId: String,
-        @QueryValue("location_id") locationId: Long?,
-        @PathVariable("list_id") listId: UUID,
-        @PathVariable("source_item_id") sourceItemId: UUID,
-        @Valid @Body listItemRequestTO: ListItemRequestTO
-    ): Mono<ListItemResponseTO> {
-        if (locationId == null) {
-            return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
-        }
-        return replaceListItemService.replaceListItem(guestId, listId, sourceItemId, locationId, listItemRequestTO)
     }
 }
