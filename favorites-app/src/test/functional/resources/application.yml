@@ -132,10 +132,10 @@ list:
   max-pending-item-count: 3
   max-completed-items-count: 100
   abandon-after-duration-in-days: 730 # It is two years duration
-  features.two-carts: true
-  features.dedupe: true
+  features.two-carts: false
+  features.dedupe: false
   features.sort-position: false
-  features.fixed-default-list: false
+  features.fixed-default-list: true
 sic:
   batch-size: 3
 

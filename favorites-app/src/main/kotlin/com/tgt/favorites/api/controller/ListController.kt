@@ -25,9 +25,9 @@ class ListController(
     private val getListsService: GetAllListService,
     private val createListItemService: CreateListItemService,
     private val deleteListItemService: DeleteListItemService,
-    private val getShoppingListService: GetShoppingListService,
-    private val getDefaultShoppingListService: GetDefaultShoppingListService,
-    private val getShoppingListItemService: GetShoppingListItemService,
+    private val getFavoriteListService: GetFavoriteListService,
+    private val getDefaultFavoriteListService: GetDefaultFavoriteListService,
+    private val getFavoriteListItemService: GetFavoriteListItemService,
     private val updateListItemService: UpdateListItemService
 ) {
 
@@ -73,7 +73,7 @@ class ListController(
         if (locationId == null) {
             return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return getShoppingListService.getList(guestId, locationId!!, listId, startX, startY, startFloor, sortFieldBy, sortOrderBy,
+        return getFavoriteListService.getList(guestId, locationId!!, listId, startX, startY, startFloor, sortFieldBy, sortOrderBy,
             allowExpiredItems ?: false, includeItems ?: ItemIncludeFields.ALL)
             .zipWith(Mono.subscriberContext())
             .map {
@@ -111,7 +111,7 @@ class ListController(
         @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false,
         @QueryValue("include_items") includeItems: ItemIncludeFields?
     ): Mono<MutableHttpResponse<ListResponseTO>> {
-        return getDefaultShoppingListService.getDefaultList(guestId, locationId, startX, startY, startFloor, sortFieldBy, sortOrderBy,
+        return getDefaultFavoriteListService.getDefaultList(guestId, locationId, startX, startY, startFloor, sortFieldBy, sortOrderBy,
             allowExpiredItems ?: false, includeItems ?: ItemIncludeFields.ALL)
             .zipWith(Mono.subscriberContext())
             .map {
@@ -213,7 +213,7 @@ class ListController(
         if (locationId == null) {
             return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return getShoppingListItemService.getListItem(guestId, locationId, listId, listItemId).zipWith(Mono.subscriberContext())
+        return getFavoriteListItemService.getListItem(guestId, locationId, listId, listItemId).zipWith(Mono.subscriberContext())
             .map {
                 if (it.t2.get<ContextContainer>(CONTEXT_OBJECT).partialResponse) {
                     HttpResponse.status<ListItemResponseTO>(HttpStatus.PARTIAL_CONTENT).body(it.t1)
@@ -235,6 +235,7 @@ class ListController(
     @Post("/{list_id}/list_items")
     @Status(HttpStatus.CREATED)
     fun createListItem(
+        @Header(PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
         @QueryValue("location_id") locationId: Long?,
         @Valid @Body listItemRequestTO: ListItemRequestTO
@@ -242,7 +243,7 @@ class ListController(
         if (locationId == null) {
             return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return createListItemService.createListItem(listId, locationId, listItemRequestTO)
+        return createListItemService.createListItem(guestId, listId, locationId, listItemRequestTO)
     }
 
     /**

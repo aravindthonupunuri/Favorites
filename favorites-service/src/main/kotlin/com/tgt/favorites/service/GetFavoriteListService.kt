@@ -1,6 +1,8 @@
 package com.tgt.favorites.service
 
 import com.tgt.lists.lib.api.service.GetListService
+import com.tgt.lists.lib.api.service.transform.ListItemsTransformationPipeline
+import com.tgt.lists.lib.api.service.transform.SortListItemsTransformationStep
 import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.util.ItemIncludeFields
 import com.tgt.lists.lib.api.util.ItemSortFieldGroup
@@ -12,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetShoppingListService(
+class GetFavoriteListService(
     @Inject val getListService: GetListService
 ) {
 
@@ -28,7 +30,7 @@ class GetShoppingListService(
         allowExpiredItems: Boolean,
         includeItems: ItemIncludeFields
     ): Mono<ListResponseTO> {
-        return getListService.getList(guestId, locationId, listId,
-            sortFieldBy, sortOrderBy, allowExpiredItems, includeItems)
+        return getListService.getList(guestId, locationId, listId, ListItemsTransformationPipeline()
+            .addStep(SortListItemsTransformationStep(sortFieldBy, sortOrderBy)), allowExpiredItems, includeItems)
     }
 }

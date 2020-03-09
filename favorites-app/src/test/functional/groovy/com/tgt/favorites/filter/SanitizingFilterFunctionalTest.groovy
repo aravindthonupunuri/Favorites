@@ -72,7 +72,7 @@ class SanitizingFilterFunctionalTest extends BaseFunctionalTest {
         actual.shortDescription == "My Favorite List<input type=text autofocus alert//wztya"
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))},{ headers -> checkHeaders(headers) }) >> [status: 200, body: cartLists]
-        2 * mockServer.post({ path -> path.contains("/carts/v4") }, { body ->
+        1 * mockServer.post({ path -> path.contains("/carts/v4") }, { body ->
             String cartPostRequestJson = ((Optional) body).get()
             CartPostRequest cartPostRequest = cartDataProvider.jsonToCartPostRequest(cartPostRequestJson)
             if (cartPostRequest.tenantCartName != Constants.COMPLETED_CART_NAME) {

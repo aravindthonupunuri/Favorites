@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetShoppingListItemService(
+class GetFavoriteListItemService(
     @Inject val getListItemService: GetListItemService
 ) {
     fun getListItem(
