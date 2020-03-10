@@ -22,7 +22,7 @@ import spock.lang.Unroll
 import static com.tgt.favorites.util.DataProvider.*
 
 @MicronautTest
-class CreateListFunctionalTest  extends BaseKafkaFunctionalTest {
+class CreateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
 
     CartDataProvider cartDataProvider = new CartDataProvider()
 

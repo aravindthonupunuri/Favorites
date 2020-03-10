@@ -14,7 +14,7 @@ import io.micronaut.test.annotation.MicronautTest
 import static com.tgt.favorites.util.DataProvider.*
 
 @MicronautTest
-class DeleteListItemFunctionalTest extends BaseKafkaFunctionalTest {
+class DeleteFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
 
     String guestId = "1234"
 

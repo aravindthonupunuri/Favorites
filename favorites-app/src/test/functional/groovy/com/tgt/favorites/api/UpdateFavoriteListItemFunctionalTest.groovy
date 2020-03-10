@@ -17,7 +17,7 @@ import io.micronaut.test.annotation.MicronautTest
 import static com.tgt.favorites.util.DataProvider.*
 
 @MicronautTest
-class UpdateListItemFunctionalTest extends BaseKafkaFunctionalTest {
+class UpdateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
 
     String guestId = "1234"
     String listId = "aaaaaaaa-1111-bbbb-2222-cccccccccccc"

@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 import static com.tgt.favorites.util.DataProvider.*
 
 @MicronautTest
-class CreateListItemFunctionalTest extends BaseKafkaFunctionalTest {
+class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
 
     String guestId = "1234"
 

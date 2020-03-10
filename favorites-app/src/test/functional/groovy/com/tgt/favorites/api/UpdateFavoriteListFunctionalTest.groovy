@@ -25,7 +25,7 @@ import javax.inject.Inject
 import static com.tgt.favorites.util.DataProvider.*
 
 @MicronautTest
-class UpdateListFunctionalTest  extends BaseKafkaFunctionalTest {
+class UpdateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
 
     CartDataProvider cartDataProvider
     LIST_CHANNEL cartChannel = LIST_CHANNEL.WEB

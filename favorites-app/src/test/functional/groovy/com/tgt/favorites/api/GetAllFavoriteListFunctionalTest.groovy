@@ -23,7 +23,7 @@ import javax.inject.Inject
 import static com.tgt.favorites.util.DataProvider.*
 
 @MicronautTest
-class GetAllListFunctionalTest  extends BaseFunctionalTest {
+class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
 
     @Shared
     @Inject

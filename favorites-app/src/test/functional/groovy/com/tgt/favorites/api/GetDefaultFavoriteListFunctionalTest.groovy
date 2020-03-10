@@ -12,7 +12,7 @@ import io.micronaut.test.annotation.MicronautTest
 import static com.tgt.favorites.util.DataProvider.*
 
 @MicronautTest
-class GetDefaultListFunctionalTest extends BaseFunctionalTest {
+class GetDefaultFavoriteListFunctionalTest extends BaseFunctionalTest {
 
     String guestId = "1234"
 

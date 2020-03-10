@@ -22,7 +22,7 @@ import javax.inject.Inject
 import static com.tgt.favorites.util.DataProvider.*
 
 @MicronautTest
-class GetListItemFunctionalTest extends BaseFunctionalTest {
+class GetFavoriteListItemFunctionalTest extends BaseFunctionalTest {
 
     String guestId = "1234"
 

@@ -18,7 +18,7 @@ import io.micronaut.test.annotation.MicronautTest
 import static com.tgt.favorites.util.DataProvider.*
 
 @MicronautTest
-class DeleteListFunctionalTest extends BaseKafkaFunctionalTest {
+class DeleteFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
 
     def "test delete list success scenario"() {
         given:
