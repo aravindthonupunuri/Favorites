@@ -50,7 +50,7 @@ class AuthorizationFilterFunctionalTest extends BaseFunctionalTest {
         def actualBody  = listsResponse.body()
 
         then:
-        actualStatus == HttpStatus.PARTIAL_CONTENT
+        actualStatus == HttpStatus.OK
         actualBody.size() == 1
 
         2 * mockServer.get({ path -> path.contains(cartUri) }, { headers -> checkHeaders(headers) }) >> [status: 200, body: response]

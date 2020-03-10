@@ -70,7 +70,7 @@ class GetListFunctionalTest  extends BaseFunctionalTest {
         def actual = listResponse.body()
 
         then:
-        actualStatus == HttpStatus.PARTIAL_CONTENT //TODO: fix the bug
+        actualStatus == HttpStatus.OK
 
         actual.listId == cartResponse.cartId
         actual.channel == LIST_CHANNEL.valueOf(cartResponse.cartChannel)
@@ -142,7 +142,7 @@ class GetListFunctionalTest  extends BaseFunctionalTest {
         def actual = listResponse.body()
 
         then:
-        actualStatus == HttpStatus.PARTIAL_CONTENT //TODO: check why two calls here
+        actualStatus == HttpStatus.OK
 
         actual.listId == cartResponse.cartId
         actual.channel == LIST_CHANNEL.valueOf(cartResponse.cartChannel)
@@ -214,7 +214,7 @@ class GetListFunctionalTest  extends BaseFunctionalTest {
         def actual = listResponse.body()
 
         then:
-        actualStatus == HttpStatus.PARTIAL_CONTENT
+        actualStatus == HttpStatus.OK
 
         actual.listId == cartResponse.cartId
         actual.channel == LIST_CHANNEL.valueOf(cartResponse.cartChannel)
