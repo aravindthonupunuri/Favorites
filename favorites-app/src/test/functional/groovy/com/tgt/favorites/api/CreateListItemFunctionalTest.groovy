@@ -13,7 +13,6 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.annotation.MicronautTest
-import spock.lang.Ignore
 
 import java.time.LocalDateTime
 
@@ -61,9 +60,8 @@ class CreateListItemFunctionalTest extends BaseKafkaFunctionalTest {
         actual.images == cartItemResponse.images
         actual.itemType == itemMetaData1.itemType
         actual.itemExpiration == itemMetaData1.itemExpiration
-        actual.requestedQuantity == cartItemResponse.requestedQuantity
 
-        1 * mockServer.get({ path -> path.contains(getCartContentURI(listId))}, _) >> [status: 200, body: cartContentsResponse]
+        2 * mockServer.get({ path -> path.contains(getCartContentURI(listId))}, _) >> [status: 200, body: cartContentsResponse]
         1 * mockServer.post({ path -> path.contains("/carts/v4/cart_items")},_,{ headers -> checkHeaders(headers) }) >> [status: 200, body: cartItemResponse]
 
         when: 'circuit is still closed'
@@ -73,7 +71,6 @@ class CreateListItemFunctionalTest extends BaseKafkaFunctionalTest {
         metrics.contains('resilience4j_circuitbreaker_state{name="carts-api",state="closed",} 1.0')
     }
 
-    @Ignore
     def "test create list item when max pending item count has reached"() {
         def listId = UUID.randomUUID()
         def itemId1 = UUID.randomUUID()
@@ -119,7 +116,7 @@ class CreateListItemFunctionalTest extends BaseKafkaFunctionalTest {
         def error = thrown(HttpClientResponseException)
         error.status == HttpStatus.BAD_REQUEST
 
-        1 * mockServer.get({ path -> path.contains(getCartContentURI(listId))}, _) >> [status: 200, body: cartContentsResponse]
+        2 * mockServer.get({ path -> path.contains(getCartContentURI(listId))}, _) >> [status: 200, body: cartContentsResponse]
         0 * mockServer.post({ path -> path.contains("/carts/v4/cart_items")},_,{ headers -> checkHeaders(headers) }) >> [status: 200, body: cartItemResponse]
 
         when: 'circuit is still closed'

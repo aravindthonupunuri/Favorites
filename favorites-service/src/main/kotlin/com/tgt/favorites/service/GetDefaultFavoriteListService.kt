@@ -8,7 +8,6 @@ import com.tgt.lists.lib.api.util.ItemIncludeFields
 import com.tgt.lists.lib.api.util.ItemSortFieldGroup
 import com.tgt.lists.lib.api.util.ItemSortOrderGroup
 import reactor.core.publisher.Mono
-import java.math.BigDecimal
 import javax.inject.Singleton
 
 @Singleton
@@ -18,16 +17,12 @@ class GetDefaultFavoriteListService(
     fun getDefaultList(
         guestId: String,
         locationId: Long,
-        startX: BigDecimal?,
-        startY: BigDecimal?,
-        startFloor: String?,
         sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
         sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
-        allowExpiredItems: Boolean? = false,
-        includeItems: ItemIncludeFields?
+        allowExpiredItems: Boolean? = false
     ): Mono<ListResponseTO> {
         return getDefaultListService.getDefaultList(guestId, locationId, ListItemsTransformationPipeline()
             .addStep(SortListItemsTransformationStep(sortFieldBy, sortOrderBy)),
-            allowExpiredItems ?: false, includeItems ?: ItemIncludeFields.ALL)
+            allowExpiredItems ?: false, ItemIncludeFields.PENDING)
     }
 }

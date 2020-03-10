@@ -7,7 +7,6 @@ import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.*
 import reactor.core.publisher.Mono
 import reactor.core.publisher.switchIfEmpty
-import java.math.BigDecimal
 import java.util.*
 import javax.validation.Valid
 import com.tgt.lists.lib.api.exception.BadRequestException
@@ -64,17 +63,13 @@ class ListController(
         @QueryValue("sort_field") sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
         @QueryValue("sort_order") sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
         @QueryValue("location_id") locationId: Long?,
-        @QueryValue("start_x") startX: BigDecimal?,
-        @QueryValue("start_y") startY: BigDecimal?,
-        @QueryValue("start_floor") startFloor: String?,
-        @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false,
-        @QueryValue("include_items") includeItems: ItemIncludeFields?
+        @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false
     ): Mono<MutableHttpResponse<ListResponseTO>> {
         if (locationId == null) {
             return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return getFavoriteListService.getList(guestId, locationId!!, listId, startX, startY, startFloor, sortFieldBy, sortOrderBy,
-            allowExpiredItems ?: false, includeItems ?: ItemIncludeFields.ALL)
+        return getFavoriteListService.getList(guestId, locationId!!, listId, sortFieldBy, sortOrderBy,
+            allowExpiredItems ?: false)
             .zipWith(Mono.subscriberContext())
             .map {
                 if (it.t2.get<ContextContainer>(CONTEXT_OBJECT).partialResponse) {
@@ -105,14 +100,10 @@ class ListController(
         @QueryValue("sort_field") sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
         @QueryValue("sort_order") sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
         @QueryValue("location_id") locationId: Long,
-        @QueryValue("start_x") startX: BigDecimal?,
-        @QueryValue("start_y") startY: BigDecimal?,
-        @QueryValue("start_floor") startFloor: String?,
-        @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false,
-        @QueryValue("include_items") includeItems: ItemIncludeFields?
+        @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false
     ): Mono<MutableHttpResponse<ListResponseTO>> {
-        return getDefaultFavoriteListService.getDefaultList(guestId, locationId, startX, startY, startFloor, sortFieldBy, sortOrderBy,
-            allowExpiredItems ?: false, includeItems ?: ItemIncludeFields.ALL)
+        return getDefaultFavoriteListService.getDefaultList(guestId, locationId, sortFieldBy, sortOrderBy,
+            allowExpiredItems ?: false)
             .zipWith(Mono.subscriberContext())
             .map {
                 if (it.t2.get<ContextContainer>(CONTEXT_OBJECT).partialResponse) {

@@ -68,15 +68,9 @@ allprojects {
         implementation "io.micronaut.configuration:micronaut-hibernate-validator"
         implementation "javax.annotation:javax.annotation-api"
 
-        implementation "com.tgt.lists:lists-lib:1.0.9"
+        implementation "com.tgt.lists:lists-lib:1.0.10"
 
         implementation "com.tgt.lists:lists-cart-client:1.122.0"
-        implementation "com.tgt.lists:lists-v2-client:1.122.0"
-        implementation "com.tgt.lists:lists-sic-client:1.122.0"
-        implementation "com.tgt.lists:lists-item-search-client:1.121.9"
-        implementation "com.tgt.lists:lists-core-items-client:1.121.6"
-        implementation "com.tgt.lists:lists-cartwheel-client:1.121.0"
-        implementation "com.tgt.lists:lists-neptune-client:1.121.3"
         implementation "com.tgt.lists:lists-oauth:1.121.2"
         implementation "com.tgt.lists.micronaut:micronaut-zipkin:1.127.19"
         implementation "com.tgt.lists:lists-message-bus:1.127.22"
