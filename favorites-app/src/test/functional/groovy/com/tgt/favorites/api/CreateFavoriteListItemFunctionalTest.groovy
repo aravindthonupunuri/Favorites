@@ -1,5 +1,6 @@
 package com.tgt.favorites.api
 
+import com.tgt.favorites.transport.FavouritesListItemResponseTO
 import com.tgt.favorites.util.BaseKafkaFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
@@ -43,10 +44,10 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()))
 
         when:
-        HttpResponse<ListItemResponseTO> listResponse = client.toBlocking().exchange(
-            HttpRequest.POST(uri, JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), ListItemResponseTO)
-        def actualStatus = listResponse.status()
-        def actual = listResponse.body()
+        HttpResponse<ListItemResponseTO> favouritesListItemResponse = client.toBlocking().exchange(
+            HttpRequest.POST(uri, JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), FavouritesListItemResponseTO)
+        def actualStatus = favouritesListItemResponse.status()
+        def actual = favouritesListItemResponse.body()
 
         then:
         actualStatus == HttpStatus.CREATED
@@ -55,11 +56,7 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
         actual.tcin == cartItemResponse.tcin
         actual.itemTitle == cartItemResponse.tenantItemName
         actual.itemNote == cartItemResponse.notes
-        actual.price == cartItemResponse.price
-        actual.listPrice == cartItemResponse.listPrice
-        actual.images == cartItemResponse.images
         actual.itemType == itemMetaData1.itemType
-        actual.itemExpiration == itemMetaData1.itemExpiration
 
         2 * mockServer.get({ path -> path.contains(getCartContentURI(listId))}, _) >> [status: 200, body: cartContentsResponse]
         1 * mockServer.post({ path -> path.contains("/carts/v4/cart_items")},_,{ headers -> checkHeaders(headers) }) >> [status: 200, body: cartItemResponse]
@@ -110,7 +107,7 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
 
         when:
         client.toBlocking().exchange(HttpRequest.POST(uri,
-            JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), ListItemResponseTO)
+            JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), FavouritesListItemResponseTO)
 
         then:
         def error = thrown(HttpClientResponseException)

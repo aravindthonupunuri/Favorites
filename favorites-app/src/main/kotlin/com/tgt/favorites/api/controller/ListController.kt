@@ -1,6 +1,15 @@
 package com.tgt.favorites.api.controller
 
-import com.tgt.favorites.service.*
+import com.tgt.favorites.service.GetDefaultFavoriteListService
+import com.tgt.favorites.service.GetFavoriteListItemService
+import com.tgt.favorites.service.GetFavoriteListService
+import com.tgt.favorites.transport.*
+import com.tgt.lists.lib.api.exception.BadRequestException
+import com.tgt.lists.lib.api.service.*
+import com.tgt.lists.lib.api.transport.*
+import com.tgt.lists.lib.api.util.*
+import com.tgt.lists.lib.api.util.Constants.CONTEXT_OBJECT
+import com.tgt.lists.lib.api.util.Constants.PROFILE_ID
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MutableHttpResponse
@@ -9,12 +18,6 @@ import reactor.core.publisher.Mono
 import reactor.core.publisher.switchIfEmpty
 import java.util.*
 import javax.validation.Valid
-import com.tgt.lists.lib.api.exception.BadRequestException
-import com.tgt.lists.lib.api.service.*
-import com.tgt.lists.lib.api.transport.*
-import com.tgt.lists.lib.api.util.*
-import com.tgt.lists.lib.api.util.Constants.CONTEXT_OBJECT
-import com.tgt.lists.lib.api.util.Constants.PROFILE_ID
 
 @Controller(Constants.LISTS_BASEPATH)
 class ListController(
@@ -41,8 +44,9 @@ class ListController(
      */
     @Post("/")
     @Status(HttpStatus.CREATED)
-    fun createList(@Header(PROFILE_ID) guestId: String, @Valid @Body listRequestTO: ListRequestTO): Mono<ListResponseTO> {
+    fun createList(@Header(PROFILE_ID) guestId: String, @Valid @Body listRequestTO: ListRequestTO): Mono<FavouritesListResponseTO> {
         return createListService.createList(guestId, listRequestTO).map { validate(it) }
+            .map { toFavouritesListResponse(it) }
     }
 
     /**
@@ -230,11 +234,12 @@ class ListController(
         @PathVariable("list_id") listId: UUID,
         @QueryValue("location_id") locationId: Long?,
         @Valid @Body listItemRequestTO: ListItemRequestTO
-    ): Mono<ListItemResponseTO> {
+    ): Mono<FavouritesListItemResponseTO> {
         if (locationId == null) {
             return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
         return createListItemService.createListItem(guestId, listId, locationId, listItemRequestTO)
+            .map { toFavouritesListItemResponse(it) }
     }
 
     /**
