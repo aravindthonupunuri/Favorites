@@ -38,7 +38,7 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         def uri = FavoriteConstants.BASEPATH + "/" + cartId + "?location_id=1375"
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
         ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
 
@@ -117,7 +117,7 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         def uri = FavoriteConstants.BASEPATH + "/" + cartId + "?location_id=1375&sort_field=ITEM_TITTLE&sort_order=ASCENDING"
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
         ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
 
@@ -190,7 +190,7 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         def uri = FavoriteConstants.BASEPATH + "/" + cartId + "?location_id=1375"
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.OFFER, LIST_ITEM_STATE.PENDING)
         ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO("2018-09-16T06:35:00.000Z", ItemType.OFFER, LIST_ITEM_STATE.PENDING)
 
