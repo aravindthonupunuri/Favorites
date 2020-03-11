@@ -5,7 +5,7 @@ plugins {
 apply from: "test.gradle"
 apply plugin: "com.target.platform.connector"
 
-mainClassName = "com.tgt.shoppinglist.kafka.Application"
+mainClassName = "com.tgt.favorites.kafka.Application"
 
 dependencies {
     implementation project(":favorites-service")
