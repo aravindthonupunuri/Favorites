@@ -5,6 +5,7 @@ import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.ListMetaDataTO
 import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.transport.UserMetaDataTO
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import com.tgt.lists.lib.api.util.LIST_STATUS
@@ -58,7 +59,7 @@ class SanitizingFilterFunctionalTest extends BaseFunctionalTest {
 
         when:
         HttpResponse<ListResponseTO> listResponse = client.toBlocking().exchange(
-            HttpRequest.POST(Constants.LISTS_BASEPATH, JsonOutput.toJson(listRequest))
+            HttpRequest.POST(FavoriteConstants.BASEPATH, JsonOutput.toJson(listRequest))
                 .headers(getHeaders(guestId)), ListResponseTO)
         def actualStatus = listResponse.status()
         def actual = listResponse.body()
@@ -101,7 +102,7 @@ class SanitizingFilterFunctionalTest extends BaseFunctionalTest {
 
         when:
         HttpResponse<ListResponseTO> listResponse = client.toBlocking().exchange(
-            HttpRequest.POST(Constants.LISTS_BASEPATH, JsonOutput.toJson(listRequest))
+            HttpRequest.POST(FavoriteConstants.BASEPATH, JsonOutput.toJson(listRequest))
                 .headers(getHeaders(guestId)), ListResponseTO)
 
         then:

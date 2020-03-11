@@ -4,6 +4,7 @@ import com.tgt.favorites.util.BaseFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE
@@ -38,7 +39,7 @@ class GetFavoriteListItemFunctionalTest extends BaseFunctionalTest {
     def "get list item integrity test"() {
         def cartId = UUID.randomUUID()
         def cartItemId = "aaaaaaaa-1111-bbbb-2222-cccccccccccc"
-        def uri = Constants.LISTS_BASEPATH + "/" + cartId + "/list_items/" + cartItemId + "?location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/" + cartId + "/list_items/" + cartItemId + "?location_id=1375"
         def cartUri = "/carts/v4/cart_items/aaaaaaaa-1111-bbbb-2222-cccccccccccc?cart_id=" + cartId
 
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
@@ -78,7 +79,7 @@ class GetFavoriteListItemFunctionalTest extends BaseFunctionalTest {
     def "get get list item test when location_id is not passed"() {
         def cartId = UUID.randomUUID()
         def cartItemId = "aaaaaaaa-1111-bbbb-2222-cccccccccccc"
-        def uri = Constants.LISTS_BASEPATH + "/" + cartId + "/list_items/" + cartItemId
+        def uri = FavoriteConstants.BASEPATH + "/" + cartId + "/list_items/" + cartItemId
         def cartResponse = cartDataProvider.getCartResponse(cartId, guestId, null)
         def cartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, null)
 

@@ -2,7 +2,7 @@ package com.tgt.favorites.filter
 
 import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.ListGetAllResponseTO
-import com.tgt.lists.lib.api.util.Constants
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import com.tgt.lists.msgbus.ListsMessageBusProducer
 import com.tgt.lists.msgbus.event.EventLifecycleNotificationProvider
@@ -37,7 +37,7 @@ class AuthorizationFilterFunctionalTest extends BaseFunctionalTest {
     def "test authorization success"() {
         given:
         def cartId = "fe9c3360-b44a-11e9-987d-03d970ca1c28"
-        def uri = Constants.LISTS_BASEPATH + "/${cartId}?location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/${cartId}?location_id=1375"
         def cartUri = "/carts/v4/cart_contents/${cartId}"
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(cartId), "1234",
             LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, [(TestUtilConstants.DEFAULT_LIST_IND): true, (TestUtilConstants.LIST_TYPE): "SHOPPING"])
@@ -59,7 +59,7 @@ class AuthorizationFilterFunctionalTest extends BaseFunctionalTest {
     def "test authorization failure without profile_id"() {
         given:
         def cartId = "fe9c3360-b44a-11e9-987d-03d970ca1c28"
-        def uri = Constants.LISTS_BASEPATH + "/${cartId}?location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/${cartId}?location_id=1375"
         def cartUri = "/carts/v4/cart_contents/${cartId}"
 
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(cartId), "1234",
@@ -77,7 +77,7 @@ class AuthorizationFilterFunctionalTest extends BaseFunctionalTest {
     def "test authorization failure with unauthorized profile_id access"() {
         given:
         def cartId = "fe9c3360-b44a-11e9-987d-03d970ca1c28"
-        def uri = Constants.LISTS_BASEPATH + "/${cartId}?location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/${cartId}?location_id=1375"
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(cartId), guestId, null)
         def cartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, null)
 
@@ -94,7 +94,7 @@ class AuthorizationFilterFunctionalTest extends BaseFunctionalTest {
     def "test authorization failure for cart 404"() {
         given:
         def cartId = "fe9c3360-b44a-11e9-987d-03d970ca1c28"
-        def uri = Constants.LISTS_BASEPATH + "/${cartId}?location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/${cartId}?location_id=1375"
 
         when:
         client.toBlocking().exchange(HttpRequest.GET(uri).headers(getHeaders("1235")), List)
@@ -109,7 +109,7 @@ class AuthorizationFilterFunctionalTest extends BaseFunctionalTest {
     def "test authorization failure with cart 4xx"() {
         given:
         def cartId = "fe9c3360-b44a-11e9-987d-03d970ca1c28"
-        def uri = Constants.LISTS_BASEPATH + "/${cartId}?location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/${cartId}?location_id=1375"
 
         when:
         client.toBlocking().exchange(HttpRequest.GET(uri).headers(getHeaders("1235")), List)

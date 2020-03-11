@@ -1,9 +1,9 @@
 package com.tgt.favorites.api.filter
 
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.domain.ListPermissionManager
 import com.tgt.lists.lib.api.exception.NotAuthorizedException
 import com.tgt.lists.lib.api.util.AppErrorCodes
-import com.tgt.lists.lib.api.util.Constants
 import io.micronaut.context.annotation.Value
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.MutableHttpResponse
@@ -15,7 +15,7 @@ import org.reactivestreams.Publisher
 import reactor.core.publisher.Mono
 import java.util.*
 
-@Filter(Constants.LISTS_BASEPATH + "/**")
+@Filter(FavoriteConstants.BASEPATH + "/**")
 class AuthorizationFilter(private val listPermissionManager: ListPermissionManager) : OncePerRequestHttpServerFilter() {
     private val logger = KotlinLogging.logger(AuthorizationFilter::class.java.name)
 
@@ -50,7 +50,7 @@ class AuthorizationFilter(private val listPermissionManager: ListPermissionManag
     }
 
     private fun getUUID(path: String): UUID? {
-        val index = path.indexOf("/v4/")
+        val index = path.indexOf("/v1/")
         if (index <= 0) {
             return null
         }

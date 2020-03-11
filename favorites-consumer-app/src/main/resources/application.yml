@@ -120,6 +120,10 @@ list:
   max-pending-item-count: 100
   max-completed-items-count: 100
   abandon-after-duration-in-days: 730 # It is two years duration
+  features.two-carts: false
+  features.dedupe: false
+  features.sort-position: false
+  features.fixed-default-list: true
 
 kafka:
   bootstrap:

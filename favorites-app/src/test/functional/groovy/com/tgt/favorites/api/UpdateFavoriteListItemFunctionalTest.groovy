@@ -4,6 +4,7 @@ import com.tgt.favorites.util.BaseKafkaFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE
@@ -11,7 +12,6 @@ import groovy.json.JsonOutput
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
-import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.annotation.MicronautTest
 
 import static com.tgt.favorites.util.DataProvider.*
@@ -24,7 +24,7 @@ class UpdateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
     String listItemId = "40689bf0-c56f-11e9-b988-b394861ac09e"
 
     def "test Update list item integrity"() {
-        def uri = Constants.LISTS_BASEPATH + "/" + listId + "/list_items/" + listItemId+ "?location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/" + listId + "/list_items/" + listItemId+ "?location_id=1375"
         def listItemUpdateRequest =
             [
                 "item_title":"updated item title",
