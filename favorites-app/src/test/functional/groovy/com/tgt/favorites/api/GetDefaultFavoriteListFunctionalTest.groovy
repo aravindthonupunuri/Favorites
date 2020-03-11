@@ -1,5 +1,6 @@
 package com.tgt.favorites.api
 
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.favorites.util.BaseFunctionalTest
 import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.*
@@ -18,7 +19,7 @@ class GetDefaultFavoriteListFunctionalTest extends BaseFunctionalTest {
 
     def "test get default list integration"() {
         given:
-        def uri = Constants.LISTS_BASEPATH + "/default_list?location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/default_list?location_id=1375"
         String guestId = "1234"
         def listId = UUID.randomUUID()
 

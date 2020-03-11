@@ -1,5 +1,6 @@
 package com.tgt.favorites.api
 
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.favorites.util.BaseFunctionalTest
 import com.tgt.lists.cart.transport.CartContentsResponse
 import com.tgt.lists.cart.transport.CartResponse
@@ -63,7 +64,7 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
 
         when:
         HttpResponse<ListGetAllResponseTO[]> listsResponse = client.toBlocking().exchange(
-            HttpRequest.GET(Constants.LISTS_BASEPATH).headers(getHeaders(guestId)), ListGetAllResponseTO[])
+            HttpRequest.GET(FavoriteConstants.BASEPATH).headers(getHeaders(guestId)), ListGetAllResponseTO[])
         def actualStatus = listsResponse.status()
         def actualBody  = listsResponse.body()
 
@@ -138,7 +139,7 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         CartContentsResponse cartContentsResponse3 = cartDataProvider.getCartContentsResponse(cartId3, 3)
 
         when:
-        final requestURI = new UriTemplate(Constants.LISTS_BASEPATH + "{?sort_field,sort_order}")
+        final requestURI = new UriTemplate(FavoriteConstants.BASEPATH + "{?sort_field,sort_order}")
             .expand(sort_field: ListSortFieldGroup.LIST_TITLE, sort_order: ListSortOrderGroup.ASCENDING)
         HttpResponse<ListGetAllResponseTO[]> listsResponse = client.toBlocking().exchange(
             HttpRequest.GET(requestURI).headers(getHeaders(guestId)), ListGetAllResponseTO[])
@@ -216,7 +217,7 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         CartContentsResponse cartContentsResponse3 = cartDataProvider.getCartContentsResponse(cartId3, 3)
 
         when:
-        final requestURI = new UriTemplate(Constants.LISTS_BASEPATH + "{?sort_field,sort_order}")
+        final requestURI = new UriTemplate(FavoriteConstants.BASEPATH + "{?sort_field,sort_order}")
             .expand(sort_field: ListSortFieldGroup.LIST_TITLE, sort_order: ListSortOrderGroup.DESCENDING)
         HttpResponse<ListGetAllResponseTO[]> listsResponse = client.toBlocking().exchange(
             HttpRequest.GET(requestURI).headers(getHeaders(guestId)), ListGetAllResponseTO[])

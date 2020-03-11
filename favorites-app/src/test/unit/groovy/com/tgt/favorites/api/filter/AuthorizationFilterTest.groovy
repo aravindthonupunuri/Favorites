@@ -1,11 +1,11 @@
 package com.tgt.favorites.api.filter
 
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.cart.CartClient
 import com.tgt.lists.cart.transport.CartContentsFieldGroup
 import com.tgt.lists.cart.types.CartContentsFieldGroups
 import com.tgt.lists.lib.api.domain.ListPermissionManager
 import com.tgt.lists.lib.api.exception.NotAuthorizedException
-import com.tgt.lists.lib.api.util.Constants
 import com.tgt.favorites.api.util.CartDataProvider
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpRequest
@@ -67,7 +67,7 @@ class AuthorizationFilterTest extends Specification {
         headers.get("profile_id") >> guestId
         mockRequest.headers >> headers
         def serverFilterChain = Mock(ServerFilterChain)
-        mockRequest.path >> Constants.LISTS_BASEPATH + "/" + listId
+        mockRequest.path >> FavoriteConstants.BASEPATH + "/" + listId
         def cartResponse = cartDataProvider.getCartResponse(listId, guestId, null)
         def cartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, null)
         def fieldGroups = new CartContentsFieldGroups([CartContentsFieldGroup.CART])
@@ -89,7 +89,7 @@ class AuthorizationFilterTest extends Specification {
         headers.get("profile_id") >> guestId
         mockRequest.headers >> headers
         def serverFilterChain = Mock(ServerFilterChain)
-        mockRequest.path >> Constants.LISTS_BASEPATH + "/" + listId
+        mockRequest.path >> FavoriteConstants.BASEPATH + "/" + listId
         def exception = new HttpClientResponseException("Cart id is not found", HttpResponse.notFound())
         def fieldGroups = new CartContentsFieldGroups([CartContentsFieldGroup.CART])
 

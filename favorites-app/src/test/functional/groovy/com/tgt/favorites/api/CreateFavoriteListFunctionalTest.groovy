@@ -5,7 +5,7 @@ import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.ListMetaDataTO
 import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.transport.UserMetaDataTO
-import com.tgt.lists.lib.api.util.Constants
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import com.tgt.lists.lib.api.util.LIST_STATUS
 import com.tgt.favorites.api.util.CartDataProvider
@@ -42,7 +42,7 @@ class CreateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
 
         when:
         client.toBlocking()
-            .exchange(HttpRequest.POST(Constants.LISTS_BASEPATH, JsonOutput.toJson(listRequest))
+            .exchange(HttpRequest.POST(FavoriteConstants.BASEPATH, JsonOutput.toJson(listRequest))
             .headers(getHeaders(guestId, false)))
 
         then:
@@ -76,7 +76,7 @@ class CreateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
             listChannel, CartType.LIST, listTitle, "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
 
         when:
-        client.toBlocking().exchange(HttpRequest.POST(Constants.LISTS_BASEPATH, JsonOutput.toJson(listRequest))
+        client.toBlocking().exchange(HttpRequest.POST(FavoriteConstants.BASEPATH, JsonOutput.toJson(listRequest))
             .headers(getHeaders(guestId)), FavouritesListResponseTO)
 
         then:
@@ -114,7 +114,7 @@ class CreateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
 
         when:
         HttpResponse<ListResponseTO> favouritesListResponse = client.toBlocking().exchange(
-            HttpRequest.POST(Constants.LISTS_BASEPATH, JsonOutput.toJson(listRequest))
+            HttpRequest.POST(FavoriteConstants.BASEPATH, JsonOutput.toJson(listRequest))
                 .headers(getHeaders(guestId)), FavouritesListResponseTO)
         def actualStatus = favouritesListResponse.status()
         def actual = favouritesListResponse.body()

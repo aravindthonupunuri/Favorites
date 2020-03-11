@@ -5,6 +5,7 @@ import com.tgt.favorites.util.BaseKafkaFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE
@@ -27,7 +28,7 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
     def "test create list item integrity"() {
         def listId = UUID.randomUUID()
         def itemId = UUID.randomUUID()
-        def uri = Constants.LISTS_BASEPATH + "/" + listId + "/list_items?" + "location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/" + listId + "/list_items?" + "location_id=1375"
         def listItemRequest =
             [
                 "item_type": ItemType.TCIN,
@@ -73,7 +74,7 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
         def itemId1 = UUID.randomUUID()
         def itemId2 = UUID.randomUUID()
         def itemId3 = UUID.randomUUID()
-        def uri = Constants.LISTS_BASEPATH + "/" + listId + "/list_items?" + "location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/" + listId + "/list_items?" + "location_id=1375"
         def listItemRequest =
             [
                 "item_type": ItemType.TCIN,

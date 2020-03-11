@@ -5,13 +5,12 @@ import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.ListMetaDataTO
 import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.transport.UserMetaDataTO
-import com.tgt.lists.lib.api.util.Constants
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import com.tgt.lists.lib.api.util.LIST_STATUS
 import com.tgt.lists.msgbus.ListsMessageBusProducer
 import com.tgt.lists.msgbus.event.EventLifecycleNotificationProvider
 import com.tgt.favorites.api.util.CartDataProvider
-import com.tgt.favorites.api.util.TestUtilConstants
 import groovy.json.JsonOutput
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
@@ -46,7 +45,7 @@ class UpdateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
 
     def "test update list integrity"() {
         def listId = UUID.randomUUID()
-        def uri = Constants.LISTS_BASEPATH + "/" + listId
+        def uri = FavoriteConstants.BASEPATH + "/" + listId
         def cartUri = "/carts/v4/" + listId
         def listRequest =
             [

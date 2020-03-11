@@ -108,13 +108,13 @@ cart:
     refresh-cycle-sec: 999999999
 
 list:
-  list-type: SHOPPING
+  list-type: FAVORITES
   max-count: 50
   max-pending-item-count: 100
   max-completed-items-count: 100
   abandon-after-duration-in-days: 730 # It is two years duration
-  features.two-carts: true
-  features.dedupe: true
+  features.two-carts: false
+  features.dedupe: false
   features.sort-position: false
   features.fixed-default-list: true
 

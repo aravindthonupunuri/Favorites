@@ -1,5 +1,6 @@
 package com.tgt.favorites.api.controller
 
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.favorites.service.GetDefaultFavoriteListService
 import com.tgt.favorites.service.GetFavoriteListItemService
 import com.tgt.favorites.service.GetFavoriteListService
@@ -19,7 +20,7 @@ import reactor.core.publisher.switchIfEmpty
 import java.util.*
 import javax.validation.Valid
 
-@Controller(Constants.LISTS_BASEPATH)
+@Controller(FavoriteConstants.BASEPATH)
 class ListController(
     private val createListService: CreateListService,
     private val updateListService: UpdateListService,

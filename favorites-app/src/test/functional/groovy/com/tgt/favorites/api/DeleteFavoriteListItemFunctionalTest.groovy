@@ -1,5 +1,6 @@
 package com.tgt.favorites.api
 
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.favorites.util.BaseKafkaFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemDeleteResponseTO
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
@@ -21,7 +22,7 @@ class DeleteFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
     def "test delete list item from pending cart"() {
         def cartId = UUID.randomUUID()
         def cartItemId = UUID.randomUUID()
-        def uri = Constants.LISTS_BASEPATH + "/" + cartId + "/list_items/" + cartItemId
+        def uri = FavoriteConstants.BASEPATH + "/" + cartId + "/list_items/" + cartItemId
         def cartItemUri = "/carts/v4/cart_items/" + cartItemId + "?cart_id=" + cartId
         def cartItemDeleteResponse = ["cart_id" : cartId, "cart_item_id" : cartItemId]
         def cartResponse = cartDataProvider.getCartResponse(cartId, guestId, null)
@@ -55,7 +56,7 @@ class DeleteFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
     def "test exception deleting list item from pending cart"() {
         def cartId = UUID.randomUUID()
         def cartItemId = UUID.randomUUID()
-        def uri = Constants.LISTS_BASEPATH + "/" + cartId + "/list_items/" + cartItemId
+        def uri = FavoriteConstants.BASEPATH + "/" + cartId + "/list_items/" + cartItemId
         def cartItemUri = "/carts/v4/cart_items/" + cartItemId + "?cart_id=" + cartId
         def cartResponse = cartDataProvider.getCartResponse(cartId, guestId, null)
         def cartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, null)

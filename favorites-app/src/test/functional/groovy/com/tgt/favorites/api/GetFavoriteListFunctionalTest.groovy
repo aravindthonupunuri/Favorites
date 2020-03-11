@@ -1,5 +1,6 @@
 package com.tgt.favorites.api
 
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.*
 import com.tgt.lists.lib.api.util.*
@@ -34,7 +35,7 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
     def "test get list integrity"() {
         given:
         def cartId = "fe9c3360-b44a-11e9-987d-03d970ca1c28"
-        def uri = Constants.LISTS_BASEPATH + "/" + cartId + "?location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/" + cartId + "?location_id=1375"
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
         ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
@@ -113,7 +114,7 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
     def "test get list integrity with sortedFieldGroups and sortOrder"() {
         given:
         def cartId = "fe9c3360-b44a-11e9-987d-03d970ca1c28"
-        def uri = Constants.LISTS_BASEPATH + "/" + cartId + "?location_id=1375&sort_field=ITEM_TITTLE&sort_order=ASCENDING"
+        def uri = FavoriteConstants.BASEPATH + "/" + cartId + "?location_id=1375&sort_field=ITEM_TITTLE&sort_order=ASCENDING"
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
         ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
@@ -186,7 +187,7 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
     def "test get list integrity with expired item"() {
         given:
         def cartId = "fe9c3360-b44a-11e9-987d-03d970ca1c28"
-        def uri = Constants.LISTS_BASEPATH + "/" + cartId + "?location_id=1375"
+        def uri = FavoriteConstants.BASEPATH + "/" + cartId + "?location_id=1375"
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
         ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)

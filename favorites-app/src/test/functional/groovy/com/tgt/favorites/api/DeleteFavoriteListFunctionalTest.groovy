@@ -7,7 +7,7 @@ import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.ListDeleteResponseTO
 import com.tgt.lists.lib.api.transport.ListMetaDataTO
 import com.tgt.lists.lib.api.transport.UserMetaDataTO
-import com.tgt.lists.lib.api.util.Constants
+import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import com.tgt.lists.lib.api.util.LIST_STATUS
 import io.micronaut.http.HttpRequest
@@ -33,7 +33,7 @@ class DeleteFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
         when:
         HttpResponse<ListDeleteResponseTO> deletedListResponseVO =
             client.toBlocking().exchange(
-                HttpRequest.DELETE(Constants.LISTS_BASEPATH + '/'+listId).headers(getHeaders(guestId)), ListDeleteResponseTO)
+                HttpRequest.DELETE(FavoriteConstants.BASEPATH + '/'+listId).headers(getHeaders(guestId)), ListDeleteResponseTO)
 
         def actualStatus = deletedListResponseVO.status()
 
