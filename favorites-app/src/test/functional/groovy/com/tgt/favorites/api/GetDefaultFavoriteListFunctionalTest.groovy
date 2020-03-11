@@ -24,7 +24,7 @@ class GetDefaultFavoriteListFunctionalTest extends BaseFunctionalTest {
         def listId = UUID.randomUUID()
 
         def pendingCartResponse = cartDataProvider.getCartResponse(listId, guestId,
-            LIST_CHANNEL.MOBILE, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING), new UserMetaDataTO()))
+            LIST_CHANNEL.MOBILE, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING), new UserMetaDataTO()))
 
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
         def pendingCartItemResponse1 = cartDataProvider.getCartItemResponse(listId, UUID.randomUUID(), "1234",
