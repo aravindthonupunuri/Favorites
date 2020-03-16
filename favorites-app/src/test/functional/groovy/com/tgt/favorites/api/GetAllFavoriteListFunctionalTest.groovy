@@ -76,21 +76,21 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         actualBody[0].channel == LIST_CHANNEL.valueOf(cartResponse1.cartChannel)
         actualBody[0].listTitle == cartResponse1.tenantCartName
         actualBody[0].defaultList
-        actualBody[0].totalItemsCount == -1 //TODO: fix the bug
+        actualBody[0].totalItemsCount == 1
         actualBody[0].pendingItemsCount == 1
 
         actualBody[1].listId == cartResponse2.cartId
         actualBody[1].channel == LIST_CHANNEL.valueOf(cartResponse2.cartChannel)
         actualBody[1].listTitle == cartResponse2.tenantCartName
         !actualBody[1].defaultList
-        actualBody[1].totalItemsCount == -1 //TODO: fix the bug
+        actualBody[1].totalItemsCount == 2
         actualBody[1].pendingItemsCount == 2
 
         actualBody[2].listId == cartResponse3.cartId
         actualBody[2].channel == LIST_CHANNEL.valueOf(cartResponse3.cartChannel)
         actualBody[2].listTitle == cartResponse3.tenantCartName
         !actualBody[2].defaultList
-        actualBody[2].totalItemsCount == -1 //TODO: fix the bug
+        actualBody[2].totalItemsCount == 3
         actualBody[2].pendingItemsCount == 3
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartResponseList]
@@ -154,21 +154,21 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         actualBody[0].channel == LIST_CHANNEL.valueOf(cartResponse1.cartChannel)
         actualBody[0].listTitle == cartResponse1.tenantCartName
         actualBody[0].defaultList
-        actualBody[0].totalItemsCount == -1 //TODO: fix the bug
+        actualBody[0].totalItemsCount == 1
         actualBody[0].pendingItemsCount == 1
 
         actualBody[1].listId == cartResponse2.cartId
         actualBody[1].channel == LIST_CHANNEL.valueOf(cartResponse2.cartChannel)
         actualBody[1].listTitle == cartResponse2.tenantCartName
         !actualBody[1].defaultList
-        actualBody[1].totalItemsCount == -1 //TODO: fix the bug
+        actualBody[1].totalItemsCount == 2
         actualBody[1].pendingItemsCount == 2
 
         actualBody[2].listId == cartResponse3.cartId
         actualBody[2].channel == LIST_CHANNEL.valueOf(cartResponse3.cartChannel)
         actualBody[2].listTitle == cartResponse3.tenantCartName
         !actualBody[2].defaultList
-        actualBody[2].totalItemsCount == -1 //TODO: fix the bug
+        actualBody[2].totalItemsCount == 3
         actualBody[2].pendingItemsCount == 3
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartResponseList]
@@ -232,21 +232,21 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         actualBody[0].channel == LIST_CHANNEL.valueOf(cartResponse3.cartChannel)
         actualBody[0].listTitle == cartResponse3.tenantCartName
         !actualBody[0].defaultList
-        actualBody[0].totalItemsCount == -1
+        actualBody[0].totalItemsCount == 3
         actualBody[0].pendingItemsCount == 3
 
         actualBody[1].listId == cartResponse2.cartId
         actualBody[1].channel == LIST_CHANNEL.valueOf(cartResponse2.cartChannel)
         actualBody[1].listTitle == cartResponse2.tenantCartName
         !actualBody[1].defaultList
-        actualBody[1].totalItemsCount == -1
+        actualBody[1].totalItemsCount == 2
         actualBody[1].pendingItemsCount == 2
 
         actualBody[2].listId == cartResponse1.cartId
         actualBody[2].channel == LIST_CHANNEL.valueOf(cartResponse1.cartChannel)
         actualBody[2].listTitle == cartResponse1.tenantCartName
         actualBody[2].defaultList
-        actualBody[2].totalItemsCount == -1
+        actualBody[2].totalItemsCount == 1
         actualBody[2].pendingItemsCount == 1
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartResponseList]

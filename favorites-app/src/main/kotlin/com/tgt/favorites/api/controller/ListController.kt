@@ -7,6 +7,9 @@ import com.tgt.favorites.service.GetFavoriteListService
 import com.tgt.favorites.transport.*
 import com.tgt.lists.lib.api.exception.BadRequestException
 import com.tgt.lists.lib.api.service.*
+import com.tgt.lists.lib.api.service.transform.list.ListsTransformationPipeline
+import com.tgt.lists.lib.api.service.transform.list.PopulateListItemsTransformationStep
+import com.tgt.lists.lib.api.service.transform.list.SortListsTransformationStep
 import com.tgt.lists.lib.api.transport.*
 import com.tgt.lists.lib.api.util.*
 import com.tgt.lists.lib.api.util.Constants.CONTEXT_OBJECT
@@ -175,7 +178,7 @@ class ListController(
         @QueryValue("sort_order") sortOrderBy: ListSortOrderGroup? = ListSortOrderGroup.DESCENDING
     ): Mono<MutableHttpResponse<List<ListGetAllResponseTO>>> {
         return getListsService.getAllListsForUser(guestId,
-            sortFieldBy, sortOrderBy)
+            ListsTransformationPipeline().addStep(PopulateListItemsTransformationStep()).addStep(SortListsTransformationStep(sortFieldBy, sortOrderBy)))
             .zipWith(Mono.subscriberContext())
             .map {
                 if (it.t2.get<ContextContainer>(CONTEXT_OBJECT).partialResponse) {

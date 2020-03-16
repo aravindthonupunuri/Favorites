@@ -1,8 +1,8 @@
 package com.tgt.favorites.service
 
 import com.tgt.lists.lib.api.service.GetListService
-import com.tgt.lists.lib.api.service.transform.ListItemsTransformationPipeline
-import com.tgt.lists.lib.api.service.transform.SortListItemsTransformationStep
+import com.tgt.lists.lib.api.service.transform.list_items.ListItemsTransformationPipeline
+import com.tgt.lists.lib.api.service.transform.list_items.SortListItemsTransformationStep
 import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.util.ItemIncludeFields
 import com.tgt.lists.lib.api.util.ItemSortFieldGroup
