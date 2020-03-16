@@ -25,7 +25,7 @@ class DeleteFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
         String guestId = "1234"
         UUID listId = UUID.randomUUID()
         CartDeleteResponse pendingDeleteResponse = cartDataProvider.getCartDeleteResponse(listId)
-        ListMetaDataTO pendingCartMetadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
+        ListMetaDataTO pendingCartMetadata = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
         CartResponse pendingCartResponse = cartDataProvider.getCartResponse(listId, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(pendingCartMetadata, new UserMetaDataTO()))
         def cartContentsResponse = cartDataProvider.getCartContentsResponse(pendingCartResponse, null)
