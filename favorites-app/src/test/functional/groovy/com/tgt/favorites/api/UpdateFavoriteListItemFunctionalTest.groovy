@@ -1,5 +1,6 @@
 package com.tgt.favorites.api
 
+import com.tgt.favorites.transport.FavouritesListItemResponseTO
 import com.tgt.favorites.util.BaseKafkaFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
@@ -49,7 +50,7 @@ class UpdateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
         def updatedListItemMetaData = cartDataProvider.getListItemMetaDataFromCart(updatedCartItemResponse.metadata)
 
         when:
-        HttpResponse<ListItemResponseTO> listResponse = client.toBlocking().exchange(
+        HttpResponse<FavouritesListItemResponseTO> listResponse = client.toBlocking().exchange(
             HttpRequest.PUT(uri, JsonOutput.toJson(listItemUpdateRequest)).headers(getHeaders(guestId)), ListItemResponseTO)
         def actualStatus = listResponse.status()
         def actual = listResponse.body()
@@ -61,11 +62,7 @@ class UpdateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
         actual.tcin == updatedCartItemResponse.tcin
         actual.itemTitle == updatedCartItemResponse.tenantItemName
         actual.itemNote == updatedCartItemResponse.notes
-        actual.price == updatedCartItemResponse.price
-        actual.listPrice == updatedCartItemResponse.listPrice
-        actual.images == updatedCartItemResponse.images
         actual.itemType == updatedListItemMetaData.itemType
-        actual.itemState == updatedListItemMetaData.itemState
 
         1 * mockServer.get({ path -> path.contains(getCartContentURI(listId))}, _) >> [status: 200, body: cartContentsResponse]    // Authorization filter call
         1 * mockServer.get({ path -> path.contains("/carts/v4/cart_items/40689bf0-c56f-11e9-b988-b394861ac09e") }, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartItemResponse]  // get cart item call
