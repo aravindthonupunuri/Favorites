@@ -35,6 +35,15 @@ class CartDataProvider {
     fun getCartItemResponse(
         cartId: UUID,
         cartItemId: UUID,
+        tcin: String,
+        itemtitle: String
+    ): CartItemResponse {
+        return CartItemResponse(cartId = cartId, cartItemId = cartItemId, tcin = tcin, tenantItemName = itemtitle)
+    }
+
+    fun getCartItemResponse(
+        cartId: UUID,
+        cartItemId: UUID,
         tcin: String?,
         itemTitle: String?,
         itemNote: String?,

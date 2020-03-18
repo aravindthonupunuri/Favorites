@@ -1,7 +1,7 @@
 package service
 
 import com.tgt.favorites.service.GetFavoritesTcinService
-import com.tgt.favorites.transport.FavoritesTcinResponseTO
+import com.tgt.favorites.transport.GuestFavoritesResponseTO
 import com.tgt.favorites.transport.ListItemDetailsTO
 import com.tgt.lists.cart.CartClient
 import com.tgt.lists.lib.api.domain.ContextContainerManager
@@ -63,7 +63,7 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         ListResponseTO listResponse2TO = new ListResponseTO(listId2, null, null, null, null, null, null, null, [listItemResponse3TO, listItemResponse4TO], null, null, null, null, null, null, null)
 
         when:
-        List<FavoritesTcinResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcd,abcde").block()
+        List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcd,abcde").block()
 
         then:
 
@@ -103,7 +103,7 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         ListResponseTO listResponse2TO = new ListResponseTO(listId2, null, null, null, null, null, null, null, [listItemResponse3TO, listItemResponse4TO], null, null, null, null, null, null, null)
 
         when:
-        List<FavoritesTcinResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcdf,abcde").block()
+        List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcdf,abcde").block()
 
         then:
         1 * getAllListService.getAllListsForUser(_, _) >> Mono.just([listGetAllResponse1TO, listGetAllResponse2TO])
