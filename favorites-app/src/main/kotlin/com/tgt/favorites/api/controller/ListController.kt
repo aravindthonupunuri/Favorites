@@ -128,7 +128,7 @@ class ListController(
 
     @Get("/guest_favourites")
     @Status(HttpStatus.OK)
-    fun getFavouritesOfTcins(
+    fun getFavoritesOfTcins(
         @Header(PROFILE_ID) guestId: String,
         @QueryValue("tcins") tcins: String
     ): Mono<List<GuestFavoritesResponseTO>> {

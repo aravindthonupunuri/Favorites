@@ -12,7 +12,6 @@ import com.tgt.lists.lib.api.service.GetAllListService
 import com.tgt.lists.lib.api.service.GetListService
 import com.tgt.lists.lib.api.transport.ListGetAllResponseTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
-import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import reactor.core.publisher.Mono
 import spock.lang.Specification
@@ -59,8 +58,6 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
 
         ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "hh", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse1TO, listItemResponse2TO], null)
         ListGetAllResponseTO listGetAllResponse2TO = new ListGetAllResponseTO(listId2, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "hh", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse3TO, listItemResponse4TO], null)
-        ListResponseTO listResponse1TO = new ListResponseTO(listId1, null, null, null, null, null, null, null, [listItemResponse1TO, listItemResponse2TO], null, null, null, null, null, null, null)
-        ListResponseTO listResponse2TO = new ListResponseTO(listId2, null, null, null, null, null, null, null, [listItemResponse3TO, listItemResponse4TO], null, null, null, null, null, null, null)
 
         when:
         List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcd,abcde").block()
@@ -73,6 +70,7 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         favouritesTcinResponsesTO[0].listItemDetails[0] == listItemDetails1TO
         favouritesTcinResponsesTO[0].listItemDetails[1] == listItemDetails2TO
         favouritesTcinResponsesTO[1].tcin == "abcde"
+        favouritesTcinResponsesTO[1].listItemDetails[0] == listItemDetails3TO
         favouritesTcinResponsesTO[1].listItemDetails[1] == listItemDetails4TO
 
     }
@@ -99,8 +97,6 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
 
         ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "hh", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse1TO, listItemResponse2TO], null)
         ListGetAllResponseTO listGetAllResponse2TO = new ListGetAllResponseTO(listId2, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "hh", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse3TO, listItemResponse4TO], null)
-        ListResponseTO listResponse1TO = new ListResponseTO(listId1, null, null, null, null, null, null, null, [listItemResponse1TO, listItemResponse2TO], null, null, null, null, null, null, null)
-        ListResponseTO listResponse2TO = new ListResponseTO(listId2, null, null, null, null, null, null, null, [listItemResponse3TO, listItemResponse4TO], null, null, null, null, null, null, null)
 
         when:
         List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcdf,abcde").block()
