@@ -48,7 +48,7 @@ class GetFavoritesTcinService(
             if (tcinAndListItemDetailsMap.containsKey(listGetAllResponseTO.pendingItems!![i].tcin)) {
 
                 val valueAssignedToTcin: MutableList<ListItemDetailsTO> = tcinAndListItemDetailsMap[listGetAllResponseTO.pendingItems!![i].tcin]!!
-                valueAssignedToTcin.add(ListItemDetailsTO(listGetAllResponseTO.listId, listGetAllResponseTO.pendingItems!![i].itemTitle, listGetAllResponseTO.pendingItems!![i].listItemId))
+                valueAssignedToTcin.add(ListItemDetailsTO(listGetAllResponseTO.listId, listGetAllResponseTO.listTitle, listGetAllResponseTO.pendingItems!![i].listItemId))
                 tcinAndListItemDetailsMap[listGetAllResponseTO.pendingItems!![i].tcin!!] = valueAssignedToTcin
             }
         }

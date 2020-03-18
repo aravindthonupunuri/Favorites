@@ -66,10 +66,10 @@ class GetFavoritesTcinFunctionalTest extends BaseFunctionalTest  {
         CartItemResponse cartItemResponse3 = cartDataProvider.getCartItemResponse(cartId2, cartItemId3, "abcd", "item 3")
         CartItemResponse cartItemResponse4 = cartDataProvider.getCartItemResponse(cartId2, cartItemId4, "abcde", "item 4")
 
-        ListItemDetailsTO listItemDetails1TO = new ListItemDetailsTO(cartId1, "item 1", cartItemId1)
-        ListItemDetailsTO listItemDetails2TO = new ListItemDetailsTO(cartId1, "item 2", cartItemId2)
-        ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(cartId2, "item 3", cartItemId3)
-        ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(cartId2, "item 4", cartItemId4)
+        ListItemDetailsTO listItemDetails1TO = new ListItemDetailsTO(cartId1, "My list1", cartItemId1)
+        ListItemDetailsTO listItemDetails2TO = new ListItemDetailsTO(cartId1, "My list1", cartItemId2)
+        ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(cartId2, "My list2", cartItemId3)
+        ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(cartId2, "My list2", cartItemId4)
 
 
         CartContentsResponse cartContentsResponse1 = cartDataProvider.getCartContentsResponse(cartResponse1, [cartItemResponse1, cartItemResponse2])

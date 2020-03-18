@@ -126,6 +126,15 @@ class ListController(
             .subscriberContext { it.put(CONTEXT_OBJECT, ContextContainer()) }
     }
 
+    /**
+     *
+     * Get guest_favourites by TCINs.
+     *
+     * @param guestId guestId
+     * @param tcins tcins
+     * @return get list of guest favourites response
+     *
+     */
     @Get("/guest_favourites")
     @Status(HttpStatus.OK)
     fun getFavoritesOfTcins(

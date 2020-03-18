@@ -44,10 +44,10 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         UUID listItemId1 = UUID.randomUUID()
         UUID listItemId2 = UUID.randomUUID()
 
-        ListItemDetailsTO listItemDetails1TO = new ListItemDetailsTO(listId1, "item1", listItemId1)
-        ListItemDetailsTO listItemDetails2TO = new ListItemDetailsTO(listId2, "item3", listItemId1)
-        ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(listId1, "item2", listItemId2)
-        ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(listId2, "item4", listItemId2)
+        ListItemDetailsTO listItemDetails1TO = new ListItemDetailsTO(listId1, "list1", listItemId1)
+        ListItemDetailsTO listItemDetails2TO = new ListItemDetailsTO(listId2, "list2", listItemId1)
+        ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(listId1, "list1", listItemId2)
+        ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(listId2, "list2", listItemId2)
 
 
 
@@ -56,8 +56,8 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         ListItemResponseTO listItemResponse3TO = new ListItemResponseTO(listItemId1, null, "abcd", "item3", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
         ListItemResponseTO listItemResponse4TO = new ListItemResponseTO(listItemId2, null, "abcde", "item4", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
 
-        ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "hh", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse1TO, listItemResponse2TO], null)
-        ListGetAllResponseTO listGetAllResponse2TO = new ListGetAllResponseTO(listId2, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "hh", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse3TO, listItemResponse4TO], null)
+        ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list1", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse1TO, listItemResponse2TO], null)
+        ListGetAllResponseTO listGetAllResponse2TO = new ListGetAllResponseTO(listId2, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list2", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse3TO, listItemResponse4TO], null)
 
         when:
         List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcd,abcde").block()
@@ -83,10 +83,10 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         UUID listItemId1 = UUID.randomUUID()
         UUID listItemId2 = UUID.randomUUID()
 
-        ListItemDetailsTO listItemDetails1TO = new ListItemDetailsTO(listId1, "item1", listItemId1)
-        ListItemDetailsTO listItemDetails2TO = new ListItemDetailsTO(listId2, "item3", listItemId1)
-        ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(listId1, "item2", listItemId2)
-        ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(listId2, "item4", listItemId2)
+        ListItemDetailsTO listItemDetails1TO = new ListItemDetailsTO(listId1, "list1", listItemId1)
+        ListItemDetailsTO listItemDetails2TO = new ListItemDetailsTO(listId2, "list2", listItemId1)
+        ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(listId1, "list1", listItemId2)
+        ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(listId2, "list2", listItemId2)
 
 
 
@@ -95,8 +95,8 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         ListItemResponseTO listItemResponse3TO = new ListItemResponseTO(listItemId1, null, "abcd", "item3", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
         ListItemResponseTO listItemResponse4TO = new ListItemResponseTO(listItemId2, null, "abcde", "item4", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
 
-        ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "hh", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse1TO, listItemResponse2TO], null)
-        ListGetAllResponseTO listGetAllResponse2TO = new ListGetAllResponseTO(listId2, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "hh", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse3TO, listItemResponse4TO], null)
+        ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list1", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse1TO, listItemResponse2TO], null)
+        ListGetAllResponseTO listGetAllResponse2TO = new ListGetAllResponseTO(listId2, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list2", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse3TO, listItemResponse4TO], null)
 
         when:
         List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcdf,abcde").block()
