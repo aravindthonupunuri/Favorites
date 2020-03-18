@@ -111,6 +111,21 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
 
     }
 
+    def "test getTcinsFromFavouritesService if there are no pending items in a list"() {
+
+        given:
+        UUID listId1 = UUID.randomUUID()
+        ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list1", false, "dd", "1", null, null, null, 100, 1, 2, 3, null, null)
+        when:
+        List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcdf,abcde").block()
+
+        then:
+        1 * getAllListService.getAllListsForUser(_, _) >> Mono.just([listGetAllResponse1TO])
+
+        favouritesTcinResponsesTO[0].tcin == "abcdf"
+        favouritesTcinResponsesTO[0].listItemDetails == []
+    }
+
     def "if tcin count exceeds 28 "() {
 
         String str = "abc,"
