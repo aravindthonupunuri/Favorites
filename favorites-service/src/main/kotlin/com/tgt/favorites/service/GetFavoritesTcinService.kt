@@ -21,48 +21,52 @@ class GetFavoritesTcinService(
     fun getFavoritesTcin(guestId: String, tcins: String): Mono<List<GuestFavoritesResponseTO>> {
 
         val tcinsList = tcins.trim().split(",")
-        val tcinAndListItemDetailsMap = mutableMapOf<String, MutableList<ListItemDetailsTO>?>()
+        val tcinToItemDetailsMap = mutableMapOf<String, MutableList<ListItemDetailsTO>?>()
 
         if (tcinsList.size > 28)
             return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("tcins count exceeded 28", "tcins count is $tcinsList.size")))
 
-        for (element in tcinsList)
-        tcinAndListItemDetailsMap[element] = mutableListOf()
+        tcinsList.map {
+            tcinToItemDetailsMap[it] = mutableListOf()
+        }
 
-        return getAllListService.getAllListsForUser(guestId, ListsTransformationPipeline().addStep(PopulateListItemsTransformationStep()))
-            .flatMap { process(it, tcinAndListItemDetailsMap) }
+        return getAllListService.getAllListsForUser(guestId, ListsTransformationPipeline()
+            .addStep(PopulateListItemsTransformationStep()))
+            .flatMap { process(it, tcinToItemDetailsMap) }
     }
 
     fun process(
         listResponses: List<ListGetAllResponseTO>,
-        tcinAndListItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>
+        tcinToItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>
     ): Mono<List<GuestFavoritesResponseTO>> {
-        return listResponses.toFlux().flatMap { addItemDetailsToTcin(it, tcinAndListItemDetailsMap) }
+        return listResponses.toFlux()
+            .flatMap { addItemDetailsToTcin(it, tcinToItemDetailsMap) }
             .then(Mono.just(true))
-            .map { formFavoritesTcinResponse(tcinAndListItemDetailsMap) }
+            .map { formFavoritesTcinResponse(tcinToItemDetailsMap) }
     }
 
-    private fun addItemDetailsToTcin(listGetAllResponseTO: ListGetAllResponseTO, tcinAndListItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>): Mono<Map<String, List<ListItemDetailsTO>?>> {
+    private fun addItemDetailsToTcin(listGetAllResponseTO: ListGetAllResponseTO, tcinToItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>): Mono<Map<String, List<ListItemDetailsTO>?>> {
 
-        for (i in listGetAllResponseTO.pendingItems!!.indices) {
-            if (tcinAndListItemDetailsMap.containsKey(listGetAllResponseTO.pendingItems!![i].tcin)) {
+        listGetAllResponseTO.pendingItems?.map {
+            if (tcinToItemDetailsMap.containsKey(it.tcin)) {
 
-                val valueAssignedToTcin: MutableList<ListItemDetailsTO> = tcinAndListItemDetailsMap[listGetAllResponseTO.pendingItems!![i].tcin]!!
-                valueAssignedToTcin.add(ListItemDetailsTO(listGetAllResponseTO.listId, listGetAllResponseTO.listTitle, listGetAllResponseTO.pendingItems!![i].listItemId))
-                tcinAndListItemDetailsMap[listGetAllResponseTO.pendingItems!![i].tcin!!] = valueAssignedToTcin
+                val valueAssignedToTcin: MutableList<ListItemDetailsTO> = tcinToItemDetailsMap[it.tcin]!!
+                valueAssignedToTcin.add(ListItemDetailsTO(listGetAllResponseTO.listId, listGetAllResponseTO.listTitle, it.listItemId))
+                tcinToItemDetailsMap[it.tcin!!] = valueAssignedToTcin
             }
         }
 
-        return Mono.just(tcinAndListItemDetailsMap)
+        return Mono.just(tcinToItemDetailsMap)
     }
 
-    private fun formFavoritesTcinResponse(tcinAndListItemDetailsMap: Map<String, List<ListItemDetailsTO>?>): List<GuestFavoritesResponseTO> {
+    private fun formFavoritesTcinResponse(tcinToItemDetailsMap: Map<String, List<ListItemDetailsTO>?>): List<GuestFavoritesResponseTO> {
 
-        val tcins = tcinAndListItemDetailsMap.keys.toList()
-        val listOfListItemDetail = tcinAndListItemDetailsMap.values.toList()
+        val tcins = tcinToItemDetailsMap.keys.toList()
+        val listOfListItemDetail = tcinToItemDetailsMap.values.toList()
         val listOfFavouritesTcinResponseTO = mutableListOf<GuestFavoritesResponseTO>()
-        for (i in tcins.indices)
-            listOfFavouritesTcinResponseTO.add(GuestFavoritesResponseTO(tcins[i], listOfListItemDetail[i]))
+        tcins.indices.map {
+            listOfFavouritesTcinResponseTO.add(GuestFavoritesResponseTO(tcins[it], listOfListItemDetail[it]))
+        }
         return listOfFavouritesTcinResponseTO
     }
 }
