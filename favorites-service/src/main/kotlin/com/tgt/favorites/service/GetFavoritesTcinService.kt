@@ -10,7 +10,6 @@ import com.tgt.lists.lib.api.transport.ListGetAllResponseTO
 import com.tgt.lists.lib.api.util.AppErrorCodes
 import io.micronaut.context.annotation.Value
 import reactor.core.publisher.Mono
-import reactor.core.publisher.toFlux
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,31 +33,29 @@ class GetFavoritesTcinService(
 
         return getAllListService.getAllListsForUser(guestId, ListsTransformationPipeline()
             .addStep(PopulateListItemsTransformationStep()))
-            .flatMap { process(it, tcinToItemDetailsMap) }
+            .map { process(it, tcinToItemDetailsMap) }
     }
 
     fun process(
         listResponses: List<ListGetAllResponseTO>,
         tcinToItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>
-    ): Mono<List<GuestFavoritesResponseTO>> {
-        return listResponses.toFlux()
-            .flatMap { addItemDetailsToTcin(it, tcinToItemDetailsMap) }
-            .collectList()
-            .map { formFavoritesTcinResponse(tcinToItemDetailsMap) }
+    ): List<GuestFavoritesResponseTO> {
+        return listResponses
+            .map { addItemDetailsToTcin(it, tcinToItemDetailsMap) }
+            .flatMap { formFavoritesTcinResponse(it) }
     }
 
-    private fun addItemDetailsToTcin(listGetAllResponseTO: ListGetAllResponseTO, tcinToItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>): Mono<Map<String, List<ListItemDetailsTO>?>> {
+    private fun addItemDetailsToTcin(listGetAllResponseTO: ListGetAllResponseTO, tcinToItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>): Map<String, List<ListItemDetailsTO>?> {
 
         listGetAllResponseTO.pendingItems?.map {
             if (tcinToItemDetailsMap.containsKey(it.tcin)) {
-
                 val valueAssignedToTcin: MutableList<ListItemDetailsTO> = tcinToItemDetailsMap[it.tcin]!!
                 valueAssignedToTcin.add(ListItemDetailsTO(listGetAllResponseTO.listId, listGetAllResponseTO.listTitle, it.listItemId))
                 tcinToItemDetailsMap[it.tcin!!] = valueAssignedToTcin
             }
         }
 
-        return Mono.just(tcinToItemDetailsMap)
+        return tcinToItemDetailsMap
     }
 
     private fun formFavoritesTcinResponse(tcinToItemDetailsMap: Map<String, List<ListItemDetailsTO>?>): List<GuestFavoritesResponseTO> {
