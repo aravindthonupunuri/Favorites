@@ -1,11 +1,11 @@
 package com.tgt.favorites.api
 
 import com.tgt.favorites.api.util.FavoriteConstants
+import com.tgt.favorites.transport.FavoriteGetAllListResponseTO
 import com.tgt.favorites.util.BaseFunctionalTest
 import com.tgt.lists.cart.transport.CartContentsResponse
 import com.tgt.lists.cart.transport.CartResponse
 import com.tgt.lists.cart.transport.CartType
-import com.tgt.lists.lib.api.transport.ListGetAllResponseTO
 import com.tgt.lists.lib.api.transport.ListMetaDataTO
 import com.tgt.lists.lib.api.transport.UserMetaDataTO
 import com.tgt.lists.lib.api.util.*
@@ -63,8 +63,8 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         CartContentsResponse cartContentsResponse3 = cartDataProvider.getCartContentsResponse(cartId3, 3)
 
         when:
-        HttpResponse<ListGetAllResponseTO[]> listsResponse = client.toBlocking().exchange(
-            HttpRequest.GET(FavoriteConstants.BASEPATH).headers(getHeaders(guestId)), ListGetAllResponseTO[])
+        HttpResponse<FavoriteGetAllListResponseTO[]> listsResponse = client.toBlocking().exchange(
+            HttpRequest.GET(FavoriteConstants.BASEPATH).headers(getHeaders(guestId)), FavoriteGetAllListResponseTO[])
         def actualStatus = listsResponse.status()
         def actualBody  = listsResponse.body()
 
@@ -77,21 +77,18 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         actualBody[0].listTitle == cartResponse1.tenantCartName
         actualBody[0].defaultList
         actualBody[0].totalItemsCount == 1
-        actualBody[0].pendingItemsCount == 1
 
         actualBody[1].listId == cartResponse2.cartId
         actualBody[1].channel == LIST_CHANNEL.valueOf(cartResponse2.cartChannel)
         actualBody[1].listTitle == cartResponse2.tenantCartName
         !actualBody[1].defaultList
         actualBody[1].totalItemsCount == 2
-        actualBody[1].pendingItemsCount == 2
 
         actualBody[2].listId == cartResponse3.cartId
         actualBody[2].channel == LIST_CHANNEL.valueOf(cartResponse3.cartChannel)
         actualBody[2].listTitle == cartResponse3.tenantCartName
         !actualBody[2].defaultList
         actualBody[2].totalItemsCount == 3
-        actualBody[2].pendingItemsCount == 3
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartResponseList]
         1 * mockServer.get(
@@ -141,8 +138,8 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         when:
         final requestURI = new UriTemplate(FavoriteConstants.BASEPATH + "{?sort_field,sort_order}")
             .expand(sort_field: ListSortFieldGroup.LIST_TITLE, sort_order: ListSortOrderGroup.ASCENDING)
-        HttpResponse<ListGetAllResponseTO[]> listsResponse = client.toBlocking().exchange(
-            HttpRequest.GET(requestURI).headers(getHeaders(guestId)), ListGetAllResponseTO[])
+        HttpResponse<FavoriteGetAllListResponseTO[]> listsResponse = client.toBlocking().exchange(
+            HttpRequest.GET(requestURI).headers(getHeaders(guestId)), FavoriteGetAllListResponseTO[])
         def actualStatus = listsResponse.status()
         def actualBody  = listsResponse.body()
 
@@ -155,21 +152,18 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         actualBody[0].listTitle == cartResponse1.tenantCartName
         actualBody[0].defaultList
         actualBody[0].totalItemsCount == 1
-        actualBody[0].pendingItemsCount == 1
 
         actualBody[1].listId == cartResponse2.cartId
         actualBody[1].channel == LIST_CHANNEL.valueOf(cartResponse2.cartChannel)
         actualBody[1].listTitle == cartResponse2.tenantCartName
         !actualBody[1].defaultList
         actualBody[1].totalItemsCount == 2
-        actualBody[1].pendingItemsCount == 2
 
         actualBody[2].listId == cartResponse3.cartId
         actualBody[2].channel == LIST_CHANNEL.valueOf(cartResponse3.cartChannel)
         actualBody[2].listTitle == cartResponse3.tenantCartName
         !actualBody[2].defaultList
         actualBody[2].totalItemsCount == 3
-        actualBody[2].pendingItemsCount == 3
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartResponseList]
         1 * mockServer.get(
@@ -219,8 +213,8 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         when:
         final requestURI = new UriTemplate(FavoriteConstants.BASEPATH + "{?sort_field,sort_order}")
             .expand(sort_field: ListSortFieldGroup.LIST_TITLE, sort_order: ListSortOrderGroup.DESCENDING)
-        HttpResponse<ListGetAllResponseTO[]> listsResponse = client.toBlocking().exchange(
-            HttpRequest.GET(requestURI).headers(getHeaders(guestId)), ListGetAllResponseTO[])
+        HttpResponse<FavoriteGetAllListResponseTO[]> listsResponse = client.toBlocking().exchange(
+            HttpRequest.GET(requestURI).headers(getHeaders(guestId)), FavoriteGetAllListResponseTO[])
         def actualStatus = listsResponse.status()
         def actualBody  = listsResponse.body()
 
@@ -233,21 +227,18 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         actualBody[0].listTitle == cartResponse3.tenantCartName
         !actualBody[0].defaultList
         actualBody[0].totalItemsCount == 3
-        actualBody[0].pendingItemsCount == 3
 
         actualBody[1].listId == cartResponse2.cartId
         actualBody[1].channel == LIST_CHANNEL.valueOf(cartResponse2.cartChannel)
         actualBody[1].listTitle == cartResponse2.tenantCartName
         !actualBody[1].defaultList
         actualBody[1].totalItemsCount == 2
-        actualBody[1].pendingItemsCount == 2
 
         actualBody[2].listId == cartResponse1.cartId
         actualBody[2].channel == LIST_CHANNEL.valueOf(cartResponse1.cartChannel)
         actualBody[2].listTitle == cartResponse1.tenantCartName
         actualBody[2].defaultList
         actualBody[2].totalItemsCount == 1
-        actualBody[2].pendingItemsCount == 1
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartResponseList]
         1 * mockServer.get(

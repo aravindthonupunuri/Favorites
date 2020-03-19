@@ -1,6 +1,7 @@
 package com.tgt.favorites.api.controller
 
 import com.tgt.favorites.api.util.FavoriteConstants
+import com.tgt.favorites.service.GetAllFavoriteListService
 import com.tgt.favorites.service.GetDefaultFavoriteListService
 import com.tgt.favorites.service.GetFavoriteListItemService
 import com.tgt.favorites.service.GetFavoriteListService
@@ -8,9 +9,6 @@ import com.tgt.favorites.service.GetFavoritesTcinService
 import com.tgt.favorites.transport.*
 import com.tgt.lists.lib.api.exception.BadRequestException
 import com.tgt.lists.lib.api.service.*
-import com.tgt.lists.lib.api.service.transform.list.ListsTransformationPipeline
-import com.tgt.lists.lib.api.service.transform.list.PopulateListItemsTransformationStep
-import com.tgt.lists.lib.api.service.transform.list.SortListsTransformationStep
 import com.tgt.lists.lib.api.transport.*
 import com.tgt.lists.lib.api.util.*
 import com.tgt.lists.lib.api.util.Constants.CONTEXT_OBJECT
@@ -29,8 +27,8 @@ class ListController(
     private val createListService: CreateListService,
     private val updateListService: UpdateListService,
     private val deleteListService: DeleteListService,
-    private val getListsService: GetAllListService,
     private val getFavoriteTcinService: GetFavoritesTcinService,
+    private val getAllFavoriteListService: GetAllFavoriteListService,
     private val createListItemService: CreateListItemService,
     private val deleteListItemService: DeleteListItemService,
     private val getFavoriteListService: GetFavoriteListService,
@@ -76,7 +74,7 @@ class ListController(
         @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false
     ): Mono<MutableHttpResponse<ListResponseTO>> {
         if (locationId == null) {
-            return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
+            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
         return getFavoriteListService.getList(guestId, locationId!!, listId, sortFieldBy, sortOrderBy,
             allowExpiredItems ?: false)
@@ -109,10 +107,13 @@ class ListController(
         @Header(PROFILE_ID) guestId: String,
         @QueryValue("sort_field") sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
         @QueryValue("sort_order") sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
-        @QueryValue("location_id") locationId: Long,
+        @QueryValue("location_id") locationId: Long?,
         @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false
     ): Mono<MutableHttpResponse<ListResponseTO>> {
-        return getDefaultFavoriteListService.getDefaultList(guestId, locationId, sortFieldBy, sortOrderBy,
+        if (locationId == null) {
+            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
+        }
+        return getDefaultFavoriteListService.getDefaultList(guestId, locationId!!, sortFieldBy, sortOrderBy,
             allowExpiredItems ?: false)
             .zipWith(Mono.subscriberContext())
             .map {
@@ -177,8 +178,9 @@ class ListController(
         @Header(PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
         @Valid @Body listUpdateRequestTO: ListUpdateRequestTO
-    ): Mono<ListResponseTO> {
+    ): Mono<FavouritesListResponseTO> {
         return updateListService.updateList(guestId, listId, listUpdateRequestTO)
+            .map { toFavouritesListResponse(it) }
     }
 
     /**
@@ -196,18 +198,16 @@ class ListController(
         @Header(PROFILE_ID) guestId: String,
         @QueryValue("sort_field") sortFieldBy: ListSortFieldGroup? = ListSortFieldGroup.ADDED_DATE,
         @QueryValue("sort_order") sortOrderBy: ListSortOrderGroup? = ListSortOrderGroup.DESCENDING
-    ): Mono<MutableHttpResponse<List<ListGetAllResponseTO>>> {
-        return getListsService.getAllListsForUser(guestId,
-            ListsTransformationPipeline().addStep(PopulateListItemsTransformationStep()).addStep(SortListsTransformationStep(sortFieldBy, sortOrderBy)))
+    ): Mono<MutableHttpResponse<List<FavoriteGetAllListResponseTO>>> {
+        return getAllFavoriteListService.getListForUser(guestId, sortFieldBy, sortOrderBy)
             .zipWith(Mono.subscriberContext())
             .map {
                 if (it.t2.get<ContextContainer>(CONTEXT_OBJECT).partialResponse) {
-                    HttpResponse.status<List<ListGetAllResponseTO>>(HttpStatus.PARTIAL_CONTENT).body(it.t1)
+                    HttpResponse.status<List<FavoriteGetAllListResponseTO>>(HttpStatus.PARTIAL_CONTENT).body(it.t1)
                 } else {
                     HttpResponse.ok(it.t1)
                 }
-            }
-            .subscriberContext {
+            }.subscriberContext {
                 it.put(CONTEXT_OBJECT, ContextContainer())
             }
     }
@@ -230,7 +230,7 @@ class ListController(
         @PathVariable("list_item_id") listItemId: UUID
     ): Mono<MutableHttpResponse<ListItemResponseTO>> {
         if (locationId == null) {
-            return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
+            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
         return getFavoriteListItemService.getListItem(guestId, locationId, listId, listItemId).zipWith(Mono.subscriberContext())
             .map {
@@ -256,13 +256,9 @@ class ListController(
     fun createListItem(
         @Header(PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
-        @QueryValue("location_id") locationId: Long?,
         @Valid @Body listItemRequestTO: ListItemRequestTO
     ): Mono<FavouritesListItemResponseTO> {
-        if (locationId == null) {
-            return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
-        }
-        return createListItemService.createListItem(guestId, listId, locationId, listItemRequestTO)
+        return createListItemService.createListItem(guestId, listId, FavoriteConstants.LOCATION_ID, listItemRequestTO)
             .map { toFavouritesListItemResponse(it) }
     }
 
@@ -297,13 +293,10 @@ class ListController(
     fun updateListItem(
         @Header(PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
-        @QueryValue("location_id") locationId: Long?,
         @PathVariable("list_item_id") listItemId: UUID,
         @Valid @Body listItemUpdateRequestTO: ListItemUpdateRequestTO
-    ): Mono<ListItemResponseTO> {
-        if (locationId == null) {
-            return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
-        }
-        return updateListItemService.updateListItem(guestId, locationId, listId, listItemId, listItemUpdateRequestTO)
+    ): Mono<FavouritesListItemResponseTO> {
+        return updateListItemService.updateListItem(guestId, FavoriteConstants.LOCATION_ID, listId, listItemId, listItemUpdateRequestTO)
+            .map { toFavouritesListItemResponse(it) }
     }
 }
