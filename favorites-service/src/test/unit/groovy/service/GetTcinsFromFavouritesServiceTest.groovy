@@ -33,7 +33,7 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         guestPreferenceRepository = Mock(GuestPreferenceRepository)
         guestPreferenceSortOrderManager = new GuestPreferenceSortOrderManager(guestPreferenceRepository)
         contextContainerManager = new ContextContainerManager()
-        getFavoritesTcinService = new GetFavoritesTcinService(getAllListService)
+        getFavoritesTcinService = new GetFavoritesTcinService(getAllListService, 28)
     }
 
     def "test getTcinsFromFavouritesService integrity"() {

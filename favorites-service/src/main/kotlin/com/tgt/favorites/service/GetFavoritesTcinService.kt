@@ -8,6 +8,7 @@ import com.tgt.lists.lib.api.service.transform.list.ListsTransformationPipeline
 import com.tgt.lists.lib.api.service.transform.list.PopulateListItemsTransformationStep
 import com.tgt.lists.lib.api.transport.ListGetAllResponseTO
 import com.tgt.lists.lib.api.util.AppErrorCodes
+import io.micronaut.context.annotation.Value
 import reactor.core.publisher.Mono
 import reactor.core.publisher.toFlux
 import javax.inject.Inject
@@ -15,7 +16,8 @@ import javax.inject.Singleton
 
 @Singleton
 class GetFavoritesTcinService(
-    @Inject val getAllListService: GetAllListService
+    @Inject val getAllListService: GetAllListService,
+    @Value("\${list.max-tcin-count}") val maxTcinCount: Int = 28 // default value of 28 tcins
 ) {
 
     fun getFavoritesTcin(guestId: String, tcins: String): Mono<List<GuestFavoritesResponseTO>> {
@@ -23,8 +25,8 @@ class GetFavoritesTcinService(
         val tcinsList = tcins.trim().split(",")
         val tcinToItemDetailsMap = mutableMapOf<String, MutableList<ListItemDetailsTO>?>()
 
-        if (tcinsList.size > 28)
-            return throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("tcins count exceeded 28", "tcins count is $tcinsList.size")))
+        if (tcinsList.size > maxTcinCount)
+            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("tcins count exceeded 28", "tcins count is $tcinsList.size")))
 
         tcinsList.map {
             tcinToItemDetailsMap[it] = mutableListOf()
@@ -41,7 +43,7 @@ class GetFavoritesTcinService(
     ): Mono<List<GuestFavoritesResponseTO>> {
         return listResponses.toFlux()
             .flatMap { addItemDetailsToTcin(it, tcinToItemDetailsMap) }
-            .then(Mono.just(true))
+            .collectList()
             .map { formFavoritesTcinResponse(tcinToItemDetailsMap) }
     }
 
