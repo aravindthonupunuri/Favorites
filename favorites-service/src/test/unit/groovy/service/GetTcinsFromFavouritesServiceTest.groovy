@@ -72,6 +72,7 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         favouritesTcinResponsesTO[1].tcin == "abcde"
         favouritesTcinResponsesTO[1].listItemDetails[0] == listItemDetails3TO
         favouritesTcinResponsesTO[1].listItemDetails[1] == listItemDetails4TO
+    //    favouritesTcinResponsesTO[2].tcin == "abcd"
 
     }
 
@@ -104,10 +105,9 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         then:
         1 * getAllListService.getAllListsForUser(_, _) >> Mono.just([listGetAllResponse1TO, listGetAllResponse2TO])
 
-        favouritesTcinResponsesTO[0].tcin == "abcdf"
-        favouritesTcinResponsesTO[0].listItemDetails == []
-        favouritesTcinResponsesTO[1].tcin == "abcde"
-        favouritesTcinResponsesTO[1].listItemDetails[1] == listItemDetails4TO
+        favouritesTcinResponsesTO[0].tcin == "abcde"
+        favouritesTcinResponsesTO[0].listItemDetails[1] == listItemDetails4TO
+        favouritesTcinResponsesTO[1] == null
 
     }
 
@@ -122,8 +122,7 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         then:
         1 * getAllListService.getAllListsForUser(_, _) >> Mono.just([listGetAllResponse1TO])
 
-        favouritesTcinResponsesTO[0].tcin == "abcdf"
-        favouritesTcinResponsesTO[0].listItemDetails == []
+        favouritesTcinResponsesTO == []
     }
 
     def "if tcin count exceeds 28 "() {
