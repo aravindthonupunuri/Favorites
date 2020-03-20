@@ -5,6 +5,7 @@ import com.tgt.favorites.service.GetAllFavoriteListService
 import com.tgt.favorites.service.GetDefaultFavoriteListService
 import com.tgt.favorites.service.GetFavoriteListItemService
 import com.tgt.favorites.service.GetFavoriteListService
+import com.tgt.favorites.service.GetFavoritesTcinService
 import com.tgt.favorites.transport.*
 import com.tgt.lists.lib.api.exception.BadRequestException
 import com.tgt.lists.lib.api.service.*
@@ -26,6 +27,7 @@ class ListController(
     private val createListService: CreateListService,
     private val updateListService: UpdateListService,
     private val deleteListService: DeleteListService,
+    private val getFavoriteTcinService: GetFavoritesTcinService,
     private val getAllFavoriteListService: GetAllFavoriteListService,
     private val createListItemService: CreateListItemService,
     private val deleteListItemService: DeleteListItemService,
@@ -123,6 +125,24 @@ class ListController(
             }
             .switchIfEmpty { Mono.just(HttpResponse.noContent()) }
             .subscriberContext { it.put(CONTEXT_OBJECT, ContextContainer()) }
+    }
+
+    /**
+     *
+     * Get guest_favourites by TCINs.
+     *
+     * @param guestId guestId
+     * @param tcins tcins
+     * @return get list of guest favourites response
+     *
+     */
+    @Get("/guest_favourites")
+    @Status(HttpStatus.OK)
+    fun getFavoritesOfTcins(
+        @Header(PROFILE_ID) guestId: String,
+        @QueryValue("tcins") tcins: String
+    ): Mono<List<GuestFavoritesResponseTO>> {
+        return getFavoriteTcinService.getFavoritesTcin(guestId, tcins)
     }
 
     /**
