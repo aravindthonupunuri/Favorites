@@ -88,6 +88,7 @@ list:
   max-pending-item-count: 100
   max-completed-items-count: 100
   abandon-after-duration-in-days: 730 # It is two years duration
+  max-tcin-count: 28
   features.two-carts: false
   features.dedupe: false
   features.sort-position: false
