@@ -1,4 +1,5 @@
 package com.tgt.favorites.service
+
 import com.tgt.favorites.transport.GuestFavoritesResponseTO
 import com.tgt.favorites.transport.ListItemDetailsTO
 import com.tgt.lists.lib.api.exception.BadRequestException
@@ -11,16 +12,19 @@ import io.micronaut.context.annotation.Value
 import reactor.core.publisher.Mono
 import javax.inject.Inject
 import javax.inject.Singleton
+
 @Singleton
 class GetFavoritesTcinService(
     @Inject val getAllListService: GetAllListService,
-    @Value("\${list.max-tcin-count}") val maxTcinCount: Int = 28 // default value of 28 tcins
+    @Value("\${list.get-favorites-max-tcin-count}") val getFavoritesMaxTcinCount: Int = 28 // default of 28 tcins
 ) {
     fun getFavoritesTcin(guestId: String, tcins: String): Mono<List<GuestFavoritesResponseTO>> {
         val tcinsList = tcins.trim().split(",")
-        val tcinToItemDetailsMap = mutableMapOf<String, MutableList<ListItemDetailsTO>?>()
-        if (tcinsList.size > 28)
-            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("tcins count exceeded 28", "tcins count is $tcinsList.size")))
+        val tcinToItemDetailsMap = mutableMapOf<String,
+            MutableList<ListItemDetailsTO>?>()
+        if (tcinsList.size > getFavoritesMaxTcinCount)
+            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("tcins count exceeded " +
+                "$getFavoritesMaxTcinCount", "tcins count is $tcinsList.size")))
         tcinsList.map {
             tcinToItemDetailsMap[it] = mutableListOf()
         }
@@ -37,19 +41,28 @@ class GetFavoritesTcinService(
         listResponses.map { addItemDetailsToTcin(it, tcinToItemDetailsMap) }
         return tcinToItemDetailsMap
     }
-    private fun addItemDetailsToTcin(listGetAllResponseTO: ListGetAllResponseTO, tcinToItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>): Map<String, List<ListItemDetailsTO>?> {
+
+    private fun addItemDetailsToTcin(
+        listGetAllResponseTO: ListGetAllResponseTO,
+        tcinToItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>
+    ): Map<String, List<ListItemDetailsTO>?> {
         listGetAllResponseTO.pendingItems?.map {
             if (tcinToItemDetailsMap.containsKey(it.tcin)) {
                 val valueAssignedToTcin: MutableList<ListItemDetailsTO> = tcinToItemDetailsMap[it.tcin]!!
-                valueAssignedToTcin.add(ListItemDetailsTO(listGetAllResponseTO.listId, listGetAllResponseTO.listTitle, it.listItemId))
+                valueAssignedToTcin
+                    .add(ListItemDetailsTO(listGetAllResponseTO.listId, listGetAllResponseTO.listTitle, it.listItemId))
                 tcinToItemDetailsMap[it.tcin!!] = valueAssignedToTcin
             }
         }
         return tcinToItemDetailsMap
     }
-    private fun formFavoritesTcinResponse(tcinToItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>): List<GuestFavoritesResponseTO> {
+
+    private fun formFavoritesTcinResponse(
+        tcinToItemDetailsMap: MutableMap<String, MutableList<ListItemDetailsTO>?>
+    ): List<GuestFavoritesResponseTO> {
         val tcins = tcinToItemDetailsMap.keys.toList()
-        for (tcin in tcins) if (tcinToItemDetailsMap[tcin] == emptyList<ListItemDetailsTO>()) { tcinToItemDetailsMap.remove(tcin) }
+        for (tcin in tcins) if (tcinToItemDetailsMap[tcin] == emptyList<ListItemDetailsTO>())
+            tcinToItemDetailsMap.remove(tcin)
         val newTcins = tcinToItemDetailsMap.keys.toList()
         val listOfListItemDetail = tcinToItemDetailsMap.values.toList()
         val listOfFavouritesTcinResponseTO = mutableListOf<GuestFavoritesResponseTO>()
