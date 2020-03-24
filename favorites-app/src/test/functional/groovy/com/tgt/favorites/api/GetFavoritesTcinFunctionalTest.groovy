@@ -105,7 +105,7 @@ class GetFavoritesTcinFunctionalTest extends BaseFunctionalTest  {
 
     }
 
-    def "test get more than 28 tcins from favourites lists"() {
+    def "test when tcin count exceeds max count specified from favourites lists"() {
         given:
         String guestId = "1234"
 
