@@ -33,10 +33,10 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         guestPreferenceRepository = Mock(GuestPreferenceRepository)
         guestPreferenceSortOrderManager = new GuestPreferenceSortOrderManager(guestPreferenceRepository)
         contextContainerManager = new ContextContainerManager()
-        getFavoritesTcinService = new GetFavoritesTcinService(getAllListService, 28)
+        getFavoritesTcinService = new GetFavoritesTcinService(getAllListService, 2)
     }
 
-    def "test getTcinsFromFavouritesService integrity"() {
+    def "test getFavoritesTcin() integrity"() {
 
         given:
         UUID listId1 = UUID.randomUUID()
@@ -49,34 +49,30 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(listId1, "list1", listItemId2)
         ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(listId2, "list2", listItemId2)
 
-
-
-        ListItemResponseTO listItemResponse1TO = new ListItemResponseTO(listItemId1, null, "abcd", "item1", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse2TO = new ListItemResponseTO(listItemId2, null, "abcde", "item2", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse3TO = new ListItemResponseTO(listItemId1, null, "abcd", "item3", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse4TO = new ListItemResponseTO(listItemId2, null, "abcde", "item4", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponse1TO = new ListItemResponseTO(listItemId1, null, "1234", "item1", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponse2TO = new ListItemResponseTO(listItemId2, null, "5678", "item2", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponse3TO = new ListItemResponseTO(listItemId1, null, "1234", "item3", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponse4TO = new ListItemResponseTO(listItemId2, null, "5678", "item4", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
 
         ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list1", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse1TO, listItemResponse2TO], null)
         ListGetAllResponseTO listGetAllResponse2TO = new ListGetAllResponseTO(listId2, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list2", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse3TO, listItemResponse4TO], null)
 
         when:
-        List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcd,abcde").block()
+        List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "1234,5678").block()
 
         then:
 
         1 * getAllListService.getAllListsForUser(_, _) >> Mono.just([listGetAllResponse1TO, listGetAllResponse2TO])
 
-        favouritesTcinResponsesTO[0].tcin == "abcd"
+        favouritesTcinResponsesTO[0].tcin == "1234"
         favouritesTcinResponsesTO[0].listItemDetails[0] == listItemDetails1TO
         favouritesTcinResponsesTO[0].listItemDetails[1] == listItemDetails2TO
-        favouritesTcinResponsesTO[1].tcin == "abcde"
+        favouritesTcinResponsesTO[1].tcin == "5678"
         favouritesTcinResponsesTO[1].listItemDetails[0] == listItemDetails3TO
         favouritesTcinResponsesTO[1].listItemDetails[1] == listItemDetails4TO
-    //    favouritesTcinResponsesTO[2].tcin == "abcd"
-
     }
 
-    def "test getTcinsFromFavouritesService if ticn is not present in lists"() {
+    def "test getFavoritesTcin() if ticn is not present in lists"() {
 
         given:
         UUID listId1 = UUID.randomUUID()
@@ -89,35 +85,32 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(listId1, "list1", listItemId2)
         ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(listId2, "list2", listItemId2)
 
-
-
-        ListItemResponseTO listItemResponse1TO = new ListItemResponseTO(listItemId1, null, "abcd", "item1", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse2TO = new ListItemResponseTO(listItemId2, null, "abcde", "item2", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse3TO = new ListItemResponseTO(listItemId1, null, "abcd", "item3", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse4TO = new ListItemResponseTO(listItemId2, null, "abcde", "item4", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponse1TO = new ListItemResponseTO(listItemId1, null, "1234", "item1", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponse2TO = new ListItemResponseTO(listItemId2, null, "5678", "item2", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponse3TO = new ListItemResponseTO(listItemId1, null, "1234", "item3", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponse4TO = new ListItemResponseTO(listItemId2, null, "5678", "item4", null, null, null, null, null, null, null, 0, null, null, null, null, null, null)
 
         ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list1", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse1TO, listItemResponse2TO], null)
         ListGetAllResponseTO listGetAllResponse2TO = new ListGetAllResponseTO(listId2, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list2", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse3TO, listItemResponse4TO], null)
 
         when:
-        List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcdf,abcde").block()
+        List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "123,5678").block()
 
         then:
         1 * getAllListService.getAllListsForUser(_, _) >> Mono.just([listGetAllResponse1TO, listGetAllResponse2TO])
 
-        favouritesTcinResponsesTO[0].tcin == "abcde"
+        favouritesTcinResponsesTO[0].tcin == "5678"
         favouritesTcinResponsesTO[0].listItemDetails[1] == listItemDetails4TO
         favouritesTcinResponsesTO[1] == null
-
     }
 
-    def "test getTcinsFromFavouritesService if there are no pending items in a list"() {
+    def "test getFavoritesTcin() if there are no pending items in a list"() {
 
         given:
         UUID listId1 = UUID.randomUUID()
         ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list1", false, "dd", "1", null, null, null, 100, 1, 2, 3, null, null)
         when:
-        List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "abcdf,abcde").block()
+        List<GuestFavoritesResponseTO> favouritesTcinResponsesTO = getFavoritesTcinService.getFavoritesTcin("1234", "1234,5678").block()
 
         then:
         1 * getAllListService.getAllListsForUser(_, _) >> Mono.just([listGetAllResponse1TO])
@@ -125,12 +118,9 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         favouritesTcinResponsesTO == []
     }
 
-    def "if tcin count exceeds 28 "() {
+    def "test getFavoritesTcin() when tcin count exceeds max count specified"() {
 
-        String str = "abc,"
-        String tcinString = ""
-        for (int i in 0 .. 30)
-            { tcinString = tcinString.plus(str) }
+        String tcinString = "1234,5678,9876"
 
         when:
         getFavoritesTcinService.getFavoritesTcin("1234", tcinString).block()
@@ -138,6 +128,4 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         then:
         thrown BadRequestException
     }
-
-
 }

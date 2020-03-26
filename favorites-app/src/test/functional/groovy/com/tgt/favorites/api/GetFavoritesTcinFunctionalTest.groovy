@@ -22,9 +22,7 @@ import io.micronaut.http.uri.UriTemplate
 import io.micronaut.test.annotation.MicronautTest
 import io.micronaut.test.annotation.MockBean
 import spock.lang.Shared
-
 import javax.inject.Inject
-
 import static com.tgt.favorites.util.DataProvider.getCartURI
 import static com.tgt.favorites.util.DataProvider.getCheckHeaders
 import static com.tgt.favorites.util.DataProvider.getHeaders
@@ -61,24 +59,22 @@ class GetFavoritesTcinFunctionalTest extends BaseFunctionalTest  {
 
         List<CartResponse> cartResponseList = [cartResponse1, cartResponse2]
 
-        CartItemResponse cartItemResponse1 = cartDataProvider.getCartItemResponse(cartId1, cartItemId1, "abcd", "item 1")
-        CartItemResponse cartItemResponse2 = cartDataProvider.getCartItemResponse(cartId1, cartItemId2, "abcde", "item 2")
-        CartItemResponse cartItemResponse3 = cartDataProvider.getCartItemResponse(cartId2, cartItemId3, "abcd", "item 3")
-        CartItemResponse cartItemResponse4 = cartDataProvider.getCartItemResponse(cartId2, cartItemId4, "abcde", "item 4")
+        CartItemResponse cartItemResponse1 = cartDataProvider.getCartItemResponse(cartId1, cartItemId1, "1234", "item 1")
+        CartItemResponse cartItemResponse2 = cartDataProvider.getCartItemResponse(cartId1, cartItemId2, "5678", "item 2")
+        CartItemResponse cartItemResponse3 = cartDataProvider.getCartItemResponse(cartId2, cartItemId3, "1234", "item 3")
+        CartItemResponse cartItemResponse4 = cartDataProvider.getCartItemResponse(cartId2, cartItemId4, "5678", "item 4")
 
         ListItemDetailsTO listItemDetails1TO = new ListItemDetailsTO(cartId1, "My list1", cartItemId1)
         ListItemDetailsTO listItemDetails2TO = new ListItemDetailsTO(cartId1, "My list1", cartItemId2)
         ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(cartId2, "My list2", cartItemId3)
         ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(cartId2, "My list2", cartItemId4)
 
-
         CartContentsResponse cartContentsResponse1 = cartDataProvider.getCartContentsResponse(cartResponse1, [cartItemResponse1, cartItemResponse2])
-
         CartContentsResponse cartContentsResponse2 = cartDataProvider.getCartContentsResponse(cartResponse2, [cartItemResponse3, cartItemResponse4])
 
         when:
         final requestURI = new UriTemplate(FavoriteConstants.BASEPATH + "/guest_favourites{?tcins}")
-            .expand(tcins: "abcd,abcde")
+            .expand(tcins: "1234,5678")
         HttpResponse<GuestFavoritesResponseTO[]> listsResponse = client.toBlocking().exchange(
             HttpRequest.GET(requestURI).headers(getHeaders(guestId)), GuestFavoritesResponseTO[])
         def actualStatus = listsResponse.status()
@@ -86,8 +82,8 @@ class GetFavoritesTcinFunctionalTest extends BaseFunctionalTest  {
 
         then:
         actualStatus == HttpStatus.OK
-        actualBody[0].tcin == "abcd"
-        actualBody[1].tcin == "abcde"
+        actualBody[0].tcin == "1234"
+        actualBody[1].tcin == "5678"
         actualBody[0].listItemDetails[1] == listItemDetails3TO || listItemDetails1TO
         actualBody[0].listItemDetails[0] == listItemDetails1TO || listItemDetails3TO
         actualBody[1].listItemDetails[0] == listItemDetails2TO || listItemDetails4TO
@@ -109,15 +105,11 @@ class GetFavoritesTcinFunctionalTest extends BaseFunctionalTest  {
 
     }
 
-    def "test get more than 28 tcins from favourites lists"() {
+    def "test when tcin count exceeds max count specified from favourites lists"() {
         given:
         String guestId = "1234"
 
-        String str = "abc,"
-        String tcinString = ""
-        for (int i in 0 .. 30)
-        { tcinString = tcinString + str
-        }
+        String tcinString = "1234,5678,9876"
 
         when:
         final requestURI = new UriTemplate(FavoriteConstants.BASEPATH + "/guest_favourites{?tcins}")
