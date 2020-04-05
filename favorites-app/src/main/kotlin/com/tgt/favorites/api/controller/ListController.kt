@@ -1,11 +1,7 @@
 package com.tgt.favorites.api.controller
 
 import com.tgt.favorites.api.util.FavoriteConstants
-import com.tgt.favorites.service.GetAllFavoriteListService
-import com.tgt.favorites.service.GetDefaultFavoriteListService
-import com.tgt.favorites.service.GetFavoriteListItemService
-import com.tgt.favorites.service.GetFavoriteListService
-import com.tgt.favorites.service.GetFavoritesTcinService
+import com.tgt.favorites.service.*
 import com.tgt.favorites.transport.*
 import com.tgt.lists.lib.api.exception.BadRequestException
 import com.tgt.lists.lib.api.service.*
@@ -29,6 +25,7 @@ class ListController(
     private val deleteListService: DeleteListService,
     private val getFavoriteTcinService: GetFavoritesTcinService,
     private val getAllFavoriteListService: GetAllFavoriteListService,
+    private val createFavoritesListItemService: CreateFavoritesListItemService,
     private val createListItemService: CreateListItemService,
     private val deleteListItemService: DeleteListItemService,
     private val getFavoriteListService: GetFavoriteListService,
@@ -259,6 +256,19 @@ class ListController(
         @Valid @Body listItemRequestTO: ListItemRequestTO
     ): Mono<FavouritesListItemResponseTO> {
         return createListItemService.createListItem(guestId, listId, FavoriteConstants.LOCATION_ID, listItemRequestTO)
+            .map { toFavouritesListItemResponse(it) }
+    }
+
+    @Post("/list_items")
+    @Status(HttpStatus.CREATED)
+    fun createFavoriteListItem(
+        @Header(PROFILE_ID) guestId: String,
+        @QueryValue("sort_field") sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
+        @QueryValue("sort_order") sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
+        @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false,
+        @Valid @Body listItemRequestTO: ListItemRequestTO
+    ): Mono<FavouritesListItemResponseTO> {
+        return createFavoritesListItemService.createFavoriteItem(guestId, FavoriteConstants.LOCATION_ID, listItemRequestTO)
             .map { toFavouritesListItemResponse(it) }
     }
 
