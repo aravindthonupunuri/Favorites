@@ -1,11 +1,10 @@
 package service
 
-import com.tgt.favorites.service.CreateFavoritesListItemService
+import com.tgt.favorites.service.CreateFavoriteListItemService
 import com.tgt.favorites.service.GetDefaultFavoriteListService
 import com.tgt.lists.cart.CartClient
 import com.tgt.lists.lib.api.domain.ContextContainerManager
 import com.tgt.lists.lib.api.domain.GuestPreferenceSortOrderManager
-import com.tgt.lists.lib.api.exception.BadRequestException
 import com.tgt.lists.lib.api.persistence.GuestPreferenceRepository
 import com.tgt.lists.lib.api.service.CreateListItemService
 import com.tgt.lists.lib.api.service.CreateListService
@@ -20,7 +19,7 @@ import spock.lang.Specification
 
 class CreateFavoritesListItemServiceTest extends Specification {
 
-    CreateFavoritesListItemService createFavoritesListItemService
+    CreateFavoriteListItemService createFavoriteListItemService
     GetDefaultFavoriteListService getDefaultFavoriteListService
     CreateListService createListService
     CreateListItemService createListItemService
@@ -37,7 +36,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
         guestPreferenceRepository = Mock(GuestPreferenceRepository)
         guestPreferenceSortOrderManager = new GuestPreferenceSortOrderManager(guestPreferenceRepository)
         contextContainerManager = new ContextContainerManager()
-        createFavoritesListItemService = new CreateFavoritesListItemService(getDefaultFavoriteListService, createListService, createListItemService)
+        createFavoriteListItemService = new CreateFavoriteListItemService(getDefaultFavoriteListService, createListService, createListItemService)
     }
 
     def "test createFavoriteItem() integrity"() {
@@ -54,7 +53,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
         ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
 
         when:
-        ListItemResponseTO favouriteItemResponsesTO = createFavoritesListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
+        ListItemResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
 
         then:
 
@@ -80,7 +79,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
         ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
 
         when:
-        ListItemResponseTO favouriteItemResponsesTO = createFavoritesListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
+        ListItemResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
 
         then:
 

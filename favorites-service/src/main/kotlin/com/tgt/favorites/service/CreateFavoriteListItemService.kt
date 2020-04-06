@@ -12,7 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CreateFavoritesListItemService(
+class CreateFavoriteListItemService(
     @Inject private val getDefaultFavoriteListService: GetDefaultFavoriteListService,
     @Inject private val createListService: CreateListService,
     @Inject private val createListItemService: CreateListItemService

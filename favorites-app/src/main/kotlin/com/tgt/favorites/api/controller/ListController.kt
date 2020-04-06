@@ -25,7 +25,7 @@ class ListController(
     private val deleteListService: DeleteListService,
     private val getFavoriteTcinService: GetFavoritesTcinService,
     private val getAllFavoriteListService: GetAllFavoriteListService,
-    private val createFavoritesListItemService: CreateFavoritesListItemService,
+    private val createFavoriteListItemService: CreateFavoriteListItemService,
     private val createListItemService: CreateListItemService,
     private val deleteListItemService: DeleteListItemService,
     private val getFavoriteListService: GetFavoriteListService,
@@ -260,7 +260,7 @@ class ListController(
     }
 
     /**
-     * Create list item.
+     * Create an item to be added to the guest's default list.
      *
      * @return list item response transfer object
      *
@@ -271,7 +271,7 @@ class ListController(
         @Header(PROFILE_ID) guestId: String,
         @Valid @Body listItemRequestTO: ListItemRequestTO
     ): Mono<FavouritesListItemResponseTO> {
-        return createFavoritesListItemService.createFavoriteItem(guestId, FavoriteConstants.LOCATION_ID, listItemRequestTO)
+        return createFavoriteListItemService.createFavoriteItem(guestId, FavoriteConstants.LOCATION_ID, listItemRequestTO)
             .map { toFavouritesListItemResponse(it) }
     }
 
