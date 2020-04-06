@@ -7,7 +7,6 @@ import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.ListMetaDataTO
-import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
 import com.tgt.lists.lib.api.transport.UserMetaDataTO
 import com.tgt.lists.lib.api.util.Constants

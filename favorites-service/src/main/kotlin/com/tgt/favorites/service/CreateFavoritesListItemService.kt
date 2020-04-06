@@ -5,7 +5,6 @@ import com.tgt.lists.lib.api.service.CreateListService
 import com.tgt.lists.lib.api.transport.ListItemRequestTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.ListRequestTO
-import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import reactor.core.publisher.Mono
 import reactor.core.publisher.switchIfEmpty
@@ -18,9 +17,11 @@ class CreateFavoritesListItemService(
     @Inject private val createListService: CreateListService,
     @Inject private val createListItemService: CreateListItemService
 ) {
-    fun createFavoriteItem(guestId: String,
-                           locationId: Long,
-                           listItemRequestTO: ListItemRequestTO): Mono<ListItemResponseTO> {
+    fun createFavoriteItem(
+        guestId: String,
+        locationId: Long,
+        listItemRequestTO: ListItemRequestTO
+    ): Mono<ListItemResponseTO> {
         return getDefaultFavoriteListService.getDefaultList(guestId, locationId)
             .switchIfEmpty {
                 createListService.createList(guestId, ListRequestTO(LIST_CHANNEL.WEB, "list-title", locationId, defaultList = true))
