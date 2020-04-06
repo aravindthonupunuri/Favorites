@@ -5,6 +5,7 @@ import com.tgt.favorites.service.GetDefaultFavoriteListService
 import com.tgt.lists.cart.CartClient
 import com.tgt.lists.lib.api.domain.ContextContainerManager
 import com.tgt.lists.lib.api.domain.GuestPreferenceSortOrderManager
+import com.tgt.lists.lib.api.exception.BadRequestException
 import com.tgt.lists.lib.api.persistence.GuestPreferenceRepository
 import com.tgt.lists.lib.api.service.CreateListItemService
 import com.tgt.lists.lib.api.service.CreateListService

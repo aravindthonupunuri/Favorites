@@ -259,13 +259,16 @@ class ListController(
             .map { toFavouritesListItemResponse(it) }
     }
 
+    /**
+     * Create list item.
+     *
+     * @return list item response transfer object
+     *
+     */
     @Post("/list_items")
     @Status(HttpStatus.CREATED)
     fun createFavoriteListItem(
         @Header(PROFILE_ID) guestId: String,
-        @QueryValue("sort_field") sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
-        @QueryValue("sort_order") sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
-        @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false,
         @Valid @Body listItemRequestTO: ListItemRequestTO
     ): Mono<FavouritesListItemResponseTO> {
         return createFavoritesListItemService.createFavoriteItem(guestId, FavoriteConstants.LOCATION_ID, listItemRequestTO)
