@@ -1,10 +1,11 @@
 package com.tgt.favorites.api
 
 import com.tgt.favorites.api.util.FavoriteConstants
-import com.tgt.favorites.api.util.TestUtilConstants
+import com.tgt.favorites.transport.FavouritesListItemResponseTO
 import com.tgt.favorites.util.BaseFunctionalTest
 import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
+import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.ListMetaDataTO
 import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
@@ -20,10 +21,8 @@ import groovy.json.JsonOutput
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
-import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.annotation.MicronautTest
 import io.micronaut.test.annotation.MockBean
-import reactor.core.publisher.Mono
 import spock.lang.Shared
 import javax.inject.Inject
 
@@ -78,13 +77,16 @@ class CreateFavoriteItemFunctionalTest extends BaseFunctionalTest {
         def pendingCartContentsResponse = cartDataProvider.getCartContentsResponse(pendingCartResponse, [pendingCartItemResponse1, pendingCartItemResponse2])
 
         when:
-        HttpResponse<ListResponseTO> listResponse = client.toBlocking()
-            .exchange(HttpRequest.POST(uri, JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), ListResponseTO)
-        def actualStatus = listResponse.status()
-        def actual = listResponse.body()
+        HttpResponse<FavouritesListItemResponseTO> listItemResponse = client.toBlocking()
+            .exchange(HttpRequest.POST(uri, JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), ListItemResponseTO)
+        def actualStatus = listItemResponse.status()
+        def actual = listItemResponse.body()
 
         then:
         actualStatus == HttpStatus.CREATED
+        actual.listItemId == cartItemResponse.cartItemId
+        actual.tcin == cartItemResponse.getTcin()
+        actual.itemTitle == cartItemResponse.tenantItemName
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId)) }, { headers -> checkHeaders(headers) }) >> [status: 200, body: [pendingCartResponse]]
         2 * mockServer.get({ path -> path.contains("/carts/v4/cart_contents/" + listId) }, _) >> [status: 200, body: pendingCartContentsResponse]

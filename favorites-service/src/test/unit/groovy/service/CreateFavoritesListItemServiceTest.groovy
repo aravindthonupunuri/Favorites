@@ -54,14 +54,16 @@ class CreateFavoritesListItemServiceTest extends Specification {
         ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
 
         when:
-        ListItemResponseTO favouritesTcinResponsesTO = createFavoritesListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
+        ListItemResponseTO favouriteItemResponsesTO = createFavoritesListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
 
         then:
 
         1 * getDefaultFavoriteListService.getDefaultList(_, _, _, _, _) >> Mono.just(listResponseTO)
         1 * createListItemService.createListItem(_, _, _, _) >> Mono.just(listItemResponseTO)
 
-        favouritesTcinResponsesTO.listItemId == listItemResponseTO.listItemId
+        favouriteItemResponsesTO.listItemId == listItemResponseTO.listItemId
+        favouriteItemResponsesTO.itemTitle == listItemResponseTO.itemTitle
+        favouriteItemResponsesTO.itemNote == listItemResponseTO.itemNote
     }
 
     def "test createFavoriteItem() if user dont have default list"() {
@@ -78,7 +80,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
         ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
 
         when:
-        ListItemResponseTO favouritesTcinResponsesTO = createFavoritesListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
+        ListItemResponseTO favouriteItemResponsesTO = createFavoritesListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
 
         then:
 
@@ -86,6 +88,8 @@ class CreateFavoritesListItemServiceTest extends Specification {
         1 * createListService.createList(_, _) >> Mono.just(listResponseTO)
         1 * createListItemService.createListItem(_, _, _, _) >> Mono.just(listItemResponseTO)
 
-        favouritesTcinResponsesTO.listItemId == listItemResponseTO.listItemId
+        favouriteItemResponsesTO.listItemId == listItemResponseTO.listItemId
+        favouriteItemResponsesTO.itemTitle == listItemResponseTO.itemTitle
+        favouriteItemResponsesTO.itemNote == listItemResponseTO.itemNote
     }
 }
