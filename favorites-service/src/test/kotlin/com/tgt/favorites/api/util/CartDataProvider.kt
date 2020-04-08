@@ -9,6 +9,7 @@ import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
@@ -28,22 +29,27 @@ class CartDataProvider {
         metadata: Map<String, Any>
     ): CartResponse {
         return CartResponse(cartId = cartId, cartNumber = "", guestId = guestId, cartChannel = cartChannel?.toString(),
+            cartSubchannel = "FAVORITES",
             cartType = cartType.value, tenantCartName = tenantCartName,
-            tenantCartDescription = tenantCartDescription, agentId = agentId, metadata = metadata, createdAt = LocalDateTime.now(), updatedAt = LocalDateTime.now())
+            tenantCartDescription = tenantCartDescription, agentId = agentId, metadata = metadata,
+            createdAt = LocalDateTime.now(), updatedAt = LocalDateTime.now(),
+            abandonAfterDuration = AbandonAfterDuration(BigDecimal.valueOf(730), AbandonAfterDuration.Type.DAYS))
     }
 
     fun getCartItemResponse(
         cartId: UUID,
         cartItemId: UUID,
+        itemReferanceId: String,
         tcin: String,
         itemtitle: String
     ): CartItemResponse {
-        return CartItemResponse(cartId = cartId, cartItemId = cartItemId, tcin = tcin, tenantItemName = itemtitle)
+        return CartItemResponse(cartId = cartId, cartItemId = cartItemId, tenantReferenceId = itemReferanceId, tcin = tcin, tenantItemName = itemtitle)
     }
 
     fun getCartItemResponse(
         cartId: UUID,
         cartItemId: UUID,
+        tenantRefId: String,
         tcin: String?,
         itemTitle: String?,
         itemNote: String?,
@@ -60,7 +66,7 @@ class CartDataProvider {
             tcin = tcin, tenantItemName = itemTitle, notes = itemNote, requestedQuantity = requestedQuantity, price = price,
             listPrice = listPrice, relationshipType = relationshipType, itemState = itemState, images = Image(baseUrl = imageBaseUrl, primaryImage = primaryImage),
             metadata = metadata, eligibleDiscounts = getEligibleDiscounts(2),
-            tenantReferenceId = populateTenantRefId(tcin, itemTitle), locationId = "1375")
+            tenantReferenceId = tenantRefId, locationId = "1375")
     }
 
     fun populateTenantRefId(tcin: String?, itemTitle: String?): String? {
@@ -74,6 +80,7 @@ class CartDataProvider {
     fun getCartItemResponse(
         cartId: UUID,
         cartItemId: UUID,
+        tenantRefId: String,
         tcin: String?,
         itemTitle: String?,
         requestedQuantity: Int = 0,
@@ -92,7 +99,7 @@ class CartDataProvider {
         return CartItemResponse(cartId = cartId, cartItemId = cartItemId,
             tcin = tcin, tenantItemName = itemTitle, notes = itemNote, requestedQuantity = requestedQuantity, price = price,
             listPrice = listPrice, eligibleDiscounts = getEligibleDiscounts(2), relationshipType = relationshipType, itemState = itemState,
-            tenantReferenceId = populateTenantRefId(tcin, itemTitle), images = Image(baseUrl = imageBaseUrl, primaryImage = primaryImage),
+            tenantReferenceId = tenantRefId, images = Image(baseUrl = imageBaseUrl, primaryImage = primaryImage),
             metadata = metadata, serialNumber = serialNumber, createdAt = createdAt, updatedAt = updatedAt, locationId = "1375")
     }
 
@@ -125,9 +132,9 @@ class CartDataProvider {
 
         for (i in 1..itemCount) {
             if (i % 2 == 0) {
-                itemList.add(CartItemResponse(metadata = mutableMapOf<String, Any>("SOME_STATUS" to "PENDING")))
+                itemList.add(CartItemResponse(tenantReferenceId = UUID.randomUUID().toString(), metadata = mutableMapOf<String, Any>("SOME_STATUS" to "PENDING")))
             } else {
-                itemList.add(CartItemResponse(metadata = mutableMapOf<String, Any>("SOME_STATUS" to "COMPLETED")))
+                itemList.add(CartItemResponse(tenantReferenceId = UUID.randomUUID().toString(), metadata = mutableMapOf<String, Any>("SOME_STATUS" to "COMPLETED")))
             }
         }
 
@@ -163,7 +170,6 @@ class CartDataProvider {
         // Push un-mapped list to cart attributes into cart meta data
         val listMetaData = ListMetaDataTO(
             defaultList = listMetadata.defaultList,
-            listType = listMetadata.listType,
             listStatus = listMetadata.listStatus)
 
         val userData = UserMetaDataTO(
@@ -220,7 +226,7 @@ class CartDataProvider {
     }
 
     fun getListItemRequestTO(itemType: ItemType, tcin: String): ListItemRequestTO {
-        return ListItemRequestTO(itemType = itemType, tcin = tcin, itemTitle = null)
+        return ListItemRequestTO(itemType = itemType, itemRefId = tcin, tcin = tcin, itemTitle = null)
     }
 
     fun jsonToCartPostRequest(json: String): CartPostRequest {

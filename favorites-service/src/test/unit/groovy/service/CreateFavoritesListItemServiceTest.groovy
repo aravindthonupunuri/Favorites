@@ -46,9 +46,9 @@ class CreateFavoritesListItemServiceTest extends Specification {
         UUID listItemId = UUID.randomUUID()
         UUID listId = UUID.randomUUID()
 
-        ListItemRequestTO listItemRequestTO = new ListItemRequestTO(ItemType.TCIN, "35446", null, null, null, UnitOfMeasure.EACHES, null, null)
+        ListItemRequestTO listItemRequestTO = new ListItemRequestTO(ItemType.TCIN, "35446", "1234", null, null, 1, null, null)
 
-        ListItemResponseTO listItemResponseTO = new ListItemResponseTO(listItemId, null, "1234", "item", null, null, UnitOfMeasure.EACHES, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponseTO = new ListItemResponseTO(listItemId, null, "35446", "1234", "item", null, null, UnitOfMeasure.EACHES, null, null, null, null, 0, null, null, null, null, null, null)
 
         ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
 
@@ -72,9 +72,9 @@ class CreateFavoritesListItemServiceTest extends Specification {
         UUID listItemId = UUID.randomUUID()
         UUID listId = UUID.randomUUID()
 
-        ListItemRequestTO listItemRequestTO = new ListItemRequestTO(ItemType.TCIN, "35446", null, null, null, UnitOfMeasure.EACHES, null, null)
+        ListItemRequestTO listItemRequestTO = new ListItemRequestTO(ItemType.TCIN, "35446", "1234", null, null, 1, null, null)
 
-        ListItemResponseTO listItemResponseTO = new ListItemResponseTO(listItemId, null, "1234", "item", null, null, UnitOfMeasure.EACHES, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponseTO = new ListItemResponseTO(listItemId, null, "35446", "1234", "item", null, null, UnitOfMeasure.EACHES, null, null, null, null, 0, null, null, null, null, null, null)
 
         ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
 

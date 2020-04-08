@@ -38,23 +38,23 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         def uri = FavoriteConstants.BASEPATH + "/" + cartId + "?location_id=1375"
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
         ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(cartId), guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
 
-        def cartItemResponse1 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234",
+        def cartItemResponse1 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234", "1234",
             null, "some note", 1, 10, 10, "Stand Alone", "READY",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()))
-        def cartItemResponse2 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), null,
+        def cartItemResponse2 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234", null,
             "coffee", "some note", 1, 10, 10, "Stand Alone", "READY",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData2, new UserItemMetaDataTO()))
-        def cartItemResponse3 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "2345",
+        def cartItemResponse3 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234", "2345",
             null, "some note", 1, 10, 10, "Stand Alone", "READY",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()))
-        def cartItemResponse4 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "3456",
+        def cartItemResponse4 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234", "3456",
             "coffee", "some note", 1, 10, 10, "Stand Alone", "READY",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()))
 
@@ -77,7 +77,7 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         actual.channel == LIST_CHANNEL.valueOf(cartResponse.cartChannel)
         actual.listTitle == cartResponse.tenantCartName
         actual.shortDescription == cartResponse.tenantCartDescription
-        actual.listType == listMetaData.listType
+        actual.listType == "FAVORITES"
         actual.defaultList == listMetaData.defaultList
 
         def pendingItems = actual.pendingListItems
@@ -117,17 +117,17 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         def uri = FavoriteConstants.BASEPATH + "/" + cartId + "?location_id=1375&sort_field=ITEM_TITTLE&sort_order=ASCENDING"
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
         ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(cartId), guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
 
-        def cartItemResponse1 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234",
+        def cartItemResponse1 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234", "1234",
             "banana", "some note",1,  10, 10, "Stand Alone", "READY",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()))
-        def cartItemResponse2 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), null,
+        def cartItemResponse2 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234", null,
             "coffee", "some note", 1, 10, 10, "Stand Alone", "READY",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData2, new UserItemMetaDataTO()))
         Map response = ["cart" : cartResponse, "cart_items" : [cartItemResponse1, cartItemResponse2]]
@@ -149,7 +149,7 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         actual.channel == LIST_CHANNEL.valueOf(cartResponse.cartChannel)
         actual.listTitle == cartResponse.tenantCartName
         actual.shortDescription == cartResponse.tenantCartDescription
-        actual.listType == listMetaData.listType
+        actual.listType == "FAVORITES"
         actual.defaultList == listMetaData.defaultList
         actual.maxPendingItemsCount == 3
 
@@ -190,17 +190,17 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         def uri = FavoriteConstants.BASEPATH + "/" + cartId + "?location_id=1375"
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.OFFER, LIST_ITEM_STATE.PENDING)
         ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO("2018-09-16T06:35:00.000Z", ItemType.OFFER, LIST_ITEM_STATE.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(cartId), guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
 
-        def cartItemResponse1 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234",
+        def cartItemResponse1 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234", "1234",
             null, "some note", 1, 10, 10, "Stand Alone", "READY",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()))
-        def cartItemResponse2 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), null,
+        def cartItemResponse2 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234", null,
             "coffee", "some note", 1, 10, 10, "Stand Alone", "READY",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData2, new UserItemMetaDataTO()))
         Map response = ["cart" : cartResponse, "cart_items" : [cartItemResponse1, cartItemResponse2]]
@@ -221,7 +221,7 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         actual.channel == LIST_CHANNEL.valueOf(cartResponse.cartChannel)
         actual.listTitle == cartResponse.tenantCartName
         actual.shortDescription == cartResponse.tenantCartDescription
-        actual.listType == listMetaData.listType
+        actual.listType == "FAVORITES"
         actual.defaultList == listMetaData.defaultList
         actual.maxPendingItemsCount == 3
 

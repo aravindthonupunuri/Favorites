@@ -50,7 +50,7 @@ class SanitizingFilterFunctionalTest extends BaseFunctionalTest {
                 "location_id"                : 1375L
             ]
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(UUID.randomUUID(), guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "\fgdfgghfh\fghdfflist1", "My Favorite List<input type=text autofocus alert//wztya", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
@@ -97,7 +97,7 @@ class SanitizingFilterFunctionalTest extends BaseFunctionalTest {
                 "location_id"                   : 1375L
             ]
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
 
 
         when:

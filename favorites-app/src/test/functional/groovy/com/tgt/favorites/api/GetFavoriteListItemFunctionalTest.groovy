@@ -43,7 +43,7 @@ class GetFavoriteListItemFunctionalTest extends BaseFunctionalTest {
         def cartUri = "/carts/v4/cart_items/aaaaaaaa-1111-bbbb-2222-cccccccccccc?cart_id=" + cartId
 
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
-        def cartItemResponse = cartDataProvider.getCartItemResponse(cartId, UUID.fromString(cartItemId), "1234",
+        def cartItemResponse = cartDataProvider.getCartItemResponse(cartId, UUID.fromString(cartItemId), "1234", "1234",
             "some title", "some note", 1, 10, 10, "Stand Alone", "READY_FOR_LAUNCH",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()))
         def cartResponse = cartDataProvider.getCartResponse(cartId, guestId, null)

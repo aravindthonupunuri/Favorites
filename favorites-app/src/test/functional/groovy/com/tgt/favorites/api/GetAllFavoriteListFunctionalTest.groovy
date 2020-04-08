@@ -42,15 +42,15 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         UUID cartId2 = UUID.randomUUID()
         UUID cartId3 = UUID.randomUUID()
 
-        ListMetaDataTO metadata1 = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata1 = new ListMetaDataTO(true, LIST_STATUS.PENDING)
         CartResponse cartResponse1 = cartDataProvider.getCartResponse(cartId1, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list1", "1st list", null, cartDataProvider.getMetaData(metadata1, new UserMetaDataTO()))
 
-        ListMetaDataTO metadata2 = new ListMetaDataTO(false, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata2 = new ListMetaDataTO(false, LIST_STATUS.PENDING)
         CartResponse cartResponse2 = cartDataProvider.getCartResponse(cartId2, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list2", "2nd list", null, cartDataProvider.getMetaData(metadata2, new UserMetaDataTO()))
 
-        ListMetaDataTO metadata3 = new ListMetaDataTO(false, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata3 = new ListMetaDataTO(false, LIST_STATUS.PENDING)
         CartResponse cartResponse3 = cartDataProvider.getCartResponse(cartId3, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list3", "3rd list", null, cartDataProvider.getMetaData(metadata3, new UserMetaDataTO()))
 
@@ -115,15 +115,15 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         UUID cartId2 = UUID.randomUUID()
         UUID cartId3 = UUID.randomUUID()
 
-        ListMetaDataTO metadata1 = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata1 = new ListMetaDataTO(true, LIST_STATUS.PENDING)
         CartResponse cartResponse1 = cartDataProvider.getCartResponse(cartId1, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list1", "1st list", null, cartDataProvider.getMetaData(metadata1, new UserMetaDataTO()))
 
-        ListMetaDataTO metadata2 = new ListMetaDataTO(false, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata2 = new ListMetaDataTO(false, LIST_STATUS.PENDING)
         CartResponse cartResponse2 = cartDataProvider.getCartResponse(cartId2, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list2", "2nd list", null, cartDataProvider.getMetaData(metadata2, new UserMetaDataTO()))
 
-        ListMetaDataTO metadata3 = new ListMetaDataTO(false, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata3 = new ListMetaDataTO(false, LIST_STATUS.PENDING)
         CartResponse cartResponse3 = cartDataProvider.getCartResponse(cartId3, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list3", "3rd list", null, cartDataProvider.getMetaData(metadata3, new UserMetaDataTO()))
 
@@ -190,15 +190,15 @@ class GetAllFavoriteListFunctionalTest extends BaseFunctionalTest {
         UUID cartId2 = UUID.randomUUID()
         UUID cartId3 = UUID.randomUUID()
 
-        ListMetaDataTO metadata1 = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata1 = new ListMetaDataTO(true, LIST_STATUS.PENDING)
         CartResponse cartResponse1 = cartDataProvider.getCartResponse(cartId1, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list1", "1st list", null, cartDataProvider.getMetaData(metadata1, new UserMetaDataTO()))
 
-        ListMetaDataTO metadata2 = new ListMetaDataTO(false, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata2 = new ListMetaDataTO(false, LIST_STATUS.PENDING)
         CartResponse cartResponse2 = cartDataProvider.getCartResponse(cartId2, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list2", "2nd list", null, cartDataProvider.getMetaData(metadata2, new UserMetaDataTO()))
 
-        ListMetaDataTO metadata3 = new ListMetaDataTO(false, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata3 = new ListMetaDataTO(false, LIST_STATUS.PENDING)
         CartResponse cartResponse3 = cartDataProvider.getCartResponse(cartId3, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list3", "3rd list", null, cartDataProvider.getMetaData(metadata3, new UserMetaDataTO()))
 

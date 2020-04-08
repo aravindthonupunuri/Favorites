@@ -253,9 +253,9 @@ class ListController(
     fun createListItem(
         @Header(PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
-        @Valid @Body listItemRequestTO: ListItemRequestTO
+        @Valid @Body favoriteListItemRequestTO: FavoriteListItemRequestTO
     ): Mono<FavouritesListItemResponseTO> {
-        return createListItemService.createListItem(guestId, listId, FavoriteConstants.LOCATION_ID, listItemRequestTO)
+        return createListItemService.createListItem(guestId, listId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO.toListItemRequestTO())
             .map { toFavouritesListItemResponse(it) }
     }
 
