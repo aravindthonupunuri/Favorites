@@ -1,11 +1,10 @@
 package com.tgt.favorites.util
 
+
 import com.tgt.lists.msgbus.event.EventHeaders
 import com.tgt.lists.msgbus.event.EventProcessingLifecycleListener
 import io.micronaut.context.annotation.Value
 import io.micronaut.test.support.TestPropertyProvider
-import io.opentracing.Span
-import io.opentracing.Tracer
 import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.KafkaAdminClient
 import org.apache.kafka.common.ConsumerGroupState
@@ -19,7 +18,7 @@ import spock.lang.Shared
 import javax.inject.Inject
 import java.util.concurrent.ConcurrentLinkedQueue
 
-class BaseKafkaFunctionalTest extends BasePersistenceFunctionalTest implements TestPropertyProvider {
+class BaseKafkaFunctionalTest extends BaseFunctionalTest implements TestPropertyProvider {
 
     static Logger LOG = LoggerFactory.getLogger(BaseKafkaFunctionalTest)
 
@@ -116,124 +115,70 @@ class BaseKafkaFunctionalTest extends BasePersistenceFunctionalTest implements T
 
     static class TestEventListener implements EventProcessingLifecycleListener {
         private PreDispatchLambda preDispatchLambda = null
-        PostCompletionLambda postCompletionLambda = null
-        Tracer tracer = null
 
         class Result {
-            public String topic
             public boolean success
+            public boolean poisonEvent
             public EventHeaders eventHeaders
             public Object data
-            public Span activeSpan
-            public boolean preDispatch
-            public boolean isPoisonEvent
 
-            Result(String topic, boolean success, EventHeaders eventHeaders, Object result, Span activeSpan, boolean preDispatch, boolean isPoisonEvent) {
-                this.topic = topic
+            Result(boolean success, boolean poisonEvent, EventHeaders eventHeaders, Object result) {
                 this.success = success
+                this.poisonEvent = poisonEvent
                 this.eventHeaders = eventHeaders
                 this.data = result
-                this.activeSpan = activeSpan
-                this.preDispatch = preDispatch
-                this.isPoisonEvent = isPoisonEvent
             }
         }
 
-        class ConsumerStatus {
-            String consumerName
-            boolean paused
-
-            ConsumerStatus(String consumerName, boolean paused) {
-                this.consumerName = consumerName
-                this.paused = paused
-            }
-        }
-
-        private ConcurrentLinkedQueue<Result> consumerEvents = new ConcurrentLinkedQueue<>()
-        private ConcurrentLinkedQueue<Result> producerEvents = new ConcurrentLinkedQueue<>()
-        private ConcurrentLinkedQueue<ConsumerStatus> consumerStatusEvents = new ConcurrentLinkedQueue<>()
-
-        void reset() {
-            consumerEvents.clear()
-            producerEvents.clear()
-            consumerStatusEvents.clear()
-            preDispatchLambda = null
-            postCompletionLambda = null
-        }
+        private ConcurrentLinkedQueue<Result> results = new ConcurrentLinkedQueue<>()
 
         void verifyEvents(Closure closure) {
             try {
-                closure(consumerEvents, producerEvents, consumerStatusEvents)
+                closure(results)
             }
             catch(Throwable t) {
                 int idx = 1
                 String events = ""
-                consumerEvents.forEach {
-                    EventHeaders headers = it.eventHeaders
-                    events += "\nevent[${idx++}]: ${headers} [ success: $it.success, preDispatch: $it.preDispatch], activeSpan: ${it.activeSpan != null}"
-                }
-                LOG.error("Test ConsumerEvents: $events")
-
-                events = ""
-                producerEvents.eventHeaders.forEach {
+                results.eventHeaders.forEach {
                     events += "\nevent[${idx++}]: ${it}"
                 }
-                LOG.error("Test ProducerEvents: $events")
+                LOG.info("Test Events: $events")
                 throw t
             }
         }
 
         @Override
-        boolean onPreDispatchConsumerEvent(@NotNull String topic, @NotNull EventHeaders eventHeaders, @NotNull byte[] data, boolean isPoisonEvent) {
-            LOG.info("Received onPreDispatch(topic: $topic): "+eventHeaders)
-            consumerEvents.add(new Result(topic, false, eventHeaders, data, tracer.activeSpan(), true, isPoisonEvent))
+        boolean onPreDispatchConsumerEvent(@NotNull EventHeaders eventHeaders, @NotNull byte[] data, boolean isPoisonEvent) {
+            logger.info("Received onPreDispatch: "+eventHeaders)
             if (preDispatchLambda)
-                return preDispatchLambda.onPreDispatchConsumerEvent(topic, eventHeaders, data, isPoisonEvent)
+                return preDispatchLambda.onPreDispatchConsumerEvent(eventHeaders, data, isPoisonEvent)
             return true
         }
 
         @Override
-        void onPostCompletionConsumerEvent(@NotNull String topic, boolean success, @NotNull EventHeaders eventHeaders, @Nullable Object result, boolean isPoisonEvent, @Nullable Throwable error) {
-            LOG.info("Received onPostCompletion(topic: $topic): "+eventHeaders)
-            consumerEvents.add(new Result(topic, success, eventHeaders, result, tracer.activeSpan(), false, isPoisonEvent))
-            if (postCompletionLambda)
-                postCompletionLambda.onPostCompletionConsumerEvent(topic, success, eventHeaders, result, isPoisonEvent, error)
+        void onPostCompletionConsumerEvent(boolean success, @NotNull EventHeaders eventHeaders, @Nullable Object result, boolean isPoisonEvent, @Nullable Throwable error) {
+            logger.info("Received onPostCompletion: "+eventHeaders)
+            results.add(new Result(success, isPoisonEvent, eventHeaders, result))
         }
 
         @Override
-        void onConsumerDeadEventPreCompletion(@NotNull String topic, @NotNull EventHeaders eventHeaders, @NotNull byte[] data) {
-            LOG.info("Received onConsumerDeadEventPreCompletion(topic: $topic): "+eventHeaders)
-            consumerEvents.add(new Result(topic, false, eventHeaders, null, tracer.activeSpan(), true, false))
+        void onConsumerDeadEventPreCompletion(@NotNull EventHeaders eventHeaders, @NotNull byte[] data) {
+            logger.info("Received onConsumerDeadEventPreCompletion: "+eventHeaders)
         }
 
         @Override
-        void onConsumerDeadEventPostCompletion(@NotNull String topic, boolean success, @NotNull EventHeaders eventHeaders, @Nullable Throwable error) {
-            LOG.info("Received onConsumerDeadEventPostCompletion(topic: $topic): "+eventHeaders)
-            consumerEvents.add(new Result(topic, success, eventHeaders, null, tracer.activeSpan(), false, false))
+        void onConsumerDeadEventPostCompletion(boolean success, @NotNull EventHeaders eventHeaders, @Nullable Throwable error) {
+            logger.info("Received onConsumerDeadEventPostCompletion: "+eventHeaders)
         }
 
         @Override
-        void onSuccessfulProducerSendEvent(@NotNull String topic, @NotNull EventHeaders eventHeaders, @NotNull Object message, @NotNull Object partitionKey) {
-            LOG.info("Received onSuccessfulProducerSendEvent(topic: $topic): "+eventHeaders)
-            producerEvents.add(new Result(topic, true, eventHeaders, message, tracer.activeSpan(), false, false))
+        void onSuccessfulProducerSendEvent(@NotNull EventHeaders eventHeaders, @NotNull Object message, @NotNull Object partitionKey) {
+            logger.info("Received onSuccessfulProducerSendEvent: "+eventHeaders)
         }
 
         @Override
-        void onFailedProducerSendEvent(@NotNull String topic, @NotNull EventHeaders eventHeaders, @NotNull Object message, @NotNull Object partitionKey) {
-            LOG.info("Received onFailedProducerSendEvent(topic: $topic): "+eventHeaders)
-            producerEvents.add(new Result(topic, false, eventHeaders, message, tracer.activeSpan(), false, false))
-        }
-
-        @Override
-        void onConsumerPause(@NotNull String consumerName) {
-            LOG.info("Received onConsumerPause for consumer "+consumerName)
-            consumerStatusEvents.add(new ConsumerStatus(consumerName, true))
-        }
-
-        @Override
-        void onConsumerResume(@NotNull String consumerName) {
-            LOG.info("Received onConsumerResume for consumer "+consumerName)
-            consumerStatusEvents.add(new ConsumerStatus(consumerName, false))
+        void onFailedProducerSendEvent(@NotNull EventHeaders eventHeaders, @NotNull Object message, @NotNull Object partitionKey) {
+            logger.info("Received onFailedProducerSendEvent: "+eventHeaders)
         }
     }
 }
