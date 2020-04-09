@@ -8,6 +8,7 @@ import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
 import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
+import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE
 import groovy.json.JsonOutput
 import io.micronaut.http.HttpRequest
@@ -32,6 +33,7 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
         def listItemRequest =
             [
                 "item_type": ItemType.TCIN,
+                "channel": LIST_CHANNEL.WEB,
                 "tcin"     : "53692059",
                 "location_id" : 1375L
             ]
@@ -79,6 +81,7 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
         def listItemRequest =
             [
                 "item_type": ItemType.TCIN,
+                "channel": LIST_CHANNEL.WEB,
                 "tcin"     : "53692059"
             ]
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
