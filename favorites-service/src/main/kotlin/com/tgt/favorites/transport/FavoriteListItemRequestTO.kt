@@ -12,8 +12,7 @@ class FavoriteListItemRequestTO(
     val tcin: String?,
     val itemTitle: String?,
     val promotionId: String?,
-    val itemNote: String? = null,
-    val requestedQuantity: Int? = 1
+    val itemNote: String? = null
 ) {
     init {
         this.validate()
@@ -50,7 +49,6 @@ class FavoriteListItemRequestTO(
             tcin = this.tcin,
             itemTitle = this.itemTitle,
             itemNote = this.itemNote,
-            requestedQuantity = this.requestedQuantity,
             metadata = FavoriteListItemMetaDataTO.getFavoriteListItemMetadataMap(itemType, promotionId)
         )
     }
