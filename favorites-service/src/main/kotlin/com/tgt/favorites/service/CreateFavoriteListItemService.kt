@@ -1,9 +1,9 @@
 package com.tgt.favorites.service
 
 import com.tgt.favorites.transport.FavoriteListItemRequestTO
+import com.tgt.favorites.transport.FavoriteListItemResponseTO
 import com.tgt.lists.lib.api.service.CreateListItemService
 import com.tgt.lists.lib.api.service.CreateListService
-import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.ListRequestTO
 import io.micronaut.context.annotation.Value
 import reactor.core.publisher.Mono
@@ -22,11 +22,12 @@ class CreateFavoriteListItemService(
         guestId: String,
         locationId: Long,
         favoriteListItemRequestTO: FavoriteListItemRequestTO
-    ): Mono<ListItemResponseTO> {
+    ): Mono<FavoriteListItemResponseTO> {
         return getDefaultFavoriteListService.getDefaultList(guestId, locationId)
             .switchIfEmpty {
                 createListService.createList(guestId, ListRequestTO(favoriteListItemRequestTO.channel, defaultListTitle, locationId, defaultList = true))
             }
             .flatMap { createListItemService.createListItem(guestId, it.listId!!, locationId, favoriteListItemRequestTO.toListItemRequestTO()) }
+            .map { FavoriteListItemResponseTO.toFavoriteListItemResponseTO(it) }
     }
 }

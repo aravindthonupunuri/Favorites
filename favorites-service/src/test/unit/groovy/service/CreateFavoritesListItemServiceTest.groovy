@@ -3,6 +3,7 @@ package service
 import com.tgt.favorites.service.CreateFavoriteListItemService
 import com.tgt.favorites.service.GetDefaultFavoriteListService
 import com.tgt.favorites.transport.FavoriteListItemRequestTO
+import com.tgt.favorites.transport.FavoriteListItemResponseTO
 import com.tgt.lists.cart.CartClient
 import com.tgt.lists.lib.api.domain.ContextContainerManager
 import com.tgt.lists.lib.api.domain.GuestPreferenceSortOrderManager
@@ -53,7 +54,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
         ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
 
         when:
-        ListItemResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
+        FavoriteListItemResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
 
         then:
 
@@ -79,7 +80,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
         ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
 
         when:
-        ListItemResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
+        FavoriteListItemResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
 
         then:
 

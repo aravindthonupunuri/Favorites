@@ -253,9 +253,9 @@ class ListController(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
         @Valid @Body favoriteListItemRequestTO: FavoriteListItemRequestTO
-    ): Mono<FavouritesListItemResponseTO> {
+    ): Mono<FavoriteListItemResponseTO> {
         return createListItemService.createListItem(guestId, listId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO.toListItemRequestTO())
-            .map { toFavouritesListItemResponse(it) }
+            .map { FavoriteListItemResponseTO.toFavoriteListItemResponseTO(it) }
     }
 
     /**
@@ -269,9 +269,8 @@ class ListController(
     fun createFavoriteListItem(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @Valid @Body favoriteListItemRequestTO: FavoriteListItemRequestTO
-    ): Mono<FavouritesListItemResponseTO> {
+    ): Mono<FavoriteListItemResponseTO> {
         return createFavoriteListItemService.createFavoriteItem(guestId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO)
-            .map { toFavouritesListItemResponse(it) }
     }
 
     /**
@@ -307,8 +306,8 @@ class ListController(
         @PathVariable("list_id") listId: UUID,
         @PathVariable("list_item_id") listItemId: UUID,
         @Valid @Body listItemUpdateRequestTO: ListItemUpdateRequestTO
-    ): Mono<FavouritesListItemResponseTO> {
+    ): Mono<FavoriteListItemResponseTO> {
         return updateListItemService.updateListItem(guestId, FavoriteConstants.LOCATION_ID, listId, listItemId, listItemUpdateRequestTO)
-            .map { toFavouritesListItemResponse(it) }
+            .map { FavoriteListItemResponseTO.toFavoriteListItemResponseTO(it) }
     }
 }
