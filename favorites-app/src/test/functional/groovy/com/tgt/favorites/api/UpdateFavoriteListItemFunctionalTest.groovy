@@ -4,7 +4,7 @@ import com.tgt.favorites.transport.FavoriteListItemResponseTO
 import com.tgt.favorites.util.BaseKafkaFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
-import com.tgt.favorites.api.util.FavoriteConstants
+import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE

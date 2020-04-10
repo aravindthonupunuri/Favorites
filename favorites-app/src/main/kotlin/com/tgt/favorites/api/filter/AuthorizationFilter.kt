@@ -1,6 +1,6 @@
 package com.tgt.favorites.api.filter
 
-import com.tgt.favorites.api.util.FavoriteConstants
+import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.lists.lib.api.domain.ListPermissionManager
 import com.tgt.lists.lib.api.exception.NotAuthorizedException
 import com.tgt.lists.lib.api.util.AppErrorCodes

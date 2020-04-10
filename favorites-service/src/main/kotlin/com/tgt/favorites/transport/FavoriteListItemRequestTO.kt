@@ -12,6 +12,7 @@ class FavoriteListItemRequestTO(
     val itemNote: String? = null
 ) {
     fun toListItemRequestTO(): ListItemRequestTO {
-        return ListItemRequestTO(itemType = this.itemType, channel = this.channel, itemRefId = this.tcin, tcin = this.tcin, itemNote = this.itemNote, itemTitle = null)
+        return ListItemRequestTO(itemType = this.itemType, channel = this.channel,
+            itemRefId = this.tcin, tcin = this.tcin, itemNote = this.itemNote, itemTitle = null)
     }
 }

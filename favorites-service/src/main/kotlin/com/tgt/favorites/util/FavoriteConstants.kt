@@ -1,4 +1,4 @@
-package com.tgt.favorites.api.util
+package com.tgt.favorites.util
 
 object FavoriteConstants {
     const val PROFILE_ID = "profile_id"

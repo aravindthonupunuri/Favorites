@@ -1,6 +1,6 @@
 package com.tgt.favorites.api
 
-import com.tgt.favorites.api.util.FavoriteConstants
+import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.favorites.transport.FavoriteGetAllListResponseTO
 import com.tgt.favorites.util.BaseFunctionalTest
 import com.tgt.lists.cart.transport.CartContentsResponse

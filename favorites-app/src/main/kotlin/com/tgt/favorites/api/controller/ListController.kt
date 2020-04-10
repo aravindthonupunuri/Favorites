@@ -1,6 +1,6 @@
 package com.tgt.favorites.api.controller
 
-import com.tgt.favorites.api.util.FavoriteConstants
+import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.favorites.service.*
 import com.tgt.favorites.transport.*
 import com.tgt.lists.lib.api.exception.BadRequestException
@@ -46,7 +46,7 @@ class ListController(
     @Status(HttpStatus.CREATED)
     fun createList(@Header(FavoriteConstants.PROFILE_ID) guestId: String, @Valid @Body listRequestTO: ListRequestTO): Mono<FavouritesListResponseTO> {
         return createListService.createList(guestId, listRequestTO).map { validate(it) }
-            .map { toFavouritesListResponse(it) }
+            .map { FavouritesListResponseTO(it) }
     }
 
     /**
@@ -176,7 +176,7 @@ class ListController(
         @Valid @Body listUpdateRequestTO: ListUpdateRequestTO
     ): Mono<FavouritesListResponseTO> {
         return updateListService.updateList(guestId, listId, listUpdateRequestTO)
-            .map { toFavouritesListResponse(it) }
+            .map { FavouritesListResponseTO(it) }
     }
 
     /**
