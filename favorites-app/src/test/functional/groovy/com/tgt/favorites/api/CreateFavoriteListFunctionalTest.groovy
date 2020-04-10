@@ -65,12 +65,12 @@ class CreateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
             [
                 "channel": LIST_CHANNEL.WEB,
                 "list_title": "list1",
-                (TestUtilConstants.LIST_TYPE) : "SHOPPING",
+                (TestUtilConstants.LIST_TYPE): "SHOPPING",
                 "short_description": "my favorite list",
                 "location_id"            : 1375L
             ]
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(listId, guestId,
             listChannel, CartType.LIST, listTitle, "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
@@ -100,10 +100,12 @@ class CreateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
             [
                 "channel": LIST_CHANNEL.WEB,
                 "list_title": "list1",
-                "short_description": "my favorite list"
+                (TestUtilConstants.LIST_TYPE) : "SHOPPING",
+                "short_description": "my favorite list",
+                "location_id"            : 1375L
             ]
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(UUID.randomUUID(), guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
@@ -126,7 +128,7 @@ class CreateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
         actual.channel == LIST_CHANNEL.valueOf(cartResponse.cartChannel)
         actual.listTitle == cartResponse.tenantCartName
         actual.shortDescription == cartResponse.tenantCartDescription
-        actual.listType == listMetaData.listType
+        actual.listType == "FAVORITES"
         actual.defaultList == listMetaData.defaultList
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))},{ headers -> checkHeaders(headers) }) >> [status: 200, body: cartLists]

@@ -49,20 +49,20 @@ class GetFavoritesTcinFunctionalTest extends BaseFunctionalTest  {
         UUID cartItemId3 = UUID.randomUUID()
         UUID cartItemId4 = UUID.randomUUID()
 
-        ListMetaDataTO metadata1 = new ListMetaDataTO(true, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata1 = new ListMetaDataTO(true, LIST_STATUS.PENDING)
         CartResponse cartResponse1 = cartDataProvider.getCartResponse(cartId1, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list1", "1st list", null, cartDataProvider.getMetaData(metadata1, new UserMetaDataTO()))
 
-        ListMetaDataTO metadata2 = new ListMetaDataTO(false, "FAVORITES", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata2 = new ListMetaDataTO(false, LIST_STATUS.PENDING)
         CartResponse cartResponse2 = cartDataProvider.getCartResponse(cartId2, guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list2", "2nd list", null, cartDataProvider.getMetaData(metadata2, new UserMetaDataTO()))
 
         List<CartResponse> cartResponseList = [cartResponse1, cartResponse2]
 
-        CartItemResponse cartItemResponse1 = cartDataProvider.getCartItemResponse(cartId1, cartItemId1, "1234", "item 1")
-        CartItemResponse cartItemResponse2 = cartDataProvider.getCartItemResponse(cartId1, cartItemId2, "5678", "item 2")
-        CartItemResponse cartItemResponse3 = cartDataProvider.getCartItemResponse(cartId2, cartItemId3, "1234", "item 3")
-        CartItemResponse cartItemResponse4 = cartDataProvider.getCartItemResponse(cartId2, cartItemId4, "5678", "item 4")
+        CartItemResponse cartItemResponse1 = cartDataProvider.getCartItemResponse(cartId1, cartItemId1, "19487487", "1234", "item 1")
+        CartItemResponse cartItemResponse2 = cartDataProvider.getCartItemResponse(cartId1, cartItemId2, "19487487", "5678", "item 2")
+        CartItemResponse cartItemResponse3 = cartDataProvider.getCartItemResponse(cartId2, cartItemId3, "19487487", "1234", "item 3")
+        CartItemResponse cartItemResponse4 = cartDataProvider.getCartItemResponse(cartId2, cartItemId4, "19487487", "5678", "item 4")
 
         ListItemDetailsTO listItemDetails1TO = new ListItemDetailsTO(cartId1, "My list1", cartItemId1)
         ListItemDetailsTO listItemDetails2TO = new ListItemDetailsTO(cartId1, "My list1", cartItemId2)

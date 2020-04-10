@@ -1,5 +1,6 @@
 package com.tgt.favorites.util
 
+import com.tgt.favorites.api.util.CartDataProvider
 import com.tgt.lists.micronaut.test.MockServer
 import com.tgt.lists.micronaut.test.MockServerDelegate
 import com.tgt.lists.msgbus.ListsMessageBusProducer
@@ -9,7 +10,6 @@ import com.tgt.lists.msgbus.metrics.MetricsPublisher
 import com.tgt.lists.msgbus.producer.MsgbusKafkaProducerClient
 import com.tgt.lists.msgbus.tracing.EventTracer
 import com.tgt.lists.msgbus.tracing.ZipkinTracingMapper
-import com.tgt.favorites.api.util.CartDataProvider
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.MockClock
 import io.micrometer.core.instrument.simple.SimpleConfig

@@ -8,5 +8,5 @@ fun toFavouritesListResponse(listResponseTO: ListResponseTO): FavouritesListResp
 }
 
 fun toFavouritesListItemResponse(listItemResponseTO: ListItemResponseTO): FavouritesListItemResponseTO {
-    return FavouritesListItemResponseTO(listItemId = listItemResponseTO.listItemId, itemType = listItemResponseTO.itemType, tcin = listItemResponseTO.tcin, itemTitle = listItemResponseTO.itemTitle, itemNote = listItemResponseTO.itemNote, addedTs = listItemResponseTO.addedTs, lastModifiedTs = listItemResponseTO.lastModifiedTs)
+    return FavouritesListItemResponseTO(listItemId = listItemResponseTO.listItemId, itemType = listItemResponseTO.itemType, channel = listItemResponseTO.channel, tcin = listItemResponseTO.tcin, itemTitle = listItemResponseTO.itemTitle, itemNote = listItemResponseTO.itemNote, addedTs = listItemResponseTO.addedTs, lastModifiedTs = listItemResponseTO.lastModifiedTs)
 }

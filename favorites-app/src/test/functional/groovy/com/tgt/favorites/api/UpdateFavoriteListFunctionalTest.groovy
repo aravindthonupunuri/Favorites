@@ -54,7 +54,7 @@ class UpdateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
                 "short_description": "My first updated list"
             ]
 
-        ListMetaDataTO metadata = new ListMetaDataTO(true, "SHOPPING", LIST_STATUS.PENDING)
+        ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(listId, guestId, cartChannel, CartType.LIST,
             "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
@@ -81,7 +81,7 @@ class UpdateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
         actual.channel == LIST_CHANNEL.valueOf(cartResponse.cartChannel)
         actual.listTitle == updatedCartResponse.tenantCartName
         actual.shortDescription == updatedCartResponse.tenantCartDescription
-        actual.listType == listMetaData.listType
+        actual.listType == "FAVORITES"
         actual.defaultList == listMetaData.defaultList
 
         1 * mockServer.get({ path -> path.contains(getCartContentURI(listId))}, _) >> [status: 200, body: cartContentsResponse] // Authorization filter call

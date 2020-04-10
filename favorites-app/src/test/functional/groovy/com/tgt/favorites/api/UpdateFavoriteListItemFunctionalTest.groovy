@@ -3,12 +3,12 @@ package com.tgt.favorites.api
 import com.tgt.favorites.transport.FavouritesListItemResponseTO
 import com.tgt.favorites.util.BaseKafkaFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
-import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
 import com.tgt.favorites.api.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE
+import com.tgt.shoppinglist.util.HelperKt
 import groovy.json.JsonOutput
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
@@ -31,17 +31,19 @@ class UpdateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
                 "item_title":"updated item title",
                 "item_note":"updated item note"
             ]
+        def tcin1 = "1234"
+        def tenantRefId1 = HelperKt.populateItemRefId(ItemType.TCIN, tcin1, null, null)
 
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(listId), guestId, null)
         def cartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, null)
 
         ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
-        def cartItemResponse = cartDataProvider.getCartItemResponse(UUID.fromString(listId), UUID.fromString(listItemId), "1234",
+        def cartItemResponse = cartDataProvider.getCartItemResponse(UUID.fromString(listId), UUID.fromString(listItemId), tenantRefId1, "1234",
             "itemTitle", 1, "itemNote",10, 10, "Stand Alone", "READY",
             "some-url", "some-image",
             cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()), null, null, null)
 
-        def updatedCartItemResponse = cartDataProvider.getCartItemResponse(UUID.fromString(listId), UUID.fromString(listItemId), "1234",
+        def updatedCartItemResponse = cartDataProvider.getCartItemResponse(UUID.fromString(listId), UUID.fromString(listItemId), tenantRefId1, "1234",
             "updated item title", 1, "updated item note",10, 10, "Stand Alone", "READY",
             "some-url", "some-image",
             cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()), null, null, null)
@@ -50,10 +52,10 @@ class UpdateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
         def updatedListItemMetaData = cartDataProvider.getListItemMetaDataFromCart(updatedCartItemResponse.metadata)
 
         when:
-        HttpResponse<FavouritesListItemResponseTO> listResponse = client.toBlocking().exchange(
-            HttpRequest.PUT(uri, JsonOutput.toJson(listItemUpdateRequest)).headers(getHeaders(guestId)), ListItemResponseTO)
-        def actualStatus = listResponse.status()
-        def actual = listResponse.body()
+        HttpResponse<FavouritesListItemResponseTO> listItemResponse = client.toBlocking().exchange(
+            HttpRequest.PUT(uri, JsonOutput.toJson(listItemUpdateRequest)).headers(getHeaders(guestId)), FavouritesListItemResponseTO)
+        def actualStatus = listItemResponse.status()
+        def actual = listItemResponse.body()
 
         then:
         actualStatus == HttpStatus.OK
