@@ -24,12 +24,13 @@ class ListController(
     private val deleteListService: DeleteListService,
     private val getFavoriteTcinService: GetFavoritesTcinService,
     private val getAllFavoriteListService: GetAllFavoriteListService,
-    private val createListItemService: CreateListItemService,
+    private val createFavoriteListItemService: CreateFavoriteListItemService,
+    private val createFavoriteDefaultListItemService: CreateFavoriteDefaultListItemService,
     private val deleteListItemService: DeleteListItemService,
     private val getFavoriteListService: GetFavoriteListService,
     private val getDefaultFavoriteListService: GetDefaultFavoriteListService,
     private val getFavoriteListItemService: GetFavoriteListItemService,
-    private val updateListItemService: UpdateListItemService
+    private val updateFavoriteListItemService: UpdateFavoriteListItemService
 ) {
 
     /**
@@ -252,9 +253,23 @@ class ListController(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
         @Valid @Body favoriteListItemRequestTO: FavoriteListItemRequestTO
-    ): Mono<FavouritesListItemResponseTO> {
-        return createListItemService.createListItem(guestId, listId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO.toListItemRequestTO())
-            .map { toFavouritesListItemResponse(it) }
+    ): Mono<FavoriteListItemResponseTO> {
+        return createFavoriteListItemService.createListItem(guestId, listId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO)
+    }
+
+    /**
+     * Create an item to be added to the guest's default list.
+     *
+     * @return list item response transfer object
+     *
+     */
+    @Post("/list_items")
+    @Status(HttpStatus.CREATED)
+    fun createFavoriteListItem(
+        @Header(FavoriteConstants.PROFILE_ID) guestId: String,
+        @Valid @Body favoriteListItemRequestTO: FavoriteListItemRequestTO
+    ): Mono<FavoriteListItemResponseTO> {
+        return createFavoriteDefaultListItemService.createFavoriteItem(guestId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO)
     }
 
     /**
@@ -290,8 +305,7 @@ class ListController(
         @PathVariable("list_id") listId: UUID,
         @PathVariable("list_item_id") listItemId: UUID,
         @Valid @Body listItemUpdateRequestTO: ListItemUpdateRequestTO
-    ): Mono<FavouritesListItemResponseTO> {
-        return updateListItemService.updateListItem(guestId, FavoriteConstants.LOCATION_ID, listId, listItemId, listItemUpdateRequestTO)
-            .map { toFavouritesListItemResponse(it) }
+    ): Mono<FavoriteListItemResponseTO> {
+        return updateFavoriteListItemService.updateFavoriteListItem(guestId, FavoriteConstants.LOCATION_ID, listId, listItemId, listItemUpdateRequestTO)
     }
 }

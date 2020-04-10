@@ -114,6 +114,7 @@ list:
   max-completed-items-count: 100
   abandon-after-duration-in-days: 730 # It is two years duration
   get-favorites-max-tcin-count: 28
+  default-list-title: "My Favorites"
   features.two-carts: false
   features.dedupe: false
   features.sort-position: false
