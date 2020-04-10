@@ -1,6 +1,6 @@
 package com.tgt.favorites.api
 
-import com.tgt.favorites.api.util.FavoriteConstants
+import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.favorites.util.BaseKafkaFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemDeleteResponseTO
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO

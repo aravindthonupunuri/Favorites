@@ -2,7 +2,7 @@ package com.tgt.favorites.filter
 
 import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.ListGetAllResponseTO
-import com.tgt.favorites.api.util.FavoriteConstants
+import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import com.tgt.lists.msgbus.ListsMessageBusProducer
 import com.tgt.lists.msgbus.event.EventLifecycleNotificationProvider

@@ -1,6 +1,7 @@
 package com.tgt.favorites.transport
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import java.util.*
 import javax.validation.constraints.NotEmpty
@@ -16,4 +17,10 @@ data class FavouritesListResponseTO(
     val defaultList: Boolean? = false,
     val addedTs: String?,
     val lastModifiedTs: String?
-)
+) {
+    constructor(listResponseTO: ListResponseTO) : this(
+        listId = listResponseTO.listId, channel = listResponseTO.channel, listType = listResponseTO.listType,
+        listTitle = listResponseTO.listTitle, shortDescription = listResponseTO.shortDescription,
+        defaultList = listResponseTO.defaultList, addedTs = listResponseTO.addedTs,
+        lastModifiedTs = listResponseTO.lastModifiedTs)
+}

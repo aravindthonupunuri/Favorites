@@ -1,6 +1,6 @@
 package com.tgt.favorites.api.filter
 
-import com.tgt.favorites.api.util.FavoriteConstants
+import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.lists.cart.CartClient
 import com.tgt.lists.cart.transport.CartContentsFieldGroup
 import com.tgt.lists.cart.types.CartContentsFieldGroups

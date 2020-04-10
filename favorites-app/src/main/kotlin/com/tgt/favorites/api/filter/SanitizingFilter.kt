@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.node.ValueNode
-import com.tgt.favorites.api.util.FavoriteConstants
+import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.lists.lib.api.exception.BadRequestException
 import com.tgt.lists.lib.api.util.AppErrorCodes.INPUT_SANITIZATION_ERROR_CODE
 import io.micronaut.context.annotation.Value
