@@ -24,13 +24,13 @@ class ListController(
     private val deleteListService: DeleteListService,
     private val getFavoriteTcinService: GetFavoritesTcinService,
     private val getAllFavoriteListService: GetAllFavoriteListService,
-    private val createListItemService: CreateListItemService,
     private val createFavoriteListItemService: CreateFavoriteListItemService,
+    private val createFavoriteDefaultListItemService: CreateFavoriteDefaultListItemService,
     private val deleteListItemService: DeleteListItemService,
     private val getFavoriteListService: GetFavoriteListService,
     private val getDefaultFavoriteListService: GetDefaultFavoriteListService,
     private val getFavoriteListItemService: GetFavoriteListItemService,
-    private val updateListItemService: UpdateListItemService
+    private val updateFavoriteListItemService: UpdateFavoriteListItemService
 ) {
 
     /**
@@ -254,8 +254,7 @@ class ListController(
         @PathVariable("list_id") listId: UUID,
         @Valid @Body favoriteListItemRequestTO: FavoriteListItemRequestTO
     ): Mono<FavoriteListItemResponseTO> {
-        return createListItemService.createListItem(guestId, listId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO.toListItemRequestTO())
-            .map { FavoriteListItemResponseTO.toFavoriteListItemResponseTO(it) }
+        return createFavoriteListItemService.createListItem(guestId, listId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO)
     }
 
     /**
@@ -270,7 +269,7 @@ class ListController(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @Valid @Body favoriteListItemRequestTO: FavoriteListItemRequestTO
     ): Mono<FavoriteListItemResponseTO> {
-        return createFavoriteListItemService.createFavoriteItem(guestId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO)
+        return createFavoriteDefaultListItemService.createFavoriteItem(guestId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO)
     }
 
     /**
@@ -307,7 +306,6 @@ class ListController(
         @PathVariable("list_item_id") listItemId: UUID,
         @Valid @Body listItemUpdateRequestTO: ListItemUpdateRequestTO
     ): Mono<FavoriteListItemResponseTO> {
-        return updateListItemService.updateListItem(guestId, FavoriteConstants.LOCATION_ID, listId, listItemId, listItemUpdateRequestTO)
-            .map { FavoriteListItemResponseTO.toFavoriteListItemResponseTO(it) }
+        return updateFavoriteListItemService.updateFavoriteListItem(guestId, FavoriteConstants.LOCATION_ID, listId, listItemId, listItemUpdateRequestTO)
     }
 }

@@ -1,6 +1,6 @@
 package service
 
-import com.tgt.favorites.service.CreateFavoriteListItemService
+import com.tgt.favorites.service.CreateFavoriteDefaultListItemService
 import com.tgt.favorites.service.GetDefaultFavoriteListService
 import com.tgt.favorites.transport.FavoriteListItemRequestTO
 import com.tgt.favorites.transport.FavoriteListItemResponseTO
@@ -20,7 +20,7 @@ import spock.lang.Specification
 
 class CreateFavoritesListItemServiceTest extends Specification {
 
-    CreateFavoriteListItemService createFavoriteListItemService
+    CreateFavoriteDefaultListItemService createFavoriteListItemService
     GetDefaultFavoriteListService getDefaultFavoriteListService
     CreateListService createListService
     CreateListItemService createListItemService
@@ -37,7 +37,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
         guestPreferenceRepository = Mock(GuestPreferenceRepository)
         guestPreferenceSortOrderManager = new GuestPreferenceSortOrderManager(guestPreferenceRepository)
         contextContainerManager = new ContextContainerManager()
-        createFavoriteListItemService = new CreateFavoriteListItemService(getDefaultFavoriteListService, createListService, createListItemService, "My Favorites")
+        createFavoriteListItemService = new CreateFavoriteDefaultListItemService(getDefaultFavoriteListService, createListService, createListItemService, "My Favorites")
     }
 
     def "test createFavoriteItem() integrity"() {
