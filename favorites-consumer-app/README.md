@@ -1,1 +1,1 @@
-# shopping-list-consumer-app
+# favorites-consumer-app

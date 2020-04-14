@@ -1,1 +1,1 @@
-# shopping-list-app
+# favorites-app
