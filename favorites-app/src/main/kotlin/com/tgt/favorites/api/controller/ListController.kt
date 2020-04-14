@@ -3,6 +3,7 @@ package com.tgt.favorites.api.controller
 import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.favorites.service.*
 import com.tgt.favorites.transport.*
+import com.tgt.favorites.transport.FavoriteItemSortFieldGroup
 import com.tgt.lists.lib.api.exception.BadRequestException
 import com.tgt.lists.lib.api.service.*
 import com.tgt.lists.lib.api.transport.*
@@ -12,6 +13,9 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.*
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import reactor.core.publisher.Mono
 import reactor.core.publisher.switchIfEmpty
 import java.util.*
@@ -44,8 +48,8 @@ class ListController(
      */
     @Post("/")
     @Status(HttpStatus.CREATED)
-    fun createList(@Header(FavoriteConstants.PROFILE_ID) guestId: String, @Valid @Body listRequestTO: ListRequestTO): Mono<FavouritesListResponseTO> {
-        return createListService.createList(guestId, listRequestTO).map { validate(it) }
+    fun createList(@Header(FavoriteConstants.PROFILE_ID) guestId: String, @Valid @Body listRequestTO: FavoriteListRequestTO): Mono<FavouritesListResponseTO> {
+        return createListService.createList(guestId, listRequestTO.toListRequestTO()).map { validate(it) }
             .map { FavouritesListResponseTO(it) }
     }
 
@@ -61,20 +65,19 @@ class ListController(
      */
     @Get("/{list_id}")
     @Status(HttpStatus.OK)
+    @ApiResponse(content = [Content(mediaType = "application/json", schema = Schema(implementation = FavouritesListResponseTO::class))])
     fun getList(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
-        @QueryValue("sort_field") sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
+        @QueryValue("sort_field") sortFieldBy: FavoriteItemSortFieldGroup? = FavoriteItemSortFieldGroup.ADDED_DATE,
         @QueryValue("sort_order") sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
         @QueryValue("page", defaultValue = "0") page: Int?,
-        @QueryValue("location_id") locationId: Long?,
-        @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false
+        @QueryValue("location_id") locationId: Long?
     ): Mono<MutableHttpResponse<ListResponseTO>> {
         if (locationId == null) {
             throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return getFavoriteListService.getList(guestId, locationId, listId, sortFieldBy, sortOrderBy, page!!,
-            allowExpiredItems ?: false)
+        return getFavoriteListService.getList(guestId, locationId, listId, sortFieldBy?.toItemSortFieldGroup(), sortOrderBy, page!!, false)
             .zipWith(Mono.subscriberContext())
             .map {
                 if (it.t2.get<ContextContainer>(CONTEXT_OBJECT).partialResponse) {
@@ -82,8 +85,7 @@ class ListController(
                 } else {
                     HttpResponse.ok(it.t1)
                 }
-            }
-            .subscriberContext {
+            }.subscriberContext {
                 it.put(CONTEXT_OBJECT, ContextContainer())
             }
     }
@@ -100,19 +102,20 @@ class ListController(
      */
     @Get("/default_list")
     @Status(HttpStatus.OK)
+    @ApiResponse(content = [Content(mediaType = "application/json", schema = Schema(implementation = FavouritesListResponseTO::class))])
     fun getDefaultList(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
-        @QueryValue("sort_field") sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
+        @QueryValue("sort_field") sortFieldBy: FavoriteItemSortFieldGroup? = FavoriteItemSortFieldGroup.ADDED_DATE,
         @QueryValue("sort_order") sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
-        @QueryValue("page", defaultValue = "0") page: Int?,
         @QueryValue("location_id") locationId: Long?,
-        @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false
+        @QueryValue("page", defaultValue = "0") page: Int?
     ): Mono<MutableHttpResponse<ListResponseTO>> {
         if (locationId == null) {
             throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return getDefaultFavoriteListService.getDefaultList(guestId, locationId, sortFieldBy, sortOrderBy, page!!,
-            allowExpiredItems ?: false)
+
+        return getDefaultFavoriteListService.getDefaultList(guestId, locationId,
+            sortFieldBy?.toItemSortFieldGroup(), sortOrderBy, page!!, false)
             .zipWith(Mono.subscriberContext())
             .map {
                 if (it.t2.get<ContextContainer>(CONTEXT_OBJECT).partialResponse) {
@@ -134,7 +137,7 @@ class ListController(
      * @return get list of guest favourites response
      *
      */
-    @Get("/guest_favourites")
+    @Get("/guest_favorites")
     @Status(HttpStatus.OK)
     fun getFavoritesOfTcins(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
@@ -157,8 +160,8 @@ class ListController(
     fun deleteList(
         @Header("profile_id") guestId: String,
         @PathVariable("list_id") listId: UUID
-    ): Mono<ListDeleteResponseTO> {
-        return deleteListService.deleteList(guestId, listId)
+    ): Mono<Void> {
+        return deleteListService.deleteList(guestId, listId).then()
     }
 
     /**
@@ -166,7 +169,7 @@ class ListController(
      *
      * @param guestId: guest id
      * @param listId list id
-     * @param listUpdateRequestTO the list request body
+     * @param favoriteListUpdateRequestTO the list request body
      * @return list delete response transfer object
      *
      */
@@ -175,9 +178,9 @@ class ListController(
     fun updateList(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
-        @Valid @Body listUpdateRequestTO: ListUpdateRequestTO
+        @Valid @Body favoriteListUpdateRequestTO: FavoriteListUpdateRequestTO
     ): Mono<FavouritesListResponseTO> {
-        return updateListService.updateList(guestId, listId, listUpdateRequestTO)
+        return updateListService.updateList(guestId, listId, favoriteListUpdateRequestTO.toListUpdateRequestTO())
             .map { FavouritesListResponseTO(it) }
     }
 
@@ -192,6 +195,7 @@ class ListController(
      *
      */
     @Get("/")
+    @ApiResponse(content = [Content(mediaType = "application/json", schema = Schema(implementation = FavoriteGetAllListResponseTO::class))])
     fun getListForUser(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @QueryValue("sort_field") sortFieldBy: ListSortFieldGroup? = ListSortFieldGroup.ADDED_DATE,
@@ -221,6 +225,7 @@ class ListController(
      */
     @Get("/{list_id}/list_items/{list_item_id}")
     @Status(HttpStatus.OK)
+    @ApiResponse(content = [Content(mediaType = "application/json", schema = Schema(implementation = FavoriteListItemGetResponseTO::class))])
     fun getListItem(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @QueryValue("location_id") locationId: Long?,
@@ -288,8 +293,8 @@ class ListController(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
         @PathVariable("list_item_id") listItemId: UUID
-    ): Mono<ListItemDeleteResponseTO> {
-        return deleteListItemService.deleteListItem(guestId, listId, listItemId)
+    ): Mono<Void> {
+        return deleteListItemService.deleteListItem(guestId, listId, listItemId).then()
     }
 
     /**
@@ -306,8 +311,9 @@ class ListController(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
         @PathVariable("list_item_id") listItemId: UUID,
-        @Valid @Body listItemUpdateRequestTO: ListItemUpdateRequestTO
+        @Valid @Body favoriteListItemUpdateRequestTO: FavoriteListItemUpdateRequestTO
     ): Mono<FavoriteListItemResponseTO> {
-        return updateFavoriteListItemService.updateFavoriteListItem(guestId, FavoriteConstants.LOCATION_ID, listId, listItemId, listItemUpdateRequestTO)
+        return updateFavoriteListItemService.updateFavoriteListItem(guestId, FavoriteConstants.LOCATION_ID,
+            listId, listItemId, favoriteListItemUpdateRequestTO.toListItemUpdateRequestTO())
     }
 }

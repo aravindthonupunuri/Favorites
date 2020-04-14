@@ -17,6 +17,7 @@ dependencies {
     implementation "org.owasp.esapi:esapi:2.2.0.0"
     testImplementation 'org.apache.kafka:kafka-clients:2.3.0:test'
     testImplementation 'org.apache.kafka:kafka_2.12:2.3.0:test'
+    testImplementation "com.tgt.swaggerlib:swagger-sync:1.210.1"
     testImplementation project(':favorites-service').sourceSets.test.output
 }
 

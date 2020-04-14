@@ -21,6 +21,7 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.http.uri.UriTemplate
 import io.micronaut.test.annotation.MicronautTest
 import io.micronaut.test.annotation.MockBean
+import spock.lang.Ignore
 import spock.lang.Shared
 import javax.inject.Inject
 import static com.tgt.favorites.util.DataProvider.getCartURI
@@ -39,6 +40,7 @@ class GetFavoritesTcinFunctionalTest extends BaseFunctionalTest  {
         return newMockMsgbusKafkaProducerClient(eventNotificationsProvider)
     }
 
+    @Ignore
     def "test get tcins from favourites lists integration"() {
         given:
         String guestId = "1234"
