@@ -58,7 +58,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
 
         then:
 
-        1 * getDefaultFavoriteListService.getDefaultList(_, _, _, _, _) >> Mono.just(listResponseTO)
+        1 * getDefaultFavoriteListService.getDefaultList(*_) >> Mono.just(listResponseTO)
         1 * createListItemService.createListItem(_, _, _, _) >> Mono.just(listItemResponseTO)
 
         favouriteItemResponsesTO.listItemId == listItemResponseTO.listItemId
@@ -84,7 +84,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
 
         then:
 
-        1 * getDefaultFavoriteListService.getDefaultList(_, _, _, _, _) >> Mono.empty()
+        1 * getDefaultFavoriteListService.getDefaultList(*_) >> Mono.empty()
         1 * createListService.createList(_, _) >> Mono.just(listResponseTO)
         1 * createListItemService.createListItem(_, _, _, _) >> Mono.just(listItemResponseTO)
 

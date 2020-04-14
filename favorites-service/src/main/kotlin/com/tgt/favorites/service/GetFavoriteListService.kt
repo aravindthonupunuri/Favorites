@@ -2,6 +2,7 @@ package com.tgt.favorites.service
 
 import com.tgt.lists.lib.api.service.GetListService
 import com.tgt.lists.lib.api.service.transform.list_items.ListItemsTransformationPipeline
+import com.tgt.lists.lib.api.service.transform.list_items.PaginateListItemsTransformationStep
 import com.tgt.lists.lib.api.service.transform.list_items.SortListItemsTransformationStep
 import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.util.ItemIncludeFields
@@ -23,10 +24,12 @@ class GetFavoriteListService(
         listId: UUID,
         sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
         sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
+        page: Int,
         allowExpiredItems: Boolean
     ): Mono<ListResponseTO> {
         return getListService.getList(guestId, locationId, listId, ListItemsTransformationPipeline()
-            .addStep(SortListItemsTransformationStep(sortFieldBy, sortOrderBy)),
+            .addStep(SortListItemsTransformationStep(sortFieldBy, sortOrderBy))
+            .addStep(PaginateListItemsTransformationStep(page)),
             allowExpiredItems, ItemIncludeFields.PENDING)
     }
 }

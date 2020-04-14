@@ -66,13 +66,14 @@ class ListController(
         @PathVariable("list_id") listId: UUID,
         @QueryValue("sort_field") sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
         @QueryValue("sort_order") sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
+        @QueryValue("page", defaultValue = "0") page: Int?,
         @QueryValue("location_id") locationId: Long?,
         @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false
     ): Mono<MutableHttpResponse<ListResponseTO>> {
         if (locationId == null) {
             throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return getFavoriteListService.getList(guestId, locationId!!, listId, sortFieldBy, sortOrderBy,
+        return getFavoriteListService.getList(guestId, locationId, listId, sortFieldBy, sortOrderBy, page!!,
             allowExpiredItems ?: false)
             .zipWith(Mono.subscriberContext())
             .map {
@@ -103,13 +104,14 @@ class ListController(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @QueryValue("sort_field") sortFieldBy: ItemSortFieldGroup? = ItemSortFieldGroup.ADDED_DATE,
         @QueryValue("sort_order") sortOrderBy: ItemSortOrderGroup? = ItemSortOrderGroup.DESCENDING,
+        @QueryValue("page", defaultValue = "0") page: Int?,
         @QueryValue("location_id") locationId: Long?,
         @QueryValue("allow_expired_items") allowExpiredItems: Boolean? = false
     ): Mono<MutableHttpResponse<ListResponseTO>> {
         if (locationId == null) {
             throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
         }
-        return getDefaultFavoriteListService.getDefaultList(guestId, locationId!!, sortFieldBy, sortOrderBy,
+        return getDefaultFavoriteListService.getDefaultList(guestId, locationId, sortFieldBy, sortOrderBy, page!!,
             allowExpiredItems ?: false)
             .zipWith(Mono.subscriberContext())
             .map {

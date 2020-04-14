@@ -193,7 +193,7 @@ paths:
       x-response_time_sla: 500ms
       x-success_http_code: '200'
       x-expected_tps: '100'
-      summary: Get favorite list by list id. 
+      summary: Get favorite list by list id.
       description: Get favorite list by list id. (this will be a paginated response)
       tags:
         - lists
@@ -234,6 +234,12 @@ paths:
           required: false
           type: "string"
           enum: [ "ASCENDING", "DESCENDING"]
+        - name: page
+          in: query
+          description: page
+          required: false
+          type: integer
+          format: int
       responses:
         '200':
           description: get list response
@@ -396,8 +402,8 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/Error401'
-   
- 
+
+
   '/{list_id}/list_items':
     x-data_classification: PUBLIC
     post:
@@ -449,7 +455,7 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/Error401'
- 
+
 
   '/{list_id}/list_items/{list_item_id}':
     x-data_classification: PUBLIC
@@ -620,7 +626,7 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/Error404'
-  /guest_favorites: 
+  /guest_favorites:
     x-data_classification: PUBLIC
     get:
       x-incident_priority: P4
@@ -664,7 +670,7 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/Error401'
- 
+
 definitions:
   ListItemUpdateRequestTO:
     type: object
@@ -707,8 +713,8 @@ definitions:
         type: string
       last_modified_ts:
         type: string
-      
-        
+
+
   ItemType:
     type: string
     enum:
@@ -751,7 +757,7 @@ definitions:
         type: string
       item_note:
         type: string
-      added_ts: 
+      added_ts:
         type: string
       last_modified_ts:
         type: string
@@ -767,7 +773,7 @@ definitions:
         type: string
       item_note:
         type: string
- 
+
   ListRequestTO:
     type: object
     required:
@@ -808,7 +814,7 @@ definitions:
         type: string
       last_modified_ts:
         type: string
-  
+
   ListUpdateRequestTO:
     type: object
     properties:
@@ -891,13 +897,13 @@ definitions:
   GuestFavoritesResponseTO:
     type: object
     properties:
-      tcin: 
+      tcin:
         type: string
-      list_item_details: 
+      list_item_details:
         type: array
         items:
-         $ref: '#/definitions/ListItemDetailsTO'
-        
+          $ref: '#/definitions/ListItemDetailsTO'
+
   ListItemDetailsTO:
     type: object
     required:
