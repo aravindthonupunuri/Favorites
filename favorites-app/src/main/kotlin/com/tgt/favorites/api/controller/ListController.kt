@@ -4,7 +4,7 @@ import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.favorites.service.*
 import com.tgt.favorites.transport.*
 import com.tgt.favorites.transport.FavoriteItemSortFieldGroup
-import com.tgt.lists.lib.api.exception.BadRequestException
+import com.tgt.lists.common.components.exception.BadRequestException
 import com.tgt.lists.lib.api.service.*
 import com.tgt.lists.lib.api.transport.*
 import com.tgt.lists.lib.api.util.*

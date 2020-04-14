@@ -42,5 +42,8 @@
         <Logger name="com.tgt.lists.api.persistence" level="DEBUG" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Logger name="com.tgt.lists.common.components" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
     </Loggers>
 </Configuration>

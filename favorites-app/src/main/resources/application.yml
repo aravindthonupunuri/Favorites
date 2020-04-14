@@ -124,6 +124,11 @@ list:
 sic:
   batch-size: 50
 
+components:
+  server:
+    authorization-filter:
+      base-uri: /favorites/v1
+
 kafka:
   bootstrap:
     servers: ${kafka-vip}

@@ -68,7 +68,8 @@ allprojects {
         implementation "io.micronaut.configuration:micronaut-hibernate-validator"
         implementation "javax.annotation:javax.annotation-api"
 
-        implementation "com.tgt.lists:lists-lib:1.0.30"
+        implementation "com.tgt.lists:lists-lib:1.0.31"
+        implementation "com.tgt.lists:lists-components:1.128.1"
 
         implementation "com.tgt.lists:lists-cart-client:1.122.5"
         implementation "com.tgt.lists:lists-oauth:1.128.1"

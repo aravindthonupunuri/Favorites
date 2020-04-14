@@ -1,7 +1,7 @@
 package com.tgt.favorites.api
 
 import com.target.platform.connector.micronaut.PlatformPropertySource
-import com.tgt.lists.lib.api.util.TAPEnvironmentLoader
+import com.tgt.lists.common.components.tap.TAPEnvironmentLoader
 import io.micronaut.runtime.Micronaut
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Info
