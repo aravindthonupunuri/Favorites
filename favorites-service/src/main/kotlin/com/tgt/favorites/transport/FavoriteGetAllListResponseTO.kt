@@ -12,6 +12,6 @@ data class FavoriteGetAllListResponseTO(
     val shortDescription: String?,
     val addedTs: String? = null,
     val lastModifiedTs: String? = null,
-    val maxListsCount: Int = -1,
+    val maximumListsCount: Int = -1,
     val totalItemsCount: Int = -1
 )

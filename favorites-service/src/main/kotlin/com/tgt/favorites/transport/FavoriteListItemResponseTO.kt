@@ -35,6 +35,6 @@ data class FavoriteListItemResponseTO(
         @JvmStatic
         fun toFavoriteListItemResponseTO(baseList: ListItemResponseTO): FavoriteListItemResponseTO {
             return FavoriteListItemResponseTO(baseList)
-            }
         }
+    }
 }
