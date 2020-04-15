@@ -114,6 +114,12 @@ cart:
   client:
     refresh-cycle-sec: 999999999
 
+components:
+  server:
+    authorization-filter:
+      enabled: false
+    sanitizing-filter:
+      enabled: false
 list:
   list-type: SHOPPING
   max-count: 50
