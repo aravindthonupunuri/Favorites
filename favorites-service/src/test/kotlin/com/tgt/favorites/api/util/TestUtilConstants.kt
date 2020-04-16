@@ -6,6 +6,5 @@ object TestUtilConstants {
     const val LIST_TYPE = "list_type"
     const val ITEM_TYPE = "item_type"
     const val ITEM_COMPLETED_IND = "item_completed_ind"
-    const val ITEM_EXPIRATION = "item_expiration"
     const val LIST_POSITION = "list_position"
 }

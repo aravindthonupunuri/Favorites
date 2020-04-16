@@ -29,7 +29,6 @@ class GetFavoriteListService(
     ): Mono<ListResponseTO> {
         return getListService.getList(guestId, locationId, listId, ListItemsTransformationPipeline()
             .addStep(SortListItemsTransformationStep(sortFieldBy, sortOrderBy))
-            .addStep(PaginateListItemsTransformationStep(page)),
-            allowExpiredItems, ItemIncludeFields.PENDING)
+            .addStep(PaginateListItemsTransformationStep(page)), ItemIncludeFields.PENDING)
     }
 }

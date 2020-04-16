@@ -37,7 +37,7 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
                 "tcin"     : "53692059",
                 "location_id" : 1375L
             ]
-        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(ItemType.TCIN, LIST_ITEM_STATE.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(listId, guestId, null)
         def cartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, null)
@@ -84,11 +84,11 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
                 "channel": LIST_CHANNEL.WEB,
                 "tcin"     : "53692059"
             ]
-        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(ItemType.TCIN, LIST_ITEM_STATE.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(listId, guestId, null)
 
-        ListItemMetaDataTO itemMetaData = new ListItemMetaDataTO(null, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData = new ListItemMetaDataTO(ItemType.TCIN, LIST_ITEM_STATE.PENDING)
 
         def cartItemResponse1 = cartDataProvider.getCartItemResponse(listId, itemId1, "1234", "53692060",
             "title", 3, "notes1", 0, 0, "Stand Alone", "READY",

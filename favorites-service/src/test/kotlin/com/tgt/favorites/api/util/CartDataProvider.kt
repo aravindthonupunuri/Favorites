@@ -194,7 +194,6 @@ class CartDataProvider {
 
         // Push un-mapped list to cart attributes into cart meta data
         val listItemMetaData = ListItemMetaDataTO(
-            itemExpiration = listItemMetadata.itemExpiration,
             itemType = listItemMetadata.itemType,
             itemState = listItemMetadata.itemState
         )

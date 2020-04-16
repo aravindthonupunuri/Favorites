@@ -39,8 +39,8 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
         ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
-        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
-        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(ItemType.TCIN, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(cartId), guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
@@ -90,7 +90,6 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         pendingItems[0].listPrice == cartItemResponse1.listPrice
         pendingItems[0].images == cartItemResponse1.images
         pendingItems[0].itemType == listItem1MetaData.itemType
-        pendingItems[0].itemExpiration == listItem1MetaData.itemExpiration
 
         pendingItems[1].listItemId == cartItemResponse2.cartItemId
         pendingItems[1].tcin == cartItemResponse2.tcin
@@ -100,7 +99,6 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         pendingItems[1].listPrice == cartItemResponse2.listPrice
         pendingItems[1].images == cartItemResponse2.images
         pendingItems[1].itemType == listItem2MetaData.itemType
-        pendingItems[1].itemExpiration == listItem2MetaData.itemExpiration
 
         2 * mockServer.get({ path -> path.contains(cartUri) }, _) >> [status: 200, body: response] //TODO: check why two calls here
 
@@ -118,8 +116,8 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
         ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
-        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
-        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(ItemType.TCIN, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(cartId), guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
@@ -169,7 +167,6 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         pendingItems[0].listPrice == cartItemResponse3.listPrice
         pendingItems[0].images == cartItemResponse3.images
         pendingItems[0].itemType == listItem3MetaData.itemType
-        pendingItems[0].itemExpiration == listItem3MetaData.itemExpiration
 
         pendingItems[1].listItemId == cartItemResponse4.cartItemId
         pendingItems[1].tcin == cartItemResponse4.tcin
@@ -179,7 +176,6 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         pendingItems[1].listPrice == cartItemResponse4.listPrice
         pendingItems[1].images == cartItemResponse4.images
         pendingItems[1].itemType == listItem4MetaData.itemType
-        pendingItems[1].itemExpiration == listItem4MetaData.itemExpiration
 
         2 * mockServer.get({ path -> path.contains(cartUri) }, _) >> [status: 200, body: response] //TODO: check why two calls here
 
@@ -197,8 +193,8 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         def cartUri = "/carts/v4/cart_contents/" + cartId
 
         ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
-        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
-        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(ItemType.TCIN, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
 
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(cartId), guestId,
             LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
@@ -242,7 +238,6 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         pendingItems[0].listPrice == cartItemResponse1.listPrice
         pendingItems[0].images == cartItemResponse1.images
         pendingItems[0].itemType == listItem1MetaData.itemType
-        pendingItems[0].itemExpiration == listItem1MetaData.itemExpiration
 
         pendingItems[1].listItemId == cartItemResponse2.cartItemId
         pendingItems[1].tcin == cartItemResponse2.tcin
@@ -252,70 +247,6 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         pendingItems[1].listPrice == cartItemResponse2.listPrice
         pendingItems[1].images == cartItemResponse2.images
         pendingItems[1].itemType == listItem2MetaData.itemType
-        pendingItems[1].itemExpiration == listItem2MetaData.itemExpiration
-
-        2 * mockServer.get({ path -> path.contains(cartUri) }, _) >> [status: 200, body: response] //TODO: check why two calls here
-
-        when: 'circuit is still closed'
-        String metrics = client.toBlocking().retrieve(HttpRequest.GET("/prometheus"))
-
-        then:
-        metrics.contains('resilience4j_circuitbreaker_state{name="carts-api",state="closed",} 1.0')
-    }
-
-    def "test get list integrity with expired item"() {
-        given:
-        def cartId = "fe9c3360-b44a-11e9-987d-03d970ca1c28"
-        def uri = FavoriteConstants.BASEPATH + "/" + cartId + "?location_id=1375"
-        def cartUri = "/carts/v4/cart_contents/" + cartId
-
-        ListMetaDataTO metadata = new ListMetaDataTO(true, LIST_STATUS.PENDING)
-        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.OFFER, LIST_ITEM_STATE.PENDING)
-        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO("2018-09-16T06:35:00.000Z", ItemType.OFFER, LIST_ITEM_STATE.PENDING)
-
-        def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(cartId), guestId,
-            LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
-
-        def cartItemResponse1 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234", "1234",
-            null, "some note", 1, 10, 10, "Stand Alone", "READY",
-            "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()))
-        def cartItemResponse2 = cartDataProvider.getCartItemResponse(UUID.fromString(cartId), UUID.randomUUID(), "1234", null,
-            "coffee", "some note", 1, 10, 10, "Stand Alone", "READY",
-            "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData2, new UserItemMetaDataTO()))
-        Map response = ["cart" : cartResponse, "cart_items" : [cartItemResponse1, cartItemResponse2]]
-
-        def listMetaData = cartDataProvider.getListMetaDataFromCart(cartResponse.metadata)
-        def listItem1MetaData = cartDataProvider.getListItemMetaDataFromCart(cartItemResponse1.metadata)
-
-        when:
-        HttpResponse<ListResponseTO> listResponse = client.toBlocking()
-            .exchange(HttpRequest.GET(uri).headers(getHeaders(guestId)), ListResponseTO)
-        def actualStatus = listResponse.status()
-        def actual = listResponse.body()
-
-        then:
-        actualStatus == HttpStatus.OK
-
-        actual.listId == cartResponse.cartId
-        actual.channel == LIST_CHANNEL.valueOf(cartResponse.cartChannel)
-        actual.listTitle == cartResponse.tenantCartName
-        actual.shortDescription == cartResponse.tenantCartDescription
-        actual.listType == "FAVORITES"
-        actual.defaultList == listMetaData.defaultList
-        actual.maxPendingItemsCount == 3
-
-        def pendingItems = actual.pendingListItems
-        pendingItems.size() == 1
-        pendingItems[0].listItemId == cartItemResponse1.cartItemId
-        pendingItems[0].tcin == cartItemResponse1.tcin
-        pendingItems[0].itemTitle == cartItemResponse1.tenantItemName
-        pendingItems[0].itemNote == cartItemResponse1.notes
-        pendingItems[0].price == cartItemResponse1.price
-        pendingItems[0].listPrice == cartItemResponse1.listPrice
-        pendingItems[0].images == cartItemResponse1.images
-        pendingItems[0].offerCount == 0
-        pendingItems[0].itemType == listItem1MetaData.itemType
-        pendingItems[0].itemExpiration == listItem1MetaData.itemExpiration
 
         2 * mockServer.get({ path -> path.contains(cartUri) }, _) >> [status: 200, body: response] //TODO: check why two calls here
 

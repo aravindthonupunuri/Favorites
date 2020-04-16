@@ -59,7 +59,7 @@ class CreateFavoriteItemFunctionalTest extends BaseFunctionalTest {
         def pendingCartResponse = cartDataProvider.getCartResponse(listId, guestId,
             LIST_CHANNEL.MOBILE, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(new ListMetaDataTO(true, LIST_STATUS.PENDING), new UserMetaDataTO()))
 
-        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(ItemType.TCIN, LIST_ITEM_STATE.PENDING)
         def pendingCartItemResponse1 = cartDataProvider.getCartItemResponse(listId, UUID.randomUUID(), tenantRefId1, "1234",
             "title1", 3, "note\nnote", 10, 10, "Stand Alone",
             "READY", "some-url", "some-image",
@@ -69,7 +69,7 @@ class CreateFavoriteItemFunctionalTest extends BaseFunctionalTest {
             "itemTitle", "itemNote", 1, 10, 10, "Stand Alone", "READY",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()))
 
-        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
         def pendingCartItemResponse2 = cartDataProvider.getCartItemResponse(listId, UUID.randomUUID(), tenantRefId1, null,
             "coffee", 1, "itemNote", 10, 10, "Stand Alone",
             "READY", "some-url", "some-image",
@@ -119,7 +119,7 @@ class CreateFavoriteItemFunctionalTest extends BaseFunctionalTest {
         def pendingCartResponse = cartDataProvider.getCartResponse(listId, guestId,
             LIST_CHANNEL.MOBILE, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(new ListMetaDataTO(true, LIST_STATUS.PENDING), new UserMetaDataTO()))
 
-        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(ItemType.TCIN, LIST_ITEM_STATE.PENDING)
         def pendingCartItemResponse1 = cartDataProvider.getCartItemResponse(listId, UUID.randomUUID(), "222", "1234",
             "title1", 3, "note\nnote", 10, 10, "Stand Alone",
             "READY", "some-url", "some-image",
@@ -129,7 +129,7 @@ class CreateFavoriteItemFunctionalTest extends BaseFunctionalTest {
             "itemTitle", "itemNote", 1, 10, 10, "Stand Alone", "READY",
             "some-url", "some-image", cartDataProvider.getItemMetaData(itemMetaData1, new UserItemMetaDataTO()))
 
-        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData2 = new ListItemMetaDataTO(ItemType.GENERIC_ITEM, LIST_ITEM_STATE.PENDING)
         def pendingCartItemResponse2 = cartDataProvider.getCartItemResponse(listId, UUID.randomUUID(), "222", null,
             "coffee", 1, "itemNote", 10, 10, "Stand Alone",
             "READY", "some-url", "some-image",

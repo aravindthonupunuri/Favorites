@@ -37,7 +37,7 @@ class UpdateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
         def cartResponse = cartDataProvider.getCartResponse(UUID.fromString(listId), guestId, null)
         def cartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, null)
 
-        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(Constants.NO_EXPIRATION, ItemType.TCIN, LIST_ITEM_STATE.PENDING)
+        ListItemMetaDataTO itemMetaData1 = new ListItemMetaDataTO(ItemType.TCIN, LIST_ITEM_STATE.PENDING)
         def cartItemResponse = cartDataProvider.getCartItemResponse(UUID.fromString(listId), UUID.fromString(listItemId), tenantRefId1, "1234",
             "itemTitle", 1, "itemNote",10, 10, "Stand Alone", "READY",
             "some-url", "some-image",

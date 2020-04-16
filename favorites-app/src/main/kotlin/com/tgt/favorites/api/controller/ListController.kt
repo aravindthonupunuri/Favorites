@@ -75,7 +75,7 @@ class ListController(
         @QueryValue("location_id") locationId: Long?
     ): Mono<MutableHttpResponse<ListResponseTO>> {
         if (locationId == null) {
-            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
+            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect, can’t be null")))
         }
         return getFavoriteListService.getList(guestId, locationId, listId, sortFieldBy?.toItemSortFieldGroup(), sortOrderBy, page!!, false)
             .zipWith(Mono.subscriberContext())
@@ -111,7 +111,7 @@ class ListController(
         @QueryValue("page", defaultValue = "0") page: Int?
     ): Mono<MutableHttpResponse<ListResponseTO>> {
         if (locationId == null) {
-            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
+            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect, can’t be null")))
         }
 
         return getDefaultFavoriteListService.getDefaultList(guestId, locationId,
@@ -233,7 +233,7 @@ class ListController(
         @PathVariable("list_item_id") listItemId: UUID
     ): Mono<MutableHttpResponse<ListItemResponseTO>> {
         if (locationId == null) {
-            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect $locationId")))
+            throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect, can’t be null")))
         }
         return getFavoriteListItemService.getListItem(guestId, locationId, listId, listItemId).zipWith(Mono.subscriberContext())
             .map {

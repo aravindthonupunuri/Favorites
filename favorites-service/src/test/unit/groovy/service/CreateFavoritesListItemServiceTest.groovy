@@ -49,7 +49,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
 
         FavoriteListItemRequestTO listItemRequestTO = new FavoriteListItemRequestTO(ItemType.TCIN, LIST_CHANNEL.WEB, "35446", "item-note")
 
-        ListItemResponseTO listItemResponseTO = new ListItemResponseTO(listItemId, null, "35446", LIST_CHANNEL.WEB, "1234", "My Favorites", null, null, UnitOfMeasure.EACHES, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponseTO = new ListItemResponseTO(listItemId, null, "35446", LIST_CHANNEL.WEB, "1234", "My Favorites", null, null, UnitOfMeasure.EACHES, null, null, null, 0, null, null, null, null, null, null)
 
         ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
 
@@ -75,7 +75,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
 
         FavoriteListItemRequestTO listItemRequestTO = new FavoriteListItemRequestTO(ItemType.TCIN, LIST_CHANNEL.WEB, "35446", "item-note")
 
-        ListItemResponseTO listItemResponseTO = new ListItemResponseTO(listItemId, null, "35446", LIST_CHANNEL.WEB, "1234", "My Favorites", null, null, UnitOfMeasure.EACHES, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponseTO = new ListItemResponseTO(listItemId, null, "35446", LIST_CHANNEL.WEB, "1234", "My Favorites", null, null, UnitOfMeasure.EACHES, null, null, null, 0, null, null, null, null, null, null)
 
         ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
 
