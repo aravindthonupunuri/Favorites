@@ -48,9 +48,9 @@ class ListController(
      */
     @Post("/")
     @Status(HttpStatus.CREATED)
-    fun createList(@Header(FavoriteConstants.PROFILE_ID) guestId: String, @Valid @Body listRequestTO: FavoriteListRequestTO): Mono<FavouritesListResponseTO> {
+    fun createList(@Header(FavoriteConstants.PROFILE_ID) guestId: String, @Valid @Body listRequestTO: FavoriteListRequestTO): Mono<FavouritesListPostResponseTO> {
         return createListService.createList(guestId, listRequestTO.toListRequestTO()).map { validate(it) }
-            .map { FavouritesListResponseTO(it) }
+            .map { FavouritesListPostResponseTO(it) }
     }
 
     /**
@@ -179,9 +179,9 @@ class ListController(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
         @Valid @Body favoriteListUpdateRequestTO: FavoriteListUpdateRequestTO
-    ): Mono<FavouritesListResponseTO> {
+    ): Mono<FavouritesListPostResponseTO> {
         return updateListService.updateList(guestId, listId, favoriteListUpdateRequestTO.toListUpdateRequestTO())
-            .map { FavouritesListResponseTO(it) }
+            .map { FavouritesListPostResponseTO(it) }
     }
 
     /**

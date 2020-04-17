@@ -174,7 +174,7 @@ paths:
         '201':
           description: list response transfer object
           schema:
-            $ref: '#/definitions/FavouritesListResponseTO'
+            $ref: '#/definitions/FavouritesListPostResponseTO'
         '400':
           description: Bad Request
           schema:
@@ -288,7 +288,7 @@ paths:
         '200':
           description: list update response transfer object
           schema:
-            $ref: '#/definitions/FavouritesListResponseTO'
+            $ref: '#/definitions/FavouritesListPostResponseTO'
         '400':
           description: Bad Request
           schema:
@@ -819,6 +819,36 @@ definitions:
       short_description:
         type: string
   FavouritesListResponseTO:
+    type: object
+    required:
+      - list_id
+      - channel
+      - list_type
+      - list_title
+    properties:
+      list_id:
+        type: string
+        format: uuid
+      channel:
+        $ref: '#/definitions/LIST_CHANNEL'
+      list_type:
+        type: string
+      list_title:
+        minLength: 1
+        type: string
+      short_description:
+        type: string
+      default_list:
+        type: boolean
+      list_items:
+        type: array
+        items:
+          $ref: '#/definitions/FavoriteListItemGetResponseTO'
+      added_ts:
+        type: string
+      last_modified_ts:
+        type: string
+  FavouritesListPostResponseTO:
     type: object
     required:
       - list_id

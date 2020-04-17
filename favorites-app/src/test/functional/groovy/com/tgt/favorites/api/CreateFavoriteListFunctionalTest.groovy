@@ -1,6 +1,6 @@
 package com.tgt.favorites.api
 
-import com.tgt.favorites.transport.FavouritesListResponseTO
+import com.tgt.favorites.transport.FavouritesListPostResponseTO
 import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.ListMetaDataTO
 import com.tgt.lists.lib.api.transport.ListResponseTO
@@ -77,7 +77,7 @@ class CreateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
 
         when:
         client.toBlocking().exchange(HttpRequest.POST(FavoriteConstants.BASEPATH, JsonOutput.toJson(listRequest))
-            .headers(getHeaders(guestId)), FavouritesListResponseTO)
+            .headers(getHeaders(guestId)), FavouritesListPostResponseTO)
 
         then:
         2 * mockServer.post({ path -> path.contains("/carts/v4")},_,{ headers -> checkHeaders(headers) }) >> [status: 200, body: cartResponse]
@@ -117,7 +117,7 @@ class CreateFavoriteListFunctionalTest extends BaseKafkaFunctionalTest {
         when:
         HttpResponse<ListResponseTO> favouritesListResponse = client.toBlocking().exchange(
             HttpRequest.POST(FavoriteConstants.BASEPATH, JsonOutput.toJson(listRequest))
-                .headers(getHeaders(guestId)), FavouritesListResponseTO)
+                .headers(getHeaders(guestId)), FavouritesListPostResponseTO)
         def actualStatus = favouritesListResponse.status()
         def actual = favouritesListResponse.body()
 
