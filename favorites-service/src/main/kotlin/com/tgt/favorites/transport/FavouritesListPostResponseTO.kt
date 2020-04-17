@@ -8,14 +8,13 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class FavouritesListResponseTO(
+data class FavouritesListPostResponseTO(
     @field:NotNull(message = "List id must not be empty") val listId: UUID?,
     @field:NotNull(message = "Channel must not be empty") val channel: LIST_CHANNEL?,
     @field:NotNull(message = "List type must not be empty") val listType: String?,
     @field:NotEmpty(message = "List title must not be empty") val listTitle: String?,
     val shortDescription: String?,
     val defaultList: Boolean? = false,
-    val listItems: List<FavoriteListItemGetResponseTO>? = null,
     val addedTs: String?,
     val lastModifiedTs: String?
 ) {
