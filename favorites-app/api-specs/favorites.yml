@@ -707,8 +707,6 @@ definitions:
   FavoriteListItemUpdateRequestTO:
     type: object
     properties:
-      item_title:
-        type: string
       item_note:
         minLength: 1
         type: string
