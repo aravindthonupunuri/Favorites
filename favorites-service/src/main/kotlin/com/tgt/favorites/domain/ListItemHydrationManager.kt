@@ -21,6 +21,7 @@ class ListItemHydrationManager(
 ) {
 
     private val logger = KotlinLogging.logger { ListItemHydrationManager::class.java.name }
+    private val variationParent = "variation parent" // TODO: Need to validate this text
 
     fun getItemHydration(locationId: Long, listItems: List<ListItemResponseTO>?): Mono<List<FavoriteListItemGetResponseTO>> {
         if (listItems.isNullOrEmpty()) {
@@ -35,7 +36,7 @@ class ListItemHydrationManager(
         locationId: Long,
         listItems: List<ListItemResponseTO>
     ): Mono<List<FavoriteListItemGetResponseTO>> {
-        val items = listItems.filter { it.relationshipType == null || it.relationshipType != "variation parent" }
+        val items = listItems.filter { it.relationshipType == null || it.relationshipType != variationParent }
         if (items.isEmpty()) {
             return Mono.just(emptyList())
         }
@@ -57,7 +58,7 @@ class ListItemHydrationManager(
         locationId: Long,
         listItems: List<ListItemResponseTO>
     ): Mono<List<FavoriteListItemGetResponseTO>> {
-        val items = listItems.filter { it.relationshipType != null && it.relationshipType == "variation parent" }
+        val items = listItems.filter { it.relationshipType != null && it.relationshipType == variationParent }
         if (items.isEmpty()) {
             return Mono.just(emptyList())
         }
