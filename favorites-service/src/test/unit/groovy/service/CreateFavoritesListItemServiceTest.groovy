@@ -4,6 +4,7 @@ import com.tgt.favorites.service.CreateFavoriteDefaultListItemService
 import com.tgt.favorites.service.GetDefaultFavoriteListService
 import com.tgt.favorites.transport.FavoriteListItemRequestTO
 import com.tgt.favorites.transport.FavoriteListItemResponseTO
+import com.tgt.favorites.transport.FavouritesListResponseTO
 import com.tgt.lists.cart.CartClient
 import com.tgt.lists.lib.api.domain.ContextContainerManager
 import com.tgt.lists.lib.api.domain.GuestPreferenceSortOrderManager
@@ -58,7 +59,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
 
         then:
 
-        1 * getDefaultFavoriteListService.getDefaultList(*_) >> Mono.just(listResponseTO)
+        1 * getDefaultFavoriteListService.getDefaultList(*_) >> Mono.just(new FavouritesListResponseTO(listResponseTO, null))
         1 * createListItemService.createListItem(_, _, _, _) >> Mono.just(listItemResponseTO)
 
         favouriteItemResponsesTO.listItemId == listItemResponseTO.listItemId

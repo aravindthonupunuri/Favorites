@@ -8,7 +8,6 @@ import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.ListMetaDataTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
 import com.tgt.lists.lib.api.transport.UserMetaDataTO
-import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE
@@ -100,7 +99,7 @@ class CreateFavoriteItemFunctionalTest extends BaseFunctionalTest {
     }
 
 
-    def "test create default item for favourites if it doesnot have default list"() {
+    def "test create default item for favourites if it does not have default list"() {
         given:
         def uri = FavoriteConstants.BASEPATH + "/list_items"
         String guestId = "1234"

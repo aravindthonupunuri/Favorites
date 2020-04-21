@@ -19,9 +19,10 @@ data class FavouritesListResponseTO(
     val addedTs: String?,
     val lastModifiedTs: String?
 ) {
-    constructor(listResponseTO: ListResponseTO) : this(
+    constructor(listResponseTO: ListResponseTO, favoriteListItems: List<FavoriteListItemGetResponseTO>? = null) : this(
         listId = listResponseTO.listId, channel = listResponseTO.channel, listType = listResponseTO.listType,
         listTitle = listResponseTO.listTitle, shortDescription = listResponseTO.shortDescription,
-        defaultList = listResponseTO.defaultList, addedTs = listResponseTO.addedTs,
+        defaultList = listResponseTO.defaultList, listItems = favoriteListItems,
+        addedTs = listResponseTO.addedTs,
         lastModifiedTs = listResponseTO.lastModifiedTs)
 }

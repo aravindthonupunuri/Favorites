@@ -120,6 +120,7 @@ list:
   features.dedupe: false
   features.sort-position: false
   features.fixed-default-list: true
+  redsky-batch-size: 28
 
 sic:
   batch-size: 50
