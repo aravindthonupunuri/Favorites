@@ -1,5 +1,6 @@
 package com.tgt.favorites.api
 
+import com.tgt.favorites.transport.FavouritesListResponseTO
 import com.tgt.favorites.util.FavoriteConstants
 import com.tgt.favorites.util.BaseFunctionalTest
 import com.tgt.lists.cart.transport.CartType
@@ -41,8 +42,8 @@ class GetDefaultFavoriteListFunctionalTest extends BaseFunctionalTest {
         def pendingCartContentsResponse = cartDataProvider.getCartContentsResponse(pendingCartResponse, [pendingCartItemResponse1, pendingCartItemResponse2])
 
         when:
-        HttpResponse<ListResponseTO> listResponse = client.toBlocking()
-            .exchange(HttpRequest.GET(uri).headers(getHeaders(guestId)), ListResponseTO)
+        HttpResponse<FavouritesListResponseTO> listResponse = client.toBlocking()
+            .exchange(HttpRequest.GET(uri).headers(getHeaders(guestId)), FavouritesListResponseTO)
         def actualStatus = listResponse.status()
         def actual = listResponse.body()
 
@@ -54,28 +55,6 @@ class GetDefaultFavoriteListFunctionalTest extends BaseFunctionalTest {
         actual.listTitle == pendingCartResponse.tenantCartName
         actual.shortDescription == pendingCartResponse.tenantCartDescription
         actual.defaultList
-        actual.maxPendingItemsCount == 3
-
-        def pendingItems = actual.pendingListItems
-        pendingItems.size() == 2
-        pendingItems[0].listItemId == pendingCartItemResponse1.cartItemId
-        pendingItems[0].tcin == pendingCartItemResponse1.tcin
-        pendingItems[0].itemTitle == pendingCartItemResponse1.tenantItemName
-        pendingItems[0].itemNote == pendingCartItemResponse1.notes
-        pendingItems[0].price == pendingCartItemResponse1.price
-        pendingItems[0].listPrice == pendingCartItemResponse1.listPrice
-        pendingItems[0].images == pendingCartItemResponse1.images
-
-        pendingItems[1].listItemId == pendingCartItemResponse2.cartItemId
-        pendingItems[1].tcin == pendingCartItemResponse2.tcin
-        pendingItems[1].itemTitle == pendingCartItemResponse2.tenantItemName
-        pendingItems[1].itemNote == pendingCartItemResponse2.notes
-        pendingItems[1].price == pendingCartItemResponse2.price
-        pendingItems[1].listPrice == pendingCartItemResponse2.listPrice
-        pendingItems[1].images == pendingCartItemResponse2.images
-
-        def completedItems = actual.completedListItems
-        completedItems.isEmpty() //TODO: why it is not null
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))},{ headers -> checkHeaders(headers) }) >> [status: 200, body: [pendingCartResponse]]
         1 * mockServer.get({ path -> path.contains("/carts/v4/cart_contents/" + listId) }, _) >> [status: 200, body: pendingCartContentsResponse]

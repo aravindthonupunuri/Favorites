@@ -1,7 +1,9 @@
 package com.tgt.favorites.transport
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.tgt.favorites.client.redsky.getItemHydrationwithvariation.*
 import com.tgt.lists.cart.transport.Image
+import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import java.util.*
@@ -16,10 +18,31 @@ data class FavoriteListItemGetResponseTO(
     val itemTitle: String? = null,
     val itemNote: String? = null,
     val images: Image? = null,
-    val price: Double? = 0.0,
-    val listPrice: Double? = 0.0,
     val averageOverallRating: Double? = 0.0,
     val totalReviewCount: Int? = 0,
+    val item: Item? = null,
+    val price: Price?,
+    val variationHierarchy: VariationHierarchy?,
     val addedTs: String? = null,
     val lastModifiedTs: String? = null
-)
+) {
+    constructor(
+        listItemResponseTO: ListItemResponseTO,
+        product: Product? = null
+    ) : this(
+        listItemId = listItemResponseTO.listItemId,
+        itemType = listItemResponseTO.itemType,
+        channel = listItemResponseTO.channel,
+        tcin = listItemResponseTO.tcin,
+        itemTitle = listItemResponseTO.itemTitle,
+        itemNote = listItemResponseTO.itemNote,
+        images = listItemResponseTO.images,
+        averageOverallRating = product?.ratingsAndReviews?.statistics?.rating?.average,
+        totalReviewCount = product?.ratingsAndReviews?.statistics?.reviewCount,
+        price = product?.price,
+        variationHierarchy = product?.variationHierarchy,
+        item = product?.item,
+        addedTs = listItemResponseTO.addedTs,
+        lastModifiedTs = listItemResponseTO.lastModifiedTs
+    )
+}

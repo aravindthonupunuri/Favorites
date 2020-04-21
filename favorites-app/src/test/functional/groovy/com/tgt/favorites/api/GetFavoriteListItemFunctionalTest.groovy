@@ -1,11 +1,11 @@
 package com.tgt.favorites.api
 
+import com.tgt.favorites.transport.FavoriteListItemGetResponseTO
 import com.tgt.favorites.util.BaseFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
 import com.tgt.favorites.util.FavoriteConstants
-import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE
 import com.tgt.lists.msgbus.ListsMessageBusProducer
@@ -50,8 +50,8 @@ class GetFavoriteListItemFunctionalTest extends BaseFunctionalTest {
         def cartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, null)
 
         when:
-        HttpResponse<ListItemResponseTO> listItemResponse = client.toBlocking()
-            .exchange(HttpRequest.GET(uri).headers(getHeaders(guestId)), ListItemResponseTO)
+        HttpResponse<FavoriteListItemGetResponseTO> listItemResponse = client.toBlocking()
+            .exchange(HttpRequest.GET(uri).headers(getHeaders(guestId)), FavoriteListItemGetResponseTO)
         def actualStatus = listItemResponse.status()
         def actual = listItemResponse.body()
 
@@ -62,8 +62,6 @@ class GetFavoriteListItemFunctionalTest extends BaseFunctionalTest {
         actual.tcin == cartItemResponse.tcin
         actual.itemTitle == cartItemResponse.tenantItemName
         actual.itemNote == cartItemResponse.notes
-        actual.price == cartItemResponse.price
-        actual.listPrice == cartItemResponse.listPrice
         actual.images == cartItemResponse.images
 
         1 * mockServer.get({ path -> path.contains(getCartContentURI(cartId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartContentsResponse]

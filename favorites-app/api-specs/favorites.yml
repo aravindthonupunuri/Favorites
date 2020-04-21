@@ -730,12 +730,6 @@ definitions:
         type: string
       item_note:
         type: string
-      price:
-        type: number
-        format: float
-      list_price:
-        type: number
-        format: float
       average_overall_rating:
         type: number
         format: float
@@ -744,6 +738,18 @@ definitions:
         format: int32
       images:
         $ref: '#/definitions/Image'
+      item:
+        $ref: '#/definitions/Item'
+      price:
+        $ref: '#/definitions/Price'
+      variationHierarchy:
+        $ref: '#/definitions/VariationHierarchy'
+      fulfillment:
+        $ref: '#/definitions/Fulfillment'
+      productVendors:
+        type: array
+        items:
+          $ref: '#/definitions/Vendor'
       added_ts:
         type: string
       last_modified_ts:
@@ -764,6 +770,80 @@ definitions:
       swatch_image:
         type: string
       alternate_images:
+        type: string
+  Price:
+    type: object
+    properties:
+      formatted_comparison_price:
+        type: string
+      formatted_current_price:
+        type: string
+      formatted_current_price_type:
+        type: string
+      hide_price:
+        type: string
+      is_current_price_range:
+        type: boolean
+      unmasked_formatted_comparison_price:
+        type: string
+      unmasked_formatted_current_price:
+        type: string
+      unmasked_formatted_current_price_type:
+        type: string
+  VariationHierarchy:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+      tcin:
+        type: string
+      swatch_image_url:
+        type: string
+      primary_image_url:
+        type: string
+      availability:
+        $ref: '#/definitions/Availability'
+  Availability:
+    type: object
+    properties:
+      is_shipping_available:
+        type: boolean
+      is_shipping_loyalty_available:
+        type: boolean
+      is_scheduled_delivery_available:
+        type: boolean
+      is_primary_store_available:
+        type: boolean
+      is_backup_store_available:
+        type: boolean
+  Item:
+    type: object
+    properties:
+      relation_ship_type:
+        type: string
+      fulfillment:
+        $ref: '#/definitions/Fulfillment'
+      item_state:
+        type: string
+      estore_item_status_code:
+        type: string
+      launch_date_time:
+        type: string
+      product_vendors:
+        type: array
+        items:
+          $ref: '#/definitions/Vendor'
+  Fulfillment:
+    type: object
+    properties:
+      is_market_place:
+        type: boolean
+  Vendor:
+    type: object
+    properties:
+      vendor_name:
         type: string
   FavoriteListItemResponseTO:
     type: object
