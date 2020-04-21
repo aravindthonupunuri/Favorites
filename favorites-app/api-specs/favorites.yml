@@ -744,12 +744,6 @@ definitions:
         $ref: '#/definitions/Price'
       variationHierarchy:
         $ref: '#/definitions/VariationHierarchy'
-      fulfillment:
-        $ref: '#/definitions/Fulfillment'
-      productVendors:
-        type: array
-        items:
-          $ref: '#/definitions/Vendor'
       added_ts:
         type: string
       last_modified_ts:
