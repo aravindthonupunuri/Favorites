@@ -742,8 +742,10 @@ definitions:
         $ref: '#/definitions/Item'
       price:
         $ref: '#/definitions/Price'
-      variationHierarchy:
-        $ref: '#/definitions/VariationHierarchy'
+      variation_hierarchy:
+        type: array
+        items:
+          $ref: '#/definitions/VariationHierarchy'
       added_ts:
         type: string
       last_modified_ts:
@@ -797,21 +799,6 @@ definitions:
         type: string
       primary_image_url:
         type: string
-      availability:
-        $ref: '#/definitions/Availability'
-  Availability:
-    type: object
-    properties:
-      is_shipping_available:
-        type: boolean
-      is_shipping_loyalty_available:
-        type: boolean
-      is_scheduled_delivery_available:
-        type: boolean
-      is_primary_store_available:
-        type: boolean
-      is_backup_store_available:
-        type: boolean
   Item:
     type: object
     properties:

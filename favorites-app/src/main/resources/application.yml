@@ -16,6 +16,14 @@ micronaut:
         pool:
           enabled: true
           max-connections: 5
+      redsky-api:
+        urls:
+          - ${redsky-base-url}
+        connect-timeout: 1500ms
+        read-timeout: 1500ms
+        pool:
+          enabled: true
+          max-connections: 5
 
   metrics:
     binders:

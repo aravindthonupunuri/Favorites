@@ -10,6 +10,11 @@ micronaut:
           - http://localhost:${server-port:32000}
         pool:
           enabled: false
+      redsky-api:
+        urls:
+          - http://localhost:${server-port:32000}
+        pool:
+          enabled: false
 
 jackson:
   property-naming-strategy: "SNAKE_CASE"
@@ -53,7 +58,7 @@ logging:
       path: /lists/**
 
 mockfilter:
-  paths: /carts/v4.*,/zipkin,/testserver/auth/oauth/v2/token,/storeItemPlacements,/ssa/cwlservice/api/v16/.*,/,/v2/stores/.*,/search/v3/items/.*,/lists/v2.*
+  paths: /carts/v4.*,/zipkin,/testserver/auth/oauth/v2/token,/storeItemPlacements,/ssa/cwlservice/api/v16/.*,/,/v2/stores/.*,/search/v3/items/.*,/lists/v2.*,/redsky_aggregations/v1.*
 
 resilience4j:
   circuitbreaker:
