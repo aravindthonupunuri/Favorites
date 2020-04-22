@@ -1,7 +1,5 @@
-package service
+package com.tgt.favorites.service
 
-import com.tgt.favorites.service.CreateFavoriteDefaultListItemService
-import com.tgt.favorites.service.GetDefaultFavoriteListService
 import com.tgt.favorites.transport.FavoriteListItemRequestTO
 import com.tgt.favorites.transport.FavoriteListItemResponseTO
 import com.tgt.favorites.transport.FavouritesListResponseTO

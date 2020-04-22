@@ -18,6 +18,15 @@ micronaut:
           enabled: true
           max-connections: 128
           max-pending-acquires: 50
+      redsky-api:
+        urls:
+          - "https://redsky-stage.perf.target.com"
+        connect-timeout: 1500ms
+        read-timeout: 1500ms
+        pool:
+          enabled: true
+          max-connections: 128
+          max-pending-acquires: 50
 
   metrics:
     binders:

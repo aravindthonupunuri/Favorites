@@ -17,14 +17,16 @@ data class Product(
     @JsonProperty("ratings_and_reviews")
     val ratingsAndReviews: RatingReview?,
     @JsonProperty("variation_hierarchy")
-    val variationHierarchy: VariationHierarchy?
+    val variationHierarchy: List<VariationHierarchy>?,
+    @JsonProperty("available_to_promise")
+    val availableToPromise: AvailableToPromise?
 )
 
 data class Item(
     @JsonProperty("relationship_type")
     val relationShipType: String?,
     @JsonProperty("fulfillment")
-    val fulfillment: Fulfillment,
+    val fulfillment: Fulfillment?,
     @JsonProperty("item_state")
     val itemState: String?,
     @JsonProperty("estore_item_status_code")
@@ -32,7 +34,7 @@ data class Item(
     @JsonProperty("launch_date_time")
     val launchDateTime: String?,
     @JsonProperty("product_vendors")
-    val productVendors: List<Vendor>
+    val productVendors: List<Vendor>?
 )
 
 data class Fulfillment(
@@ -55,7 +57,7 @@ data class Price(
     @JsonProperty("hide_price")
     val hidePrice: String?,
     @JsonProperty("is_current_price_range")
-    val isCurrentPriceRange: Boolean?,
+    val isCurrentPriceRange: Boolean? = false,
     @JsonProperty("unmasked_formatted_comparison_price")
     val unmaskedFormattedComparisonPrice: String?,
     @JsonProperty("unmasked_formatted_current_price")
@@ -82,14 +84,15 @@ data class VariationHierarchy(
     @JsonProperty("value") val value: String?,
     @JsonProperty("tcin") val tcin: String?,
     @JsonProperty("swatch_image_url") val swatchImageUrl: String?,
-    @JsonProperty("primary_image_url") val primaryImageUrl: String?,
-    @JsonProperty("availability") val availability: Availability?
+    @JsonProperty("primary_image_url") val primaryImageUrl: String?
 )
 
-data class Availability(
-    @JsonProperty("is_shipping_available") val isShippingAvailable: Boolean? = false,
-    @JsonProperty("is_shipping_loyalty_available") val isShippingLoyaltyAvailable: Boolean? = false,
-    @JsonProperty("is_scheduled_delivery_available") val isScheduledDeliveryAvailable: Boolean? = false,
-    @JsonProperty("is_primary_store_available") val isPrimaryStoreAvailable: Boolean? = false,
-    @JsonProperty("is_backup_store_available") val isBackupStoreAvailable: Boolean? = false
+data class AvailableToPromise(
+    @JsonProperty("qualitative") val qualitative: Qualitative?
+)
+
+data class Qualitative(
+    @JsonProperty("street_date") val streetDate: String?,
+    @JsonProperty("availability_status") val availabilityStatus: String?,
+    @JsonProperty("is_out_of_stock_in_all_store_locations") val isOutOfStockInAllStoreLocations: Boolean? = false
 )

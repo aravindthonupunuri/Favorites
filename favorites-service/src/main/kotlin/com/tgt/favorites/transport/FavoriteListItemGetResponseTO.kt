@@ -22,7 +22,7 @@ data class FavoriteListItemGetResponseTO(
     val totalReviewCount: Int? = 0,
     val item: Item? = null,
     val price: Price?,
-    val variationHierarchy: VariationHierarchy?,
+    val variationHierarchy: List<VariationHierarchy>?,
     val addedTs: String? = null,
     val lastModifiedTs: String? = null
 ) {

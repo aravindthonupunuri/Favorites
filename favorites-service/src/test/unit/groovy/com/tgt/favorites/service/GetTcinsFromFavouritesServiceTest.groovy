@@ -1,6 +1,5 @@
-package service
+package com.tgt.favorites.service
 
-import com.tgt.favorites.service.GetFavoritesTcinService
 import com.tgt.favorites.transport.GuestFavoritesResponseTO
 import com.tgt.favorites.transport.ListItemDetailsTO
 import com.tgt.lists.cart.CartClient

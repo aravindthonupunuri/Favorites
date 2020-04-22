@@ -4,6 +4,7 @@ import com.tgt.favorites.client.redsky.RedSkyClient
 import com.tgt.favorites.client.redsky.RedskyResponseTO
 import com.tgt.favorites.client.redsky.getitemhydration.ItemDetailVO
 import com.tgt.favorites.transport.FavoriteListItemGetResponseTO
+import com.tgt.favorites.transport.ItemRelationshipType
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import io.micronaut.context.annotation.Value
 import mu.KotlinLogging
@@ -21,7 +22,6 @@ class ListItemHydrationManager(
 ) {
 
     private val logger = KotlinLogging.logger { ListItemHydrationManager::class.java.name }
-    private val variationParent = "variation parent" // TODO: Need to validate this text
 
     fun getItemHydration(locationId: Long, listItems: List<ListItemResponseTO>?): Mono<List<FavoriteListItemGetResponseTO>> {
         if (listItems.isNullOrEmpty()) {
@@ -36,7 +36,7 @@ class ListItemHydrationManager(
         locationId: Long,
         listItems: List<ListItemResponseTO>
     ): Mono<List<FavoriteListItemGetResponseTO>> {
-        val items = listItems.filter { it.relationshipType == null || it.relationshipType != variationParent }
+        val items = listItems.filter { !isVariationParent(it.relationshipType) }
         if (items.isEmpty()) {
             return Mono.just(emptyList())
         }
@@ -58,7 +58,7 @@ class ListItemHydrationManager(
         locationId: Long,
         listItems: List<ListItemResponseTO>
     ): Mono<List<FavoriteListItemGetResponseTO>> {
-        val items = listItems.filter { it.relationshipType != null && it.relationshipType == variationParent }
+        val items = listItems.filter { isVariationParent(it.relationshipType) }
         if (items.isEmpty()) {
             return Mono.just(emptyList())
         }
@@ -81,6 +81,11 @@ class ListItemHydrationManager(
                         }
                     }
             }.collectList()
+    }
+
+    private fun isVariationParent(relationshipType: String?): Boolean {
+        return relationshipType != null && (relationshipType == ItemRelationshipType.VAP.value ||
+            relationshipType == ItemRelationshipType.VPC.value)
     }
 
     private fun toFavoriteListItemGetResponseTO(
