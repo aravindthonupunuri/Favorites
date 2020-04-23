@@ -9,6 +9,7 @@ import com.tgt.favorites.client.redsky.getitemhydration.ItemDetailVO
 import com.tgt.favorites.transport.ItemRelationshipType
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.util.ItemType
+import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import reactor.core.publisher.Mono
 import spock.lang.Specification
 
@@ -39,9 +40,9 @@ class ListItemHydrationManagerTest extends Specification {
     def "Test getItemHydration when there is no variation parent and redsky returns no data"() {
         given:
         def tcin1 = "1"; def tcin2 = "2"; def tcin3 = "3"
-        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, "first", null, ItemType.TCIN, ItemRelationshipType.SA.value)
-        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
-        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, LIST_CHANNEL.WEB, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, LIST_CHANNEL.WEB, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
 
         when:
         def actual = listItemHydrationManager.getItemHydration(storeId, [item1, item2, item3]).block()
@@ -59,9 +60,9 @@ class ListItemHydrationManagerTest extends Specification {
     def "Test getItemHydration when there is no variation parent and redsky returns 404"() {
         given:
         def tcin1 = "1"; def tcin2 = "2"; def tcin3 = "3"
-        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, "first", null, ItemType.TCIN, ItemRelationshipType.SA.value)
-        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
-        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, LIST_CHANNEL.WEB, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, LIST_CHANNEL.WEB, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
 
         when:
         def actual = listItemHydrationManager.getItemHydration(storeId, [item1, item2, item3]).block()
@@ -79,9 +80,9 @@ class ListItemHydrationManagerTest extends Specification {
     def "Test getItemHydration when there is no variation parent and redsky throws error"() {
         given:
         def tcin1 = "1"; def tcin2 = "2"; def tcin3 = "3"
-        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, "first", null, ItemType.TCIN, ItemRelationshipType.SA.value)
-        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
-        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, LIST_CHANNEL.WEB, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, LIST_CHANNEL.WEB, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
 
         when:
         def actual = listItemHydrationManager.getItemHydration(storeId, [item1, item2, item3]).block()
@@ -99,9 +100,9 @@ class ListItemHydrationManagerTest extends Specification {
     def "Test getItemHydration when there is no variation parent"() {
         given:
         def tcin1 = "1"; def tcin2 = "2"; def tcin3 = "3"
-        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, "first", null, ItemType.TCIN, ItemRelationshipType.SA.value)
-        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
-        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, LIST_CHANNEL.WEB, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, LIST_CHANNEL.WEB, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
         ItemDetailVO itemDetailVO = redskyDataProvider.getItemDetailVO([tcin1, tcin2, tcin3])
 
         when:
@@ -135,9 +136,9 @@ class ListItemHydrationManagerTest extends Specification {
     def "Test getItemHydration when there is no variation child and redsky returns no data"() {
         given:
         def tcin1 = "1"; def tcin2 = "2"; def tcin3 = "3"
-        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, "first", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
-        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, "second", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
-        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, "third", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, LIST_CHANNEL.WEB, "second", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, LIST_CHANNEL.WEB, "third", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
 
         when:
         def actual = listItemHydrationManager.getItemHydration(storeId, [item1, item2, item3]).block()
@@ -154,12 +155,32 @@ class ListItemHydrationManagerTest extends Specification {
         actual[2].tcin == tcin3
     }
 
+    def "Test getItemHydration when there is no variation child and redsky returns error and no data"() {
+        given:
+        def tcin1 = "1"; def tcin2 = "2"; def tcin3 = "3"
+        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, LIST_CHANNEL.WEB, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, LIST_CHANNEL.WEB, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+
+        when:
+        def actual = listItemHydrationManager.getItemHydration(storeId, [item1, item2, item3]).block()
+
+        then:
+        1 * redSkyClient.getItemHydration(storeId.toString(), "$tcin1,$tcin2,$tcin3") >> Mono.just(new RedskyResponseTO(["error in getting availableToPromise"], null))
+        0 * redSkyClient.getItemHydrationWithVariation(storeId.toString(), _)
+
+        actual.size() == 3
+        actual[0].tcin == tcin1
+        actual[1].tcin == tcin2
+        actual[2].tcin == tcin3
+    }
+
     def "Test getItemHydration when there is no variation child and redsky returns 404"() {
         given:
         def tcin1 = "1"; def tcin2 = "2"; def tcin3 = "3"
-        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, "first", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
-        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, "second", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
-        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, "third", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, LIST_CHANNEL.WEB, "second", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, LIST_CHANNEL.WEB, "third", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
 
         when:
         def actual = listItemHydrationManager.getItemHydration(storeId, [item1, item2, item3]).block()
@@ -179,9 +200,9 @@ class ListItemHydrationManagerTest extends Specification {
     def "Test getItemHydration when there is no variation child and redsky throws error"() {
         given:
         def tcin1 = "1"; def tcin2 = "2"; def tcin3 = "3"
-        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, "first", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
-        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, "second", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
-        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, "third", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, LIST_CHANNEL.WEB, "second", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, LIST_CHANNEL.WEB, "third", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
 
         when:
         def actual = listItemHydrationManager.getItemHydration(storeId, [item1, item2, item3]).block()
@@ -201,9 +222,9 @@ class ListItemHydrationManagerTest extends Specification {
     def "Test getItemHydration when there is no variation child"() {
         given:
         def tcin1 = "1"; def tcin2 = "2"; def tcin3 = "3"
-        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, "first", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
-        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, "second", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
-        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, "third", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, LIST_CHANNEL.WEB, "second", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
+        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, LIST_CHANNEL.WEB, "third", null, ItemType.TCIN, ItemRelationshipType.VAP.value)
 
         ItemDetailWithVariationVO itemDetailWithVariationVO1 = redskyDataProvider.getItemDetailWithVariationVO(tcin1)
         ItemDetailWithVariationVO itemDetailWithVariationVO2 = redskyDataProvider.getItemDetailWithVariationVO(tcin2)
@@ -239,9 +260,9 @@ class ListItemHydrationManagerTest extends Specification {
     def "Test getItemHydration when there is variation parent and child"() {
         given:
         def tcin1 = "1"; def tcin2 = "2"; def tcin3 = "3"
-        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
-        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
-        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item1 = listDataProvider.getListItem(UUID.randomUUID(), tcin1, LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
+        ListItemResponseTO item2 = listDataProvider.getListItem(UUID.randomUUID(), tcin2, LIST_CHANNEL.WEB, "second", null, ItemType.TCIN, ItemRelationshipType.SA.value)
+        ListItemResponseTO item3 = listDataProvider.getListItem(UUID.randomUUID(), tcin3, LIST_CHANNEL.WEB, "third", null, ItemType.TCIN, ItemRelationshipType.SA.value)
         ItemDetailVO itemDetailVO = redskyDataProvider.getItemDetailVO([tcin2, tcin3])
         ItemDetailWithVariationVO itemDetailWithVariationVO1 = redskyDataProvider.getItemDetailWithVariationVO(tcin1)
 

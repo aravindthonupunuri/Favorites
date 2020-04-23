@@ -1,8 +1,10 @@
 package com.tgt.favorites.service
 
+import com.tgt.favorites.api.util.ListDataProvider
 import com.tgt.favorites.transport.FavoriteListItemRequestTO
 import com.tgt.favorites.transport.FavoriteListItemResponseTO
 import com.tgt.favorites.transport.FavouritesListResponseTO
+import com.tgt.favorites.transport.ItemRelationshipType
 import com.tgt.lists.cart.CartClient
 import com.tgt.lists.lib.api.domain.ContextContainerManager
 import com.tgt.lists.lib.api.domain.GuestPreferenceSortOrderManager
@@ -13,7 +15,6 @@ import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.ListResponseTO
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
-import com.tgt.lists.lib.api.util.UnitOfMeasure
 import reactor.core.publisher.Mono
 import spock.lang.Specification
 
@@ -27,6 +28,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
     GuestPreferenceRepository guestPreferenceRepository
     CartClient cartClient
     ContextContainerManager contextContainerManager
+    ListDataProvider listDataProvider
 
     def setup() {
         cartClient = Mock(CartClient)
@@ -37,6 +39,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
         guestPreferenceSortOrderManager = new GuestPreferenceSortOrderManager(guestPreferenceRepository)
         contextContainerManager = new ContextContainerManager()
         createFavoriteListItemService = new CreateFavoriteDefaultListItemService(getDefaultFavoriteListService, createListService, createListItemService, "My Favorites")
+        listDataProvider = new ListDataProvider()
     }
 
     def "test createFavoriteItem() integrity"() {
@@ -48,9 +51,9 @@ class CreateFavoritesListItemServiceTest extends Specification {
 
         FavoriteListItemRequestTO listItemRequestTO = new FavoriteListItemRequestTO(ItemType.TCIN, LIST_CHANNEL.WEB, "35446", "item-note")
 
-        ListItemResponseTO listItemResponseTO = new ListItemResponseTO(listItemId, null, "35446", LIST_CHANNEL.WEB, "1234", "My Favorites", null, null, UnitOfMeasure.EACHES, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponseTO = listDataProvider.getListItem(listItemId, "1", LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
 
-        ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
+        ListResponseTO listResponseTO = listDataProvider.getListResponseTO(listId, "PENDING", "list-title")
 
         when:
         FavoriteListItemResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
@@ -74,9 +77,9 @@ class CreateFavoritesListItemServiceTest extends Specification {
 
         FavoriteListItemRequestTO listItemRequestTO = new FavoriteListItemRequestTO(ItemType.TCIN, LIST_CHANNEL.WEB, "35446", "item-note")
 
-        ListItemResponseTO listItemResponseTO = new ListItemResponseTO(listItemId, null, "35446", LIST_CHANNEL.WEB, "1234", "My Favorites", null, null, UnitOfMeasure.EACHES, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponseTO = listDataProvider.getListItem(listItemId, "1", LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
 
-        ListResponseTO listResponseTO = new ListResponseTO(listId, LIST_CHANNEL.WEB, null, "list-title", null, null, null, null, null, null, null, null, null, null, null, null)
+        ListResponseTO listResponseTO = listDataProvider.getListResponseTO(listId, "PENDING", "list-title")
 
         when:
         FavoriteListItemResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()

@@ -92,6 +92,9 @@ class ListItemHydrationManager(
         redskyResponseTO: RedskyResponseTO<ItemDetailVO>,
         listItems: List<ListItemResponseTO>
     ): List<FavoriteListItemGetResponseTO> {
+        if (redskyResponseTO.errors != null) {
+            logger.error("Exception from redsky item detail with variation hydration", redskyResponseTO.errors)
+        }
         if (redskyResponseTO.data == null ||
             redskyResponseTO.data.products.isNullOrEmpty()) {
             return listItems.map { FavoriteListItemGetResponseTO(it) }
