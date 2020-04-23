@@ -2,7 +2,7 @@ package com.tgt.favorites.service
 
 import com.tgt.favorites.api.util.ListDataProvider
 import com.tgt.favorites.transport.FavoriteListItemRequestTO
-import com.tgt.favorites.transport.FavoriteListItemResponseTO
+import com.tgt.favorites.transport.FavoriteListItemPostResponseTO
 import com.tgt.favorites.transport.FavouritesListResponseTO
 import com.tgt.favorites.transport.ItemRelationshipType
 import com.tgt.lists.cart.CartClient
@@ -56,7 +56,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
         ListResponseTO listResponseTO = listDataProvider.getListResponseTO(listId, "PENDING", "list-title")
 
         when:
-        FavoriteListItemResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
+        FavoriteListItemPostResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
 
         then:
 
@@ -82,7 +82,7 @@ class CreateFavoritesListItemServiceTest extends Specification {
         ListResponseTO listResponseTO = listDataProvider.getListResponseTO(listId, "PENDING", "list-title")
 
         when:
-        FavoriteListItemResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
+        FavoriteListItemPostResponseTO favouriteItemResponsesTO = createFavoriteListItemService.createFavoriteItem(guestId, 1357L, listItemRequestTO).block()
 
         then:
 

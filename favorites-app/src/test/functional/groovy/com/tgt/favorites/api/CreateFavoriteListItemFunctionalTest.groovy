@@ -1,12 +1,11 @@
 package com.tgt.favorites.api
 
-import com.tgt.favorites.transport.FavoriteListItemResponseTO
+import com.tgt.favorites.transport.FavoriteListItemPostResponseTO
 import com.tgt.favorites.util.BaseKafkaFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
 import com.tgt.favorites.util.FavoriteConstants
-import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE
@@ -49,7 +48,7 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
 
         when:
         HttpResponse<ListItemResponseTO> favouritesListItemResponse = client.toBlocking().exchange(
-            HttpRequest.POST(uri, JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), FavoriteListItemResponseTO)
+            HttpRequest.POST(uri, JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), FavoriteListItemPostResponseTO)
         def actualStatus = favouritesListItemResponse.status()
         def actual = favouritesListItemResponse.body()
 
@@ -113,7 +112,7 @@ class CreateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
 
         when:
         client.toBlocking().exchange(HttpRequest.POST(uri,
-            JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), FavoriteListItemResponseTO)
+            JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), FavoriteListItemPostResponseTO)
 
         then:
         def error = thrown(HttpClientResponseException)

@@ -1,6 +1,6 @@
 package com.tgt.favorites.service
 
-import com.tgt.favorites.transport.FavoriteListItemResponseTO
+import com.tgt.favorites.transport.FavoriteListItemPostResponseTO
 import com.tgt.lists.lib.api.service.UpdateListItemService
 import com.tgt.lists.lib.api.transport.ListItemUpdateRequestTO
 import com.tgt.lists.lib.api.util.GuestId
@@ -20,8 +20,8 @@ class UpdateFavoriteListItemService(
         listId: UUID,
         listItemId: ItemId,
         listItemUpdateRequestTO: ListItemUpdateRequestTO
-    ): Mono<FavoriteListItemResponseTO> {
+    ): Mono<FavoriteListItemPostResponseTO> {
         return updateListItemService.updateListItem(guestId, locationId, listId, listItemId, listItemUpdateRequestTO)
-            .map { FavoriteListItemResponseTO.toFavoriteListItemResponseTO(it) }
+            .map { FavoriteListItemPostResponseTO.toFavoriteListItemResponseTO(it) }
     }
 }

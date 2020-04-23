@@ -1,7 +1,7 @@
 package com.tgt.favorites.service
 
 import com.tgt.favorites.transport.FavoriteListItemRequestTO
-import com.tgt.favorites.transport.FavoriteListItemResponseTO
+import com.tgt.favorites.transport.FavoriteListItemPostResponseTO
 import com.tgt.favorites.transport.FavouritesListResponseTO
 import com.tgt.lists.lib.api.service.CreateListItemService
 import com.tgt.lists.lib.api.service.CreateListService
@@ -23,12 +23,12 @@ class CreateFavoriteDefaultListItemService(
         guestId: String,
         locationId: Long,
         favoriteListItemRequestTO: FavoriteListItemRequestTO
-    ): Mono<FavoriteListItemResponseTO> {
+    ): Mono<FavoriteListItemPostResponseTO> {
         return getDefaultFavoriteListService.getDefaultList(guestId, locationId)
             .switchIfEmpty {
                 createListService.createList(guestId, ListRequestTO(favoriteListItemRequestTO.channel,
                     defaultListTitle, locationId, defaultList = true)).map { FavouritesListResponseTO(it) }
             }.flatMap { createListItemService.createListItem(guestId, it.listId!!, locationId, favoriteListItemRequestTO.toListItemRequestTO()) }
-            .map { FavoriteListItemResponseTO.toFavoriteListItemResponseTO(it) }
+            .map { FavoriteListItemPostResponseTO.toFavoriteListItemResponseTO(it) }
     }
 }

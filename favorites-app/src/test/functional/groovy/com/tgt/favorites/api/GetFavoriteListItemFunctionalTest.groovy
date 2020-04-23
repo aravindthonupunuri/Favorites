@@ -3,7 +3,7 @@ package com.tgt.favorites.api
 import com.tgt.favorites.api.util.RedskyDataProvider
 import com.tgt.favorites.client.redsky.RedskyResponseTO
 import com.tgt.favorites.client.redsky.getitemhydration.ItemDetailVO
-import com.tgt.favorites.transport.FavoriteListItemGetResponseTO
+import com.tgt.favorites.transport.FavoriteListItemResponseTO
 import com.tgt.favorites.util.BaseFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
@@ -43,8 +43,8 @@ class GetFavoriteListItemFunctionalTest extends BaseFunctionalTest {
         RedskyResponseTO redskyResponseTO = new RedskyResponseTO(null, itemDetailVO)
 
         when:
-        HttpResponse<FavoriteListItemGetResponseTO> listItemResponse = client.toBlocking()
-            .exchange(HttpRequest.GET(uri).headers(getHeaders(guestId)), FavoriteListItemGetResponseTO)
+        HttpResponse<FavoriteListItemResponseTO> listItemResponse = client.toBlocking()
+            .exchange(HttpRequest.GET(uri).headers(getHeaders(guestId)), FavoriteListItemResponseTO)
         def actualStatus = listItemResponse.status()
         def actual = listItemResponse.body()
 

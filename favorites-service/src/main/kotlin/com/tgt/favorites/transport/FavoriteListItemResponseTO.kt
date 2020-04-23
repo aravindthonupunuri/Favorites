@@ -1,6 +1,8 @@
 package com.tgt.favorites.transport
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.tgt.favorites.client.redsky.getItemHydrationwithvariation.*
+import com.tgt.lists.cart.transport.Image
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
@@ -15,11 +17,19 @@ data class FavoriteListItemResponseTO(
     val tcin: String? = null,
     val itemTitle: String? = null,
     val itemNote: String? = null,
+    val images: Image? = null,
+    val averageOverallRating: Double? = 0.0,
+    val totalReviewCount: Int? = 0,
+    val item: Item? = null,
+    val availableToPromise: AvailableToPromise?,
+    val price: Price?,
+    val variationHierarchy: List<VariationHierarchy>?,
     val addedTs: String? = null,
     val lastModifiedTs: String? = null
 ) {
     constructor(
-        listItemResponseTO: ListItemResponseTO
+        listItemResponseTO: ListItemResponseTO,
+        product: Product? = null
     ) : this(
         listItemId = listItemResponseTO.listItemId,
         itemType = listItemResponseTO.itemType,
@@ -27,14 +37,14 @@ data class FavoriteListItemResponseTO(
         tcin = listItemResponseTO.tcin,
         itemTitle = listItemResponseTO.itemTitle,
         itemNote = listItemResponseTO.itemNote,
+        images = listItemResponseTO.images,
+        averageOverallRating = product?.ratingsAndReviews?.statistics?.rating?.average,
+        totalReviewCount = product?.ratingsAndReviews?.statistics?.reviewCount,
+        price = product?.price,
+        variationHierarchy = product?.variationHierarchy,
+        item = product?.item,
+        availableToPromise = product?.availableToPromise,
         addedTs = listItemResponseTO.addedTs,
         lastModifiedTs = listItemResponseTO.lastModifiedTs
     )
-
-    companion object {
-        @JvmStatic
-        fun toFavoriteListItemResponseTO(baseList: ListItemResponseTO): FavoriteListItemResponseTO {
-            return FavoriteListItemResponseTO(baseList)
-        }
-    }
 }

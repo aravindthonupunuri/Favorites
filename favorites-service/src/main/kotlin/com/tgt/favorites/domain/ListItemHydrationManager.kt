@@ -3,7 +3,7 @@ package com.tgt.favorites.domain
 import com.tgt.favorites.client.redsky.RedSkyClient
 import com.tgt.favorites.client.redsky.RedskyResponseTO
 import com.tgt.favorites.client.redsky.getitemhydration.ItemDetailVO
-import com.tgt.favorites.transport.FavoriteListItemGetResponseTO
+import com.tgt.favorites.transport.FavoriteListItemResponseTO
 import com.tgt.favorites.transport.ItemRelationshipType
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
 import io.micronaut.context.annotation.Value
@@ -23,7 +23,7 @@ class ListItemHydrationManager(
 
     private val logger = KotlinLogging.logger { ListItemHydrationManager::class.java.name }
 
-    fun getItemHydration(locationId: Long, listItems: List<ListItemResponseTO>?): Mono<List<FavoriteListItemGetResponseTO>> {
+    fun getItemHydration(locationId: Long, listItems: List<ListItemResponseTO>?): Mono<List<FavoriteListItemResponseTO>> {
         if (listItems.isNullOrEmpty()) {
             return Mono.just(emptyList())
         }
@@ -35,7 +35,7 @@ class ListItemHydrationManager(
     fun getItemDetail(
         locationId: Long,
         listItems: List<ListItemResponseTO>
-    ): Mono<List<FavoriteListItemGetResponseTO>> {
+    ): Mono<List<FavoriteListItemResponseTO>> {
         val items = listItems.filter { !isVariationParent(it.relationshipType) }
         if (items.isEmpty()) {
             return Mono.just(emptyList())
@@ -57,7 +57,7 @@ class ListItemHydrationManager(
     fun getItemDetailWithVariation(
         locationId: Long,
         listItems: List<ListItemResponseTO>
-    ): Mono<List<FavoriteListItemGetResponseTO>> {
+    ): Mono<List<FavoriteListItemResponseTO>> {
         val items = listItems.filter { isVariationParent(it.relationshipType) }
         if (items.isEmpty()) {
             return Mono.just(emptyList())
@@ -75,9 +75,9 @@ class ListItemHydrationManager(
                             logger.error("Exception from redsky item detail with variation hydration", it.errors)
                         }
                         if (it.data == null) {
-                            FavoriteListItemGetResponseTO(listItem)
+                            FavoriteListItemResponseTO(listItem)
                         } else {
-                            FavoriteListItemGetResponseTO(listItem, it.data.product)
+                            FavoriteListItemResponseTO(listItem, it.data.product)
                         }
                     }
             }.collectList()
@@ -91,18 +91,18 @@ class ListItemHydrationManager(
     private fun toFavoriteListItemGetResponseTO(
         redskyResponseTO: RedskyResponseTO<ItemDetailVO>,
         listItems: List<ListItemResponseTO>
-    ): List<FavoriteListItemGetResponseTO> {
+    ): List<FavoriteListItemResponseTO> {
         if (redskyResponseTO.errors != null) {
             logger.error("Exception from redsky item detail with hydration", redskyResponseTO.errors)
         }
         if (redskyResponseTO.data == null ||
             redskyResponseTO.data.products.isNullOrEmpty()) {
-            return listItems.map { FavoriteListItemGetResponseTO(it) }
+            return listItems.map { FavoriteListItemResponseTO(it) }
         }
         val set = redskyResponseTO.data.products.map { it.tcin }.toSet()
-        val failedItems = listItems.filter { !set.contains(it.tcin) }.map { FavoriteListItemGetResponseTO(it) }
+        val failedItems = listItems.filter { !set.contains(it.tcin) }.map { FavoriteListItemResponseTO(it) }
         val successItems = redskyResponseTO.data.products
-            .map { product -> FavoriteListItemGetResponseTO(listItems.first { it.tcin == product.tcin }, product) }
+            .map { product -> FavoriteListItemResponseTO(listItems.first { it.tcin == product.tcin }, product) }
         return listOf(failedItems, successItems).flatten()
     }
 }

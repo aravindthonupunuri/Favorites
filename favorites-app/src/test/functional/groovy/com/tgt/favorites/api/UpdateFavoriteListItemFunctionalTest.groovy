@@ -1,11 +1,10 @@
 package com.tgt.favorites.api
 
-import com.tgt.favorites.transport.FavoriteListItemResponseTO
+import com.tgt.favorites.transport.FavoriteListItemPostResponseTO
 import com.tgt.favorites.util.BaseKafkaFunctionalTest
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
 import com.tgt.lists.lib.api.transport.UserItemMetaDataTO
 import com.tgt.favorites.util.FavoriteConstants
-import com.tgt.lists.lib.api.util.Constants
 import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_ITEM_STATE
 import com.tgt.shoppinglist.util.HelperKt
@@ -52,8 +51,8 @@ class UpdateFavoriteListItemFunctionalTest extends BaseKafkaFunctionalTest {
         def updatedListItemMetaData = cartDataProvider.getListItemMetaDataFromCart(updatedCartItemResponse.metadata)
 
         when:
-        HttpResponse<FavoriteListItemResponseTO> listItemResponse = client.toBlocking().exchange(
-            HttpRequest.PUT(uri, JsonOutput.toJson(listItemUpdateRequest)).headers(getHeaders(guestId)), FavoriteListItemResponseTO)
+        HttpResponse<FavoriteListItemPostResponseTO> listItemResponse = client.toBlocking().exchange(
+            HttpRequest.PUT(uri, JsonOutput.toJson(listItemUpdateRequest)).headers(getHeaders(guestId)), FavoriteListItemPostResponseTO)
         def actualStatus = listItemResponse.status()
         def actual = listItemResponse.body()
 

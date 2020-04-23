@@ -1,7 +1,7 @@
 package com.tgt.favorites.service
 
 import com.tgt.favorites.transport.FavoriteListItemRequestTO
-import com.tgt.favorites.transport.FavoriteListItemResponseTO
+import com.tgt.favorites.transport.FavoriteListItemPostResponseTO
 import com.tgt.lists.lib.api.service.CreateListItemService
 import com.tgt.lists.lib.api.util.GuestId
 import reactor.core.publisher.Mono
@@ -18,8 +18,8 @@ class CreateFavoriteListItemService(
             listId: UUID,
             locationId: Long,
             favoriteListItemRequestTO: FavoriteListItemRequestTO
-        ): Mono<FavoriteListItemResponseTO> {
+        ): Mono<FavoriteListItemPostResponseTO> {
             return createListItemService.createListItem(guestId, listId, locationId, favoriteListItemRequestTO.toListItemRequestTO())
-                .map { FavoriteListItemResponseTO.toFavoriteListItemResponseTO(it) }
+                .map { FavoriteListItemPostResponseTO.toFavoriteListItemResponseTO(it) }
         }
 }

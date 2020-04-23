@@ -1,7 +1,7 @@
 package com.tgt.favorites.service
 
 import com.tgt.favorites.domain.ListItemHydrationManager
-import com.tgt.favorites.transport.FavoriteListItemGetResponseTO
+import com.tgt.favorites.transport.FavoriteListItemResponseTO
 import com.tgt.lists.lib.api.service.GetListItemService
 import reactor.core.publisher.Mono
 import java.util.*
@@ -18,7 +18,7 @@ class GetFavoriteListItemService(
         locationId: Long,
         listId: UUID,
         listItemId: UUID
-    ): Mono<FavoriteListItemGetResponseTO> {
+    ): Mono<FavoriteListItemResponseTO> {
         return getListItemService.getListItemService(guestId, locationId, listId, listItemId)
             .flatMap { listItemHydrationManager.getItemDetail(locationId, listOf(it)).map { it.first() } }
     }

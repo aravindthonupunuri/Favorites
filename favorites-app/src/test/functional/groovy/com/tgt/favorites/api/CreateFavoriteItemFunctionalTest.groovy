@@ -1,7 +1,7 @@
 package com.tgt.favorites.api
 
 import com.tgt.favorites.util.FavoriteConstants
-import com.tgt.favorites.transport.FavoriteListItemResponseTO
+import com.tgt.favorites.transport.FavoriteListItemPostResponseTO
 import com.tgt.favorites.util.BaseFunctionalTest
 import com.tgt.lists.cart.transport.CartType
 import com.tgt.lists.lib.api.transport.ListItemMetaDataTO
@@ -77,8 +77,8 @@ class CreateFavoriteItemFunctionalTest extends BaseFunctionalTest {
         def pendingCartContentsResponse = cartDataProvider.getCartContentsResponse(pendingCartResponse, [pendingCartItemResponse1, pendingCartItemResponse2])
         def addcartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, [cartItemResponse])
         when:
-        HttpResponse<FavoriteListItemResponseTO> listItemResponse = client.toBlocking()
-            .exchange(HttpRequest.POST(uri, JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), FavoriteListItemResponseTO)
+        HttpResponse<FavoriteListItemPostResponseTO> listItemResponse = client.toBlocking()
+            .exchange(HttpRequest.POST(uri, JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), FavoriteListItemPostResponseTO)
         def actualStatus = listItemResponse.status()
         def actual = listItemResponse.body()
 
@@ -142,8 +142,8 @@ class CreateFavoriteItemFunctionalTest extends BaseFunctionalTest {
             LIST_CHANNEL.WEB, CartType.LIST, "My list", "My first list", null, cartDataProvider.getMetaData(metadata, new UserMetaDataTO()))
         def addcartContentsResponse = cartDataProvider.getCartContentsResponse(cartResponse, [cartItemResponse])
         when:
-        HttpResponse<FavoriteListItemResponseTO> listItemResponse = client.toBlocking()
-            .exchange(HttpRequest.POST(uri, JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), FavoriteListItemResponseTO)
+        HttpResponse<FavoriteListItemPostResponseTO> listItemResponse = client.toBlocking()
+            .exchange(HttpRequest.POST(uri, JsonOutput.toJson(listItemRequest)).headers(getHeaders(guestId)), FavoriteListItemPostResponseTO)
         def actualStatus = listItemResponse.status()
         def actual = listItemResponse.body()
 

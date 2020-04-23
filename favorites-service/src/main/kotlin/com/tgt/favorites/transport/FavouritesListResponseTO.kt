@@ -15,11 +15,11 @@ data class FavouritesListResponseTO(
     @field:NotEmpty(message = "List title must not be empty") val listTitle: String?,
     val shortDescription: String?,
     val defaultList: Boolean? = false,
-    val listItems: List<FavoriteListItemGetResponseTO>? = null,
+    val listItems: List<FavoriteListItemResponseTO>? = null,
     val addedTs: String?,
     val lastModifiedTs: String?
 ) {
-    constructor(listResponseTO: ListResponseTO, favoriteListItems: List<FavoriteListItemGetResponseTO>? = null) : this(
+    constructor(listResponseTO: ListResponseTO, favoriteListItems: List<FavoriteListItemResponseTO>? = null) : this(
         listId = listResponseTO.listId, channel = listResponseTO.channel, listType = listResponseTO.listType,
         listTitle = listResponseTO.listTitle, shortDescription = listResponseTO.shortDescription,
         defaultList = listResponseTO.defaultList, listItems = favoriteListItems,

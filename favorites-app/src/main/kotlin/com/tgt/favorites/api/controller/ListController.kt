@@ -225,20 +225,20 @@ class ListController(
      */
     @Get("/{list_id}/list_items/{list_item_id}")
     @Status(HttpStatus.OK)
-    @ApiResponse(content = [Content(mediaType = "application/json", schema = Schema(implementation = FavoriteListItemGetResponseTO::class))])
+    @ApiResponse(content = [Content(mediaType = "application/json", schema = Schema(implementation = FavoriteListItemResponseTO::class))])
     fun getListItem(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @QueryValue("location_id") locationId: Long?,
         @PathVariable("list_id") listId: UUID,
         @PathVariable("list_item_id") listItemId: UUID
-    ): Mono<MutableHttpResponse<FavoriteListItemGetResponseTO>> {
+    ): Mono<MutableHttpResponse<FavoriteListItemResponseTO>> {
         if (locationId == null) {
             throw BadRequestException(AppErrorCodes.BAD_REQUEST_ERROR_CODE(listOf("location_id is incorrect, can’t be null")))
         }
         return getFavoriteListItemService.getListItem(guestId, locationId, listId, listItemId).zipWith(Mono.subscriberContext())
             .map {
                 if (it.t2.get<ContextContainer>(CONTEXT_OBJECT).partialResponse) {
-                    HttpResponse.status<FavoriteListItemGetResponseTO>(HttpStatus.PARTIAL_CONTENT).body(it.t1)
+                    HttpResponse.status<FavoriteListItemResponseTO>(HttpStatus.PARTIAL_CONTENT).body(it.t1)
                 } else {
                     HttpResponse.ok(it.t1)
                 }
@@ -260,7 +260,7 @@ class ListController(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @PathVariable("list_id") listId: UUID,
         @Valid @Body favoriteListItemRequestTO: FavoriteListItemRequestTO
-    ): Mono<FavoriteListItemResponseTO> {
+    ): Mono<FavoriteListItemPostResponseTO> {
         return createFavoriteListItemService.createListItem(guestId, listId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO)
     }
 
@@ -275,7 +275,7 @@ class ListController(
     fun createFavoriteListItem(
         @Header(FavoriteConstants.PROFILE_ID) guestId: String,
         @Valid @Body favoriteListItemRequestTO: FavoriteListItemRequestTO
-    ): Mono<FavoriteListItemResponseTO> {
+    ): Mono<FavoriteListItemPostResponseTO> {
         return createFavoriteDefaultListItemService.createFavoriteItem(guestId, FavoriteConstants.LOCATION_ID, favoriteListItemRequestTO)
     }
 
@@ -312,7 +312,7 @@ class ListController(
         @PathVariable("list_id") listId: UUID,
         @PathVariable("list_item_id") listItemId: UUID,
         @Valid @Body favoriteListItemUpdateRequestTO: FavoriteListItemUpdateRequestTO
-    ): Mono<FavoriteListItemResponseTO> {
+    ): Mono<FavoriteListItemPostResponseTO> {
         return updateFavoriteListItemService.updateFavoriteListItem(guestId, FavoriteConstants.LOCATION_ID,
             listId, listItemId, favoriteListItemUpdateRequestTO.toListItemUpdateRequestTO())
     }
