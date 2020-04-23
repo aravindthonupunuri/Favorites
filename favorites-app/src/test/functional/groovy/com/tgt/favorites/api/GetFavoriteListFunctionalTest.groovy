@@ -76,21 +76,25 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         actual.listItems[0].price == itemDetailVO.products[0].price
         actual.listItems[0].averageOverallRating == itemDetailVO.products[0].ratingsAndReviews.statistics.rating.average
         actual.listItems[0].totalReviewCount == itemDetailVO.products[0].ratingsAndReviews.statistics.reviewCount
+        actual.listItems[0].availableToPromise == itemDetailVO.products[0].availableToPromise
         actual.listItems[1].tcin == tcin2
         actual.listItems[1].item == itemDetailVO.products[1].item
         actual.listItems[1].price == itemDetailVO.products[1].price
         actual.listItems[1].averageOverallRating == itemDetailVO.products[1].ratingsAndReviews.statistics.rating.average
         actual.listItems[1].totalReviewCount == itemDetailVO.products[1].ratingsAndReviews.statistics.reviewCount
+        actual.listItems[1].availableToPromise == itemDetailVO.products[1].availableToPromise
         actual.listItems[2].tcin == tcin3
         actual.listItems[2].item == itemDetailVO.products[2].item
         actual.listItems[2].price == itemDetailVO.products[2].price
         actual.listItems[2].averageOverallRating == itemDetailVO.products[2].ratingsAndReviews.statistics.rating.average
         actual.listItems[2].totalReviewCount == itemDetailVO.products[2].ratingsAndReviews.statistics.reviewCount
+        actual.listItems[2].availableToPromise == itemDetailVO.products[2].availableToPromise
         actual.listItems[3].tcin == tcin4
         actual.listItems[3].item == itemDetailVO.products[3].item
         actual.listItems[3].price == itemDetailVO.products[3].price
         actual.listItems[3].averageOverallRating == itemDetailVO.products[3].ratingsAndReviews.statistics.rating.average
         actual.listItems[3].totalReviewCount == itemDetailVO.products[3].ratingsAndReviews.statistics.reviewCount
+        actual.listItems[3].availableToPromise == itemDetailVO.products[3].availableToPromise
 
         2 * mockServer.get({ path -> path.contains(cartUri) }, _) >> [status: 200, body: response] //TODO: check why two calls here
         1 * mockServer.get({ path -> path.contains("/redsky_aggregations/v1/lists/favorites_list_item_hydration_v1")}, _) >> [status: 200, body: redskyResponseTO]
@@ -156,11 +160,13 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         actual.listItems[0].price == itemDetailVO.products[0].price
         actual.listItems[0].averageOverallRating == itemDetailVO.products[0].ratingsAndReviews.statistics.rating.average
         actual.listItems[0].totalReviewCount == itemDetailVO.products[0].ratingsAndReviews.statistics.reviewCount
+        actual.listItems[0].availableToPromise == itemDetailVO.products[0].availableToPromise
         actual.listItems[1].tcin == tcin4
         actual.listItems[1].item == itemDetailVO.products[1].item
         actual.listItems[1].price == itemDetailVO.products[1].price
         actual.listItems[1].averageOverallRating == itemDetailVO.products[1].ratingsAndReviews.statistics.rating.average
         actual.listItems[1].totalReviewCount == itemDetailVO.products[1].ratingsAndReviews.statistics.reviewCount
+        actual.listItems[1].availableToPromise == itemDetailVO.products[1].availableToPromise
 
         2 * mockServer.get({ path -> path.contains(cartUri) }, _) >> [status: 200, body: response] //TODO: check why two calls here
         1 * mockServer.get({ path -> path.contains("/redsky_aggregations/v1/lists/favorites_list_item_hydration_v1")}, _) >> [status: 200, body: redskyResponseTO]
@@ -220,11 +226,13 @@ class GetFavoriteListFunctionalTest extends BaseFunctionalTest {
         actual.listItems[0].price == itemDetailVO.products[0].price
         actual.listItems[0].averageOverallRating == itemDetailVO.products[0].ratingsAndReviews.statistics.rating.average
         actual.listItems[0].totalReviewCount == itemDetailVO.products[0].ratingsAndReviews.statistics.reviewCount
+        actual.listItems[0].availableToPromise == itemDetailVO.products[0].availableToPromise
         actual.listItems[1].tcin == tcin2
         actual.listItems[1].item == itemDetailVO.products[1].item
         actual.listItems[1].price == itemDetailVO.products[1].price
         actual.listItems[1].averageOverallRating == itemDetailVO.products[1].ratingsAndReviews.statistics.rating.average
         actual.listItems[1].totalReviewCount == itemDetailVO.products[1].ratingsAndReviews.statistics.reviewCount
+        actual.listItems[1].availableToPromise == itemDetailVO.products[1].availableToPromise
 
         2 * mockServer.get({ path -> path.contains(cartUri) }, _) >> [status: 200, body: response] //TODO: check why two calls here
         1 * mockServer.get({ path -> path.contains("/redsky_aggregations/v1/lists/favorites_list_item_hydration_v1")}, _) >> [status: 200, body: redskyResponseTO]

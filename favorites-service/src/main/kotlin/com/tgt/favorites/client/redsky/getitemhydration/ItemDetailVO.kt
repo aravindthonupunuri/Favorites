@@ -4,6 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.tgt.favorites.client.redsky.getItemHydrationwithvariation.Product
 
 data class ItemDetailVO(
-    @JsonProperty("products")
+    @JsonProperty("product_summaries")
     val products: List<Product>?
 )

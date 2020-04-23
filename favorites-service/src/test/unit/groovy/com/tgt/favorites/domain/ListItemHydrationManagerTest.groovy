@@ -117,16 +117,19 @@ class ListItemHydrationManagerTest extends Specification {
         actual[0].price == itemDetailVO.products[0].price
         actual[0].averageOverallRating == itemDetailVO.products[0].ratingsAndReviews.statistics.rating.average
         actual[0].totalReviewCount == itemDetailVO.products[0].ratingsAndReviews.statistics.reviewCount
+        actual[0].availableToPromise == itemDetailVO.products[0].availableToPromise
         actual[1].tcin == tcin2
         actual[1].item == itemDetailVO.products[1].item
         actual[1].price == itemDetailVO.products[1].price
         actual[1].averageOverallRating == itemDetailVO.products[1].ratingsAndReviews.statistics.rating.average
         actual[1].totalReviewCount == itemDetailVO.products[1].ratingsAndReviews.statistics.reviewCount
+        actual[1].availableToPromise == itemDetailVO.products[1].availableToPromise
         actual[2].tcin == tcin3
         actual[2].item == itemDetailVO.products[2].item
         actual[2].price == itemDetailVO.products[2].price
         actual[2].averageOverallRating == itemDetailVO.products[2].ratingsAndReviews.statistics.rating.average
         actual[2].totalReviewCount == itemDetailVO.products[2].ratingsAndReviews.statistics.reviewCount
+        actual[2].availableToPromise == itemDetailVO.products[2].availableToPromise
     }
 
     def "Test getItemHydration when there is no variation child and redsky returns no data"() {
@@ -256,16 +259,17 @@ class ListItemHydrationManagerTest extends Specification {
         actual[0].price == itemDetailVO.products[0].price
         actual[0].averageOverallRating == itemDetailVO.products[0].ratingsAndReviews.statistics.rating.average
         actual[0].totalReviewCount == itemDetailVO.products[0].ratingsAndReviews.statistics.reviewCount
+        actual[0].availableToPromise == itemDetailVO.products[0].availableToPromise
         actual[1].tcin == tcin3
         actual[1].item == itemDetailVO.products[1].item
         actual[1].price == itemDetailVO.products[1].price
         actual[1].averageOverallRating == itemDetailVO.products[1].ratingsAndReviews.statistics.rating.average
         actual[1].totalReviewCount == itemDetailVO.products[1].ratingsAndReviews.statistics.reviewCount
+        actual[1].availableToPromise == itemDetailVO.products[1].availableToPromise
         actual[2].tcin == tcin1
         actual[2].item == itemDetailWithVariationVO1.product.item
         actual[2].price == itemDetailWithVariationVO1.product.price
         actual[2].averageOverallRating == itemDetailWithVariationVO1.product.ratingsAndReviews.statistics.rating.average
         actual[2].totalReviewCount == itemDetailWithVariationVO1.product.ratingsAndReviews.statistics.reviewCount
-
     }
 }

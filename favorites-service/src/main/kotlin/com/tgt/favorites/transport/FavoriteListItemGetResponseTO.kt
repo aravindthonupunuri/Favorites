@@ -21,6 +21,7 @@ data class FavoriteListItemGetResponseTO(
     val averageOverallRating: Double? = 0.0,
     val totalReviewCount: Int? = 0,
     val item: Item? = null,
+    val availableToPromise: AvailableToPromise?,
     val price: Price?,
     val variationHierarchy: List<VariationHierarchy>?,
     val addedTs: String? = null,
@@ -42,6 +43,7 @@ data class FavoriteListItemGetResponseTO(
         price = product?.price,
         variationHierarchy = product?.variationHierarchy,
         item = product?.item,
+        availableToPromise = product?.availableToPromise,
         addedTs = listItemResponseTO.addedTs,
         lastModifiedTs = listItemResponseTO.lastModifiedTs
     )
