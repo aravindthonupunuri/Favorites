@@ -1,6 +1,7 @@
 package com.tgt.favorites.client.redsky.getItemHydrationwithvariation
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
 
 data class ItemDetailWithVariationVO(
     @JsonProperty("product")
@@ -39,7 +40,7 @@ data class Item(
 
 data class Fulfillment(
     @JsonProperty("is_market_place")
-    val isMarketPlace: Boolean? = false
+    @field:Schema(name = "is_market_place") val marketPlace: Boolean? = false
 )
 
 data class Vendor(
@@ -57,7 +58,7 @@ data class Price(
     @JsonProperty("hide_price")
     val hidePrice: String?,
     @JsonProperty("is_current_price_range")
-    val isCurrentPriceRange: Boolean? = false,
+    @field:Schema(name = "is_current_price_range") val currentPriceRange: Boolean? = false,
     @JsonProperty("unmasked_formatted_comparison_price")
     val unmaskedFormattedComparisonPrice: String?,
     @JsonProperty("unmasked_formatted_current_price")
@@ -94,5 +95,6 @@ data class AvailableToPromise(
 data class Qualitative(
     @JsonProperty("street_date") val streetDate: String?,
     @JsonProperty("availability_status") val availabilityStatus: String?,
-    @JsonProperty("is_out_of_stock_in_all_store_locations") val isOutOfStockInAllStoreLocations: Boolean? = false
+    @JsonProperty("is_out_of_stock_in_all_store_locations")
+    @field:Schema(name = "is_out_of_stock_in_all_store_locations") val outOfStockInAllStoreLocations: Boolean? = false
 )
