@@ -445,7 +445,7 @@ paths:
         '201':
           description: list item response transfer object
           schema:
-            $ref: '#/definitions/FavoriteListItemResponseTO'
+            $ref: '#/definitions/FavoriteListItemPostResponseTO'
         '400':
           description: Bad Request
           schema:
@@ -500,7 +500,7 @@ paths:
         '200':
           description: list item response transfer object
           schema:
-            $ref: '#/definitions/FavoriteListItemGetResponseTO'
+            $ref: '#/definitions/FavoriteListItemResponseTO'
         '400':
           description: Bad Request
           schema:
@@ -553,7 +553,7 @@ paths:
         '200':
           description: list item response transfer object
           schema:
-            $ref: '#/definitions/FavoriteListItemResponseTO'
+            $ref: '#/definitions/FavoriteListItemPostResponseTO'
         '400':
           description: Bad Request
           schema:
@@ -693,7 +693,7 @@ paths:
         '201':
           description: list item response transfer object
           schema:
-            $ref: '#/definitions/FavoriteListItemResponseTO'
+            $ref: '#/definitions/FavoriteListItemPostResponseTO'
         '400':
           description: Bad Request
           schema:
@@ -710,7 +710,7 @@ definitions:
       item_note:
         minLength: 1
         type: string
-  FavoriteListItemGetResponseTO:
+  FavoriteListItemResponseTO:
     type: object
     required:
       - list_item_id
@@ -842,7 +842,7 @@ definitions:
     properties:
       vendor_name:
         type: string
-  FavoriteListItemResponseTO:
+  FavoriteListItemPostResponseTO:
     type: object
     required:
       - list_item_id
@@ -918,7 +918,7 @@ definitions:
       list_items:
         type: array
         items:
-          $ref: '#/definitions/FavoriteListItemGetResponseTO'
+          $ref: '#/definitions/FavoriteListItemResponseTO'
       added_ts:
         type: string
       last_modified_ts:
