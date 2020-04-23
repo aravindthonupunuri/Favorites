@@ -11,12 +11,13 @@ class ListDataProvider {
     fun getListItem(
         listItemId: UUID,
         tcin: String?,
+        channel: LIST_CHANNEL,
         itemTitle: String?,
         promotionId: String?,
         itemType: ItemType,
         itemRelationship: String?
     ): ListItemResponseTO {
-        return ListItemResponseTO(listItemId = listItemId, tcin = tcin, itemTitle = itemTitle,
+        return ListItemResponseTO(listItemId = listItemId, tcin = tcin, itemTitle = itemTitle, channel = channel,
             itemRefId = populateItemRefId(itemType, tcin, itemTitle, promotionId),
             itemType = itemType, relationshipType = itemRelationship)
     }

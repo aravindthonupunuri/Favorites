@@ -1,6 +1,8 @@
 package com.tgt.favorites.service
 
+import com.tgt.favorites.api.util.ListDataProvider
 import com.tgt.favorites.transport.GuestFavoritesResponseTO
+import com.tgt.favorites.transport.ItemRelationshipType
 import com.tgt.favorites.transport.ListItemDetailsTO
 import com.tgt.lists.cart.CartClient
 import com.tgt.lists.common.components.exception.BadRequestException
@@ -11,6 +13,7 @@ import com.tgt.lists.lib.api.service.GetAllListService
 import com.tgt.lists.lib.api.service.GetListService
 import com.tgt.lists.lib.api.transport.ListGetAllResponseTO
 import com.tgt.lists.lib.api.transport.ListItemResponseTO
+import com.tgt.lists.lib.api.util.ItemType
 import com.tgt.lists.lib.api.util.LIST_CHANNEL
 import reactor.core.publisher.Mono
 import spock.lang.Specification
@@ -24,6 +27,7 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
     GuestPreferenceRepository guestPreferenceRepository
     CartClient cartClient
     ContextContainerManager contextContainerManager
+    ListDataProvider listDataProvider
 
     def setup() {
         cartClient = Mock(CartClient)
@@ -33,6 +37,7 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         guestPreferenceSortOrderManager = new GuestPreferenceSortOrderManager(guestPreferenceRepository)
         contextContainerManager = new ContextContainerManager()
         getFavoritesTcinService = new GetFavoritesTcinService(getAllListService, 2)
+        listDataProvider = new ListDataProvider()
     }
 
     def "test getFavoritesTcin() integrity"() {
@@ -48,10 +53,10 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(listId1, "list1", listItemId2)
         ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(listId2, "list2", listItemId2)
 
-        ListItemResponseTO listItemResponse1TO = new ListItemResponseTO(listItemId1, null, "35446", LIST_CHANNEL.WEB, "1234", "item1", null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse2TO = new ListItemResponseTO(listItemId2, null, "35446", LIST_CHANNEL.WEB, "5678", "item2", null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse3TO = new ListItemResponseTO(listItemId1, null, "35446", LIST_CHANNEL.WEB, "1234", "item3", null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse4TO = new ListItemResponseTO(listItemId2, null, "35446", LIST_CHANNEL.WEB, "5678", "item4", null, null, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponse1TO = listDataProvider.getListItem(listItemId1, "1234", LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
+        ListItemResponseTO listItemResponse2TO = listDataProvider.getListItem(listItemId2, "5678", LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
+        ListItemResponseTO listItemResponse3TO = listDataProvider.getListItem(listItemId1, "1234", LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
+        ListItemResponseTO listItemResponse4TO = listDataProvider.getListItem(listItemId2, "5678", LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
 
         ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list1", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse1TO, listItemResponse2TO], null)
         ListGetAllResponseTO listGetAllResponse2TO = new ListGetAllResponseTO(listId2, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list2", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse3TO, listItemResponse4TO], null)
@@ -84,10 +89,10 @@ class GetTcinsFromFavouritesServiceTest extends Specification {
         ListItemDetailsTO listItemDetails3TO = new ListItemDetailsTO(listId1, "list1", listItemId2)
         ListItemDetailsTO listItemDetails4TO = new ListItemDetailsTO(listId2, "list2", listItemId2)
 
-        ListItemResponseTO listItemResponse1TO = new ListItemResponseTO(listItemId1, null, "35446", LIST_CHANNEL.WEB, "1234", "item1", null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse2TO = new ListItemResponseTO(listItemId2, null, "35446", LIST_CHANNEL.WEB, "5678", "item2", null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse3TO = new ListItemResponseTO(listItemId1, null, "35446", LIST_CHANNEL.WEB, "1234", "item3", null, null, null, null, null, null, 0, null, null, null, null, null, null)
-        ListItemResponseTO listItemResponse4TO = new ListItemResponseTO(listItemId2, null, "35446", LIST_CHANNEL.WEB, "5678", "item4", null, null, null, null, null, null, 0, null, null, null, null, null, null)
+        ListItemResponseTO listItemResponse1TO = listDataProvider.getListItem(listItemId1, "1234", LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
+        ListItemResponseTO listItemResponse2TO = listDataProvider.getListItem(listItemId2, "5678", LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
+        ListItemResponseTO listItemResponse3TO = listDataProvider.getListItem(listItemId1, "1234", LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
+        ListItemResponseTO listItemResponse4TO = listDataProvider.getListItem(listItemId2, "5678", LIST_CHANNEL.WEB, "first", null, ItemType.TCIN, ItemRelationshipType.VPC.value)
 
         ListGetAllResponseTO listGetAllResponse1TO = new ListGetAllResponseTO(listId1, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list1", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse1TO, listItemResponse2TO], null)
         ListGetAllResponseTO listGetAllResponse2TO = new ListGetAllResponseTO(listId2, UUID.randomUUID(), LIST_CHANNEL.WEB, "SHOPPING", "list2", false, "dd", "1", null, null, null, 100, 1, 2, 3, [listItemResponse3TO, listItemResponse4TO], null)
