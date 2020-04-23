@@ -60,6 +60,7 @@ class GetFavoriteListItemFunctionalTest extends BaseFunctionalTest {
         actual.price == itemDetailVO.products[0].price
         actual.averageOverallRating == itemDetailVO.products[0].ratingsAndReviews.statistics.rating.average
         actual.totalReviewCount == itemDetailVO.products[0].ratingsAndReviews.statistics.reviewCount
+        actual.availableToPromise == itemDetailVO.products[0].availableToPromise
 
         1 * mockServer.get({ path -> path.contains(getCartContentURI(cartId))}, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartContentsResponse]
         1 * mockServer.get({ path -> path.contains(cartUri) }, { headers -> checkHeaders(headers) }) >> [status: 200, body: cartItemResponse]

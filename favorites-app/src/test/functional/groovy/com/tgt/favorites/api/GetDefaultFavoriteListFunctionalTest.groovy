@@ -70,11 +70,13 @@ class GetDefaultFavoriteListFunctionalTest extends BaseFunctionalTest {
         actual.listItems[0].price == itemDetailVO.products[0].price
         actual.listItems[0].averageOverallRating == itemDetailVO.products[0].ratingsAndReviews.statistics.rating.average
         actual.listItems[0].totalReviewCount == itemDetailVO.products[0].ratingsAndReviews.statistics.reviewCount
+        actual.listItems[0].availableToPromise == itemDetailVO.products[0].availableToPromise
         actual.listItems[1].tcin == tcin2
         actual.listItems[1].item == itemDetailVO.products[1].item
         actual.listItems[1].price == itemDetailVO.products[1].price
         actual.listItems[1].averageOverallRating == itemDetailVO.products[1].ratingsAndReviews.statistics.rating.average
         actual.listItems[1].totalReviewCount == itemDetailVO.products[1].ratingsAndReviews.statistics.reviewCount
+        actual.listItems[1].availableToPromise == itemDetailVO.products[1].availableToPromise
 
         1 * mockServer.get({ path -> path.contains(getCartURI(guestId))},{ headers -> checkHeaders(headers) }) >> [status: 200, body: [pendingCartResponse]]
         1 * mockServer.get({ path -> path.contains("/carts/v4/cart_contents/" + listId) }, _) >> [status: 200, body: pendingCartContentsResponse]

@@ -742,6 +742,8 @@ definitions:
         $ref: '#/definitions/Item'
       price:
         $ref: '#/definitions/Price'
+      available_to_promise:
+        $ref: '#/definitions/AvailableToPromise'
       variation_hierarchy:
         type: array
         items:
@@ -767,6 +769,20 @@ definitions:
         type: string
       alternate_images:
         type: string
+  AvailableToPromise:
+    type: object
+    properties:
+      qualitative:
+        $ref: '#/definitions/Qualitative'
+  Qualitative:
+    type: object
+    properties:
+      street_date:
+        type: string
+      availability_status:
+        type: string
+      is_out_of_stock_in_all_store_locations:
+        type: boolean
   Price:
     type: object
     properties:
