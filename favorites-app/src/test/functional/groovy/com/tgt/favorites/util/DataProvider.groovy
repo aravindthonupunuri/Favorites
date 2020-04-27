@@ -14,6 +14,8 @@ class DataProvider {
 
     static ObjectMapper objectMapper = new ObjectMapper()
 
+    static String AD_GROUP_TEMPLATE = "CN=%s,OU=Application,OU=Groupings,DC=corp,DC=target,DC=com|CN=APP-CART-exempt,OU=Application,OU=Groupings,DC=corp,DC=target,DC=com"
+
     static checkHeaders = { headers ->
         def headerOk = !headers.getAuthorization().get().isEmpty() && headers.get('X-B3-TraceId') != null &&
         headers.get('X-B3-SpanId') != null && headers.get('X-B3-ParentSpanId') != null &&
@@ -48,10 +50,13 @@ class DataProvider {
         ]
     }
 
-    static getHeaders(profileId, includeDebug = true) {
-        def headers = ["X-Tgt-Auth-Source": "gsp", "profile_id": profileId, "x-api-id": UUID.randomUUID().toString()]
+    static getHeaders(profileId, includeDebug = true, authSource = "gsp", adGroup = null) {
+        def headers = ["X-Tgt-Auth-Source": authSource, "profile_id": profileId, "x-api-id": UUID.randomUUID().toString()]
         if (includeDebug) {
             headers.put("x-forced-trace", "true")
+        }
+        if (adGroup != null) {
+            headers.put("X-TGT-MEMBEROF", String.format(AD_GROUP_TEMPLATE, adGroup))
         }
         return headers
     }

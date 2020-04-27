@@ -37,8 +37,8 @@ filter:
     order:
       mdc-filter: 50
       lists-brave-tracing-server-filter: 100
-      lists-traceid-filter: 101
-      authorization-filter: 200
+      list-authorization-filter: 200
+      id2-groupvalidation-filter: 201
       sanitizing-filter: 300
   client:
     order:
@@ -83,9 +83,15 @@ cart:
 
 components:
   server:
-    authorization-filter:
+    list-authorization-filter:
       base-uri: /favorites/v1
-
+    ad-group-permissions:
+      get-access:
+        permissions[0]:
+          groups:
+            - APP-LISTS-READ
+          urls:
+            - /favorites/v1/guest_favorites
 kafka:
   embedded:
     enabled: false

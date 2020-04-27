@@ -34,6 +34,9 @@ class GetFavoritesTcinFunctionalTest extends BaseFunctionalTest  {
     @Inject
     EventLifecycleNotificationProvider eventNotificationsProvider
 
+    static final String APP_LISTS_READ_GROUP = "APP-LISTS-READ"
+    static final String GUEST_FAVORITES_ENDPOINT = "/guest_favorites"
+
     @MockBean(ListsMessageBusProducer.class)
     ListsMessageBusProducer createMockListsMessageBusProducer() {
         return newMockMsgbusKafkaProducerClient(eventNotificationsProvider)
@@ -73,10 +76,10 @@ class GetFavoritesTcinFunctionalTest extends BaseFunctionalTest  {
         CartContentsResponse cartContentsResponse2 = cartDataProvider.getCartContentsResponse(cartResponse2, [cartItemResponse3, cartItemResponse4])
 
         when:
-        final requestURI = new UriTemplate(FavoriteConstants.BASEPATH + "/guest_favorites{?tcins}")
+        final requestURI = new UriTemplate(FavoriteConstants.BASEPATH + "${GUEST_FAVORITES_ENDPOINT}{?tcins}")
             .expand(tcins: "1234,5678")
         HttpResponse<GuestFavoritesResponseTO[]> listsResponse = client.toBlocking().exchange(
-            HttpRequest.GET(requestURI).headers(getHeaders(guestId)), GuestFavoritesResponseTO[])
+            HttpRequest.GET(requestURI).headers(getHeaders(guestId, true, "id2", APP_LISTS_READ_GROUP)), GuestFavoritesResponseTO[])
         def actualStatus = listsResponse.status()
         def actualBody = listsResponse.body()
 
@@ -112,10 +115,10 @@ class GetFavoritesTcinFunctionalTest extends BaseFunctionalTest  {
         String tcinString = "1234,5678,9876"
 
         when:
-        final requestURI = new UriTemplate(FavoriteConstants.BASEPATH + "/guest_favourites{?tcins}")
+        final requestURI = new UriTemplate(FavoriteConstants.BASEPATH + "${GUEST_FAVORITES_ENDPOINT}{?tcins}")
             .expand(tcins: tcinString)
 
-        client.toBlocking().exchange(HttpRequest.GET(requestURI).headers(getHeaders(guestId)), GuestFavoritesResponseTO[])
+        client.toBlocking().exchange(HttpRequest.GET(requestURI).headers(getHeaders(guestId, true, "id2", APP_LISTS_READ_GROUP)), GuestFavoritesResponseTO[])
 
         then:
         def error = thrown(HttpClientResponseException)

@@ -46,7 +46,7 @@ filter:
   server:
     order:
       lists-brave-tracing-server-filter: 100
-      authorization-filter: 200
+      list-authorization-filter: 200
   client:
     order:
       lists-brave-tracing-client-filter: 900
@@ -89,7 +89,7 @@ cart:
 
 components:
   server:
-    authorization-filter:
+    list-authorization-filter:
       enabled: false
     sanitizing-filter:
       enabled: false

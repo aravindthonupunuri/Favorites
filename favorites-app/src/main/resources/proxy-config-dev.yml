@@ -29,17 +29,17 @@ auth:
   clientTimeout: 30
   cacheExpireSeconds: 3600
   strategies:
-    #    - strategy: ID2
-    #      configuration:
-    #        host: oauth.iam.perf.target.com
-    #        port: 443
-    #        ssl: true
-    #        enterpriseValidator:
-    #          host: gsp.perf.target.com
-    #          port: 443
-    #          ssl: true
-    #        issuer:
-    #          - 'https://oauth.iam.perf.target.com'
+    - strategy: ID2
+      configuration:
+        host: oauth.iam.perf.target.com
+        port: 443
+        ssl: true
+        enterpriseValidator:
+          host: gsp.perf.target.com
+          port: 443
+          ssl: true
+        issuer:
+          - 'https://oauth.iam.perf.target.com'
     - strategy: GSP
       configuration:
         host: gsp.perf.target.com

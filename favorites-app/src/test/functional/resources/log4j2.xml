@@ -15,7 +15,7 @@
         <Logger name="io" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Logger name="io.micronaut.http" level="INFO" additivity="false">
+        <Logger name="io.micronaut.http" level="TRACE" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="com.tgt.lists.api.filter" level="INFO" additivity="false">
