@@ -132,10 +132,10 @@ msgbus:
       enabled: false
     dlqproducer:
       enabled: true
-    topic: lists-msg-bus
+    topic: lists-msg-bus-stage
     consumer-group: favorites-msg-bus-consumer
     consumer-batch-size: 10
-    dlq-topic: lists-dlq
+    dlq-topic: lists-dlq-stage
     dlq-consumer-group: favorites-dlq-consumer
     dlq-event-retry-interval-secs: 1
     dlq-max-event-retry-count: 2
