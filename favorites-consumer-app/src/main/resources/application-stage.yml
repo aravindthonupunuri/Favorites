@@ -71,13 +71,13 @@ resilience4j:
 
 tracing:
   zipkin:
-    enabled: false
+    enabled: true
     excluded-paths: /health
     b3-propagation-suppress: true
     sample-rate-percent: 0.5
-    http:
-      url: "https://zipkinserver.dev.target.com"
-      messageMaxBytes: 50000
+    kafka:
+      bootstrap-servers: tracing-kafka-broker.service.tgt-pe-test-us-central1.consul.c-test.gcp.cloud.target.internal:9092
+      topic: tracing-zipkin-common
     app:
       name: favorites
       env: stage

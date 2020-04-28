@@ -36,6 +36,21 @@ pipeline:
       - 'tap_api_token=$TAP_API_TOKEN app_private_key=$FAVORITES_APP_PRIVATE_KEY_DEV ./favorites-app/scripts/config_deploy_manager.sh conf.dev.0.0'
       - 'tap_api_token=$TAP_API_TOKEN app_private_key=$FAVORITES_CONSUMER_APP_PRIVATE_KEY_DEV ./favorites-consumer-app/scripts/config_deploy_manager.sh conf.dev.0.0'
 
+  publish-config-favorites-stage:
+    when:
+      event: tag
+      ref: 'refs/tags/conf.stage.favorites.*'
+      branch: master
+    image: 'docker.target.com/app/lists/alpine-bash-curl-ssl:1.0.5'
+    secrets:
+      - TAP_API_TOKEN
+      - favorites_app_private_key_stage
+      - favorites_consumer_app_private_key_stage
+    commands:
+      - 'tap_api_token=$TAP_API_TOKEN app_private_key=$FAVORITES_APP_PRIVATE_KEY_STAGE ./favorites-app/scripts/config_deploy_manager.sh ${DRONE_TAG}'
+      - 'tap_api_token=$TAP_API_TOKEN app_private_key=$FAVORITES_CONSUMER_APP_PRIVATE_KEY_STAGE ./favorites-consumer-app/scripts/config_deploy_manager.sh ${DRONE_TAG}'
+
+
   build:
     when:
       event: [pull_request, push, tag]
@@ -86,6 +101,21 @@ pipeline:
       - {source: artifactory_username, target: plugin_username}
       - {source: artifactory_password, target: plugin_password}
 
+  publish-docker-favorites-app-stage:
+    image: 'plugins/docker:latest'
+    group: stgimggroup
+    registry: docker.target.com
+    repo: docker.target.com/app/favorites/favorites-app
+    dockerfile: ./favorites-app/Dockerfile
+    tags: 'rc.${DRONE_TAG:24}'
+    when:
+      event: tag
+      branch: master
+      ref: 'refs/tags/conf.stage.favorites.*'
+    secrets:
+      - {source: artifactory_username, target: plugin_username}
+      - {source: artifactory_password, target: plugin_password}
+
   publish-docker-favorites-consumer-app-dev:
     image: plugins/docker
     group: devimggroup
@@ -102,6 +132,21 @@ pipeline:
       - {source: artifactory_username, target: plugin_username}
       - {source: artifactory_password, target: plugin_password}
 
+  publish-docker-favorites-consumer-app-stage:
+    image: 'plugins/docker:latest'
+    group: stgimggroup
+    registry: docker.target.com
+    repo: docker.target.com/app/favorites/favorites-consumer-app
+    dockerfile: ./favorites-consumer-app/Dockerfile
+    tags: 'rc.${DRONE_TAG:24}'
+    when:
+      event: tag
+      branch: master
+      ref: 'refs/tags/conf.stage.favorites.*'
+    secrets:
+      - {source: artifactory_username, target: plugin_username}
+      - {source: artifactory_password, target: plugin_password}
+
 secrets:
   cache_s3_server:
     path: secret/shared/drone/prod-secrets/cache_s3_server
@@ -113,5 +158,9 @@ secrets:
     path: secret/shared/drone/prod-secrets/cache_s3_ca_cert
   favorites_app_private_key_dev:
     path: secret/repo/Lists-Modernization/favorites/favorites-privkey-dev
+  favorites_app_private_key_stage:
+    path: secret/repo/Lists-Modernization/favorites/favorites-privkey-stage
   favorites_consumer_app_private_key_dev:
     path: secret/repo/Lists-Modernization/favorites/favoritesconsumer-privkey-dev
+  favorites_consumer_app_private_key_stage:
+    path: secret/repo/Lists-Modernization/favorites/favoritesconsumer-privkey-stage

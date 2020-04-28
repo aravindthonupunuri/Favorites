@@ -104,7 +104,7 @@ tracing:
       url: "https://zipkinserver.dev.target.com"
       messageMaxBytes: 50000
     app:
-      name: shoppinglist
+      name: favorites
       env: stage
       region: tdc
 
@@ -121,7 +121,7 @@ components:
     sanitizing-filter:
       enabled: false
 list:
-  list-type: SHOPPING
+  list-type: FAVORITES
   max-count: 50
   max-pending-item-count: 100
   max-completed-items-count: 100

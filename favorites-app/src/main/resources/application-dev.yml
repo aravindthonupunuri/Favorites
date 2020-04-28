@@ -84,7 +84,7 @@ tracing:
       url: "https://zipkinserver.dev.target.com"
       messageMaxBytes: 50000
     app:
-      name: shoppinglist
+      name: favorites
       env: stage
       region: tdc
 
@@ -118,7 +118,7 @@ components:
       get-access:
         permissions[0]:
           groups:
-            - APP-LISTS-READ
+            - APP-LISTS-STG-READ
           urls:
             - /favorites/v1/guest_favorites
 msgbus:
