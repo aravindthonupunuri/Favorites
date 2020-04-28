@@ -107,7 +107,7 @@ pipeline:
     registry: docker.target.com
     repo: docker.target.com/app/favorites/favorites-app
     dockerfile: ./favorites-app/Dockerfile
-    tags: 'rc.${DRONE_TAG}'
+    tags: 'rc.${DRONE_TAG:21}'
     when:
       event: tag
       branch: master
@@ -138,7 +138,7 @@ pipeline:
     registry: docker.target.com
     repo: docker.target.com/app/favorites/favorites-consumer-app
     dockerfile: ./favorites-consumer-app/Dockerfile
-    tags: 'rc.${DRONE_TAG}'
+    tags: 'rc.${DRONE_TAG:21}'
     when:
       event: tag
       branch: master
