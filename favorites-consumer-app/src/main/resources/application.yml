@@ -149,19 +149,19 @@ kafka:
 #  security:
 #    protocol: ssl
   consumers:
-    lists-msg-bus-consumer:
+    favorites-msg-bus-consumer:
       key:
         deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value:
         deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
-    lists-dlq-consumer:
+    favorites-dlq-consumer:
       key:
         deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value:
         deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
   producers:
     # default is a Jackson based JSON serializer for key/value
-    lists-msg-bus-producer:
+    favorites-msg-bus-producer:
       retries: 3
       retry:
         backoff:
@@ -187,10 +187,10 @@ msgbus:
     dlqproducer:
       enabled: true
     topic: ${kafka-msgbus-topic}
-    consumer-group: lists-msg-bus-consumer
+    consumer-group: favorites-msg-bus-consumer
     consumer-batch-size: 10
     dlq-topic: ${kafka-dlq-topic}
-    dlq-consumer-group: lists-dlq-consumer
+    dlq-consumer-group: favorites-dlq-consumer
     dlq-event-retry-interval-secs: 1
     dlq-max-event-retry-count: 2
     dlq-consumer-batch-size: 10
