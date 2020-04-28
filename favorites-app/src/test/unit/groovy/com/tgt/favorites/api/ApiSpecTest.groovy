@@ -4,6 +4,7 @@ import com.tgt.swagger_sync.ApiSpec
 import com.tgt.swagger_sync.OpenApi3Parser
 import com.tgt.swagger_sync.SpecComparator
 import com.tgt.swagger_sync.Swagger2Parser
+import spock.lang.Ignore
 import spock.lang.Specification
 
 class ApiSpecTest extends Specification {
@@ -24,6 +25,7 @@ class ApiSpecTest extends Specification {
         dynamicSpecFileParser = new OpenApi3Parser(dynamicSpecFilePath)
     }
 
+    @Ignore
     def "validate dynamically generated swagger spec against static spec for favorites"() {
         given:
         ApiSpec staticSpec = staticSpecFileParser.parse()

@@ -1,0 +1,194 @@
+swagger: '2.0'
+info:
+  title: LOVE'S API
+  description: Love functionality for the Dev Portal
+  version: 1.0.0
+host: gnc-secure-dev.target.com
+basePath: /guest_loves/v2
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /favorites:
+    x-data_classification: PUBLIC
+    get:
+      x-incident_priority: P4
+      x-response_time_sla: 500ms
+      x-success_http_code: '200'
+      x-expected_tps: '1000'
+      summary: Get Favorites list
+      description: |
+        Returns list of all liked items.
+      parameters:
+        - name: guest_id
+          description: Guest ID
+          in: query
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: List of loved items
+          schema:
+            $ref: '#/definitions/response'
+          headers:
+            Authorization:
+              type: string
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+    post:
+      x-incident_priority: P4
+      x-response_time_sla: 500ms
+      x-success_http_code: '201'
+      x-expected_tps: '10'
+      summary: Create a love list
+      description: Used to create a new record for loved item.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: payload
+          required: true
+          schema:
+            $ref: '#/definitions/payload'
+      responses:
+        '201':
+          description: success response of your new loved item
+          schema:
+            $ref: '#/definitions/successResponse'
+        '400':
+          description: 'Token not valid '
+          schema:
+            $ref: '#/definitions/tokenNotValid'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  '/favorites/{favorite_id}':
+    delete:
+      x-incident_priority: P4
+      x-response_time_sla: 1s
+      x-success_http_code: '201'
+      x-expected_tps: '10'
+      summary: delete a loved item
+      description: Used to delete an existing loved item.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: favorite_id
+          in: path
+          type: string
+          required: true
+      responses:
+        '204':
+          description: Record removed successfully
+        '400':
+          description: 'Token not valid '
+          schema:
+            $ref: '#/definitions/tokenNotValid'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+definitions:
+  response:
+    properties:
+      guest_id:
+        type: integer
+        description: Guest Id.
+      channel_name:
+        type: string
+        description: Channel name mobile/tablet.
+      identifier:
+        type: string
+        description: identifier unique name/number.
+      identifier_type:
+        type: string
+        description: Type of identifier it could be partnumber/brand/collection.
+      price:
+        type: string
+        description: price of item .
+      create_timestamp:
+        type: string
+        format: date-time
+        description: creation date.
+      favorite_id:
+        type: string
+        description: unique id for favorite entity.
+  tokenNotValid:
+    type: object
+    properties:
+      message:
+        type: string
+        description: failed to validate token/fields.
+      errors:
+        type: array
+        items:
+          properties:
+            resource:
+              type: string
+              description: detail of resource
+            field:
+              type: string
+              description: name of field
+            reason:
+              type: string
+              description: why this error occured
+  successResponse:
+    properties:
+      guest_id:
+        type: integer
+        description: Guest Id.
+      channel_name:
+        type: string
+        description: Channel name mobile/tablet.
+      identifier:
+        type: string
+        description: identifier unique name/number.
+      identifier_type:
+        type: string
+        description: Type of identifier it could be partnumber/brand/collection.
+      price:
+        type: string
+        description: price of item .
+  error:
+    properties:
+      message:
+        type: string
+        description: Failed to validate.
+      errors:
+        type: array
+        items:
+          properties:
+            resource:
+              type: string
+              description: detail of resource
+            field:
+              type: string
+              description: name of field
+            reason:
+              type: string
+              description: why this error occured
+  payload:
+    properties:
+      guest_id:
+        type: integer
+        description: Guest Id.
+      channel_name:
+        type: string
+        description: Channel name mobile/tablet.
+      identifier:
+        type: string
+        description: identifier unique name/number.
+      identifier_type:
+        type: string
+        description: Type of identifier it could be partnumber/brand/collection.
+      price:
+        type: string
+        description: price of item .
