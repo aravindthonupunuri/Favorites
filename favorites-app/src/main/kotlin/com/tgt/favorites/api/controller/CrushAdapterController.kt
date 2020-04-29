@@ -17,11 +17,13 @@ import com.tgt.lists.lib.api.util.getListMetaDataFromCart
 import io.micronaut.context.annotation.Value
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.annotation.*
+import io.swagger.v3.oas.annotations.Hidden
 import reactor.core.publisher.Mono
 import java.util.*
 import javax.validation.Valid
 
 @Controller("/guest_loves/v2/favorites")
+@Hidden
 class CrushAdapterController(
     private val deleteListItemService: DeleteListItemService,
     private val getDefaultListService: GetDefaultListService,
