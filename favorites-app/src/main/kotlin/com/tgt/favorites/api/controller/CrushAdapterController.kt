@@ -32,7 +32,7 @@ class CrushAdapterController(
     @Value("\${list.default-list-title}") val defaultListTitle: String
 ) {
 
-    private val storeId = 1375L
+    private val storeId = 3991L
 
     /**
      *
